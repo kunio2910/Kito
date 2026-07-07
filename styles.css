@@ -131,11 +131,11 @@ a {
 }
 
 .icon-button {
-  width: 26px;
-  height: 26px;
+  width: 39px;
+  height: 39px;
   background: transparent;
   box-shadow: none;
-  font-size: 17px;
+  font-size: 26px;
 }
 
 .login-button,
@@ -531,12 +531,13 @@ main {
 .content-card p,
 .church-card p,
 .article-card p {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   display: -webkit-box;
-  min-height: 54px;
+  min-height: 0;
+  max-height: 40px;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 }
 
 .content-card a,
@@ -879,6 +880,7 @@ textarea {
   max-width: 760px;
   color: #4b3622;
   font-size: 18px;
+  font-weight: 800;
   line-height: 1.75;
 }
 
@@ -1137,6 +1139,10 @@ textarea:disabled {
   .left-column {
     border-right: 0;
   }
+
+  .right-column {
+    border-left: 0;
+  }
 }
 
 @media (max-width: 1100px) {
@@ -1170,11 +1176,53 @@ textarea:disabled {
 
 @media (max-width: 680px) {
   .site-header {
-    padding: 0 16px;
+    position: sticky;
+    min-height: 56px;
+    padding: 0 12px;
   }
 
   .brand {
     min-width: 0;
+    font-size: 8px;
+  }
+
+  .brand-mark {
+    font-size: 24px;
+  }
+
+  .header-actions {
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .icon-button {
+    width: 34px;
+    height: 34px;
+    font-size: 23px;
+  }
+
+  .login-button,
+  .primary-button,
+  .light-button,
+  .ghost-button,
+  .danger-button {
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 10px;
+  }
+
+  .home-dashboard {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .left-column {
+    padding-top: 0;
+  }
+
+  .right-column {
+    gap: 18px;
+    padding: 20px 14px 24px;
   }
 
   .quick-links,
@@ -1187,7 +1235,20 @@ textarea:disabled {
   }
 
   .hero {
-    min-height: 480px;
+    min-height: 420px;
+  }
+
+  .hero-content {
+    width: min(100% - 24px, 520px);
+    padding-top: 0;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .hero p {
+    font-size: 12px;
   }
 
   .hero-cross {
@@ -1234,6 +1295,18 @@ textarea:disabled {
     padding: 10px 16px;
   }
 
+  .search-drawer {
+    left: 12px !important;
+    right: 12px !important;
+    width: auto;
+  }
+
+  .detail-shell,
+  .category-shell {
+    width: 100%;
+    padding: 18px 12px 32px;
+  }
+
   .admin-intro .danger-button {
     margin-top: 12px;
   }
@@ -1261,16 +1334,30 @@ textarea:disabled {
   }
 
   .detail-cover img {
-    max-height: 320px;
-    aspect-ratio: 16 / 10;
+    max-height: none;
+    aspect-ratio: auto;
   }
 
   .detail-heading {
     padding: 18px;
   }
 
+  .detail-heading h1,
+  .detail-empty h1 {
+    font-size: 34px;
+  }
+
+  .lead {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
   .detail-content {
     padding: 0 18px 24px;
+  }
+
+  .detail-body {
+    font-size: 15px;
   }
 
   .category-grid {
