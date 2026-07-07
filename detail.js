@@ -1,4 +1,4 @@
-const content = getContent();
+let content = null;
 const typeLabels = {
   saints: "Các thánh",
   churches: "Nhà thờ",
@@ -10,8 +10,6 @@ const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 const id = params.get("id");
 const allowedTypes = ["saints", "churches", "articles", "events"];
-const currentList = allowedTypes.includes(type) ? content[type] : [];
-const item = currentList.find((entry) => entry.id === id);
 const detailArticle = document.querySelector("#detailArticle");
 
 function detailLink(nextType, nextId) {
@@ -31,6 +29,8 @@ function renderMissing() {
 }
 
 function renderDetail() {
+  const currentList = allowedTypes.includes(type) ? content[type] : [];
+  const item = currentList.find((entry) => entry.id === id);
   if (!item) {
     renderMissing();
     return;
@@ -63,6 +63,7 @@ function renderDetail() {
 }
 
 function renderRelated() {
+  const currentList = allowedTypes.includes(type) ? content[type] : [];
   const related = currentList.filter((entry) => entry.id !== id).slice(0, 3);
   document.querySelector("#relatedList").innerHTML = related
     .map(
@@ -80,5 +81,21 @@ function renderRelated() {
     .join("");
 }
 
-renderDetail();
-renderRelated();
+async function initDetail() {
+  try {
+    content = await getContent();
+    renderDetail();
+    renderRelated();
+  } catch (error) {
+    content = structuredClone(defaultContent);
+    detailArticle.innerHTML = `
+      <div class="detail-empty">
+        <p class="eyebrow">Chưa kết nối Firebase</p>
+        <h1>Không thể tải nội dung</h1>
+        <p>${error.message}</p>
+      </div>
+    `;
+  }
+}
+
+initDetail();

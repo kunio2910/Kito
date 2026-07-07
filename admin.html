@@ -15,11 +15,33 @@
       <nav class="main-nav" aria-label="Điều hướng quản trị">
         <a href="index.html">Xem website</a>
         <a href="#contentManager">Nội dung</a>
+        <a href="accounts.html">Tài khoản</a>
         <a href="#preview">Xem trước</a>
       </nav>
+      <div class="header-actions" id="adminAuthStatus"></div>
     </header>
 
     <main class="admin-shell">
+      <section class="login-panel" id="loginPanel">
+        <div>
+          <p class="eyebrow">Đăng nhập quản trị</p>
+          <h1>Đăng nhập để quản lý nội dung</h1>
+        </div>
+        <form id="loginForm" class="login-form">
+          <label>
+            <span>User</span>
+            <input id="loginUsername" type="text" autocomplete="username" required />
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="loginPassword" type="password" autocomplete="current-password" required />
+          </label>
+          <button class="primary-button" type="submit">Đăng nhập</button>
+          <p class="form-message" id="loginMessage"></p>
+        </form>
+      </section>
+
+      <div id="adminProtected" hidden>
       <section class="admin-intro">
         <div>
           <p class="eyebrow">Trang quản lý</p>
@@ -92,9 +114,15 @@
         </div>
         <div class="article-grid" id="previewList"></div>
       </section>
+      </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script src="data.js"></script>
+    <script src="auth.js"></script>
     <script src="admin.js"></script>
   </body>
 </html>

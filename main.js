@@ -1,4 +1,4 @@
-const content = getContent();
+let content = null;
 let dailyIndex = 0;
 
 const imageOrFallback = (item) => item.image || fallbackImage;
@@ -78,6 +78,20 @@ function renderHome() {
   renderDaily();
 }
 
+function renderLoadError(error) {
+  document.querySelector("#saintsList").innerHTML = `
+    <article class="content-card">
+      <div>
+        <h3>Chưa kết nối Firebase</h3>
+        <p>${error.message}</p>
+      </div>
+    </article>
+  `;
+  document.querySelector("#churchesList").innerHTML = "";
+  document.querySelector("#articlesList").innerHTML = "";
+  document.querySelector("#eventsList").innerHTML = "";
+}
+
 function setupSearch() {
   const drawer = document.querySelector("#searchDrawer");
   const input = document.querySelector("#searchInput");
@@ -114,5 +128,16 @@ document.querySelector("#nextDaily").addEventListener("click", () => {
   renderDaily();
 });
 
-renderHome();
-setupSearch();
+async function initHome() {
+  try {
+    content = await getContent();
+    renderHome();
+    setupSearch();
+  } catch (error) {
+    content = structuredClone(defaultContent);
+    renderDaily();
+    renderLoadError(error);
+  }
+}
+
+initHome();

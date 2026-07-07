@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý tài khoản - Truyền Giáo Kitô</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-page">
+    <header class="site-header admin-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">✝</span>
+        <span>Truyền Giáo<br />Kitô</span>
+      </a>
+      <nav class="main-nav" aria-label="Điều hướng quản trị">
+        <a href="index.html">Xem website</a>
+        <a href="admin.html">Nội dung</a>
+        <a href="accounts.html">Tài khoản</a>
+      </nav>
+      <div class="header-actions" id="accountAuthStatus"></div>
+    </header>
+
+    <main class="admin-shell">
+      <section class="login-panel" id="loginPanel">
+        <div>
+          <p class="eyebrow">Đăng nhập quản trị</p>
+          <h1>Đăng nhập để quản lý tài khoản</h1>
+        </div>
+        <form id="loginForm" class="login-form">
+          <label>
+            <span>User</span>
+            <input id="loginUsername" type="text" autocomplete="username" required />
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="loginPassword" type="password" autocomplete="current-password" required />
+          </label>
+          <button class="primary-button" type="submit">Đăng nhập</button>
+          <p class="form-message" id="loginMessage"></p>
+        </form>
+      </section>
+
+      <div id="accountProtected" hidden>
+        <section class="admin-intro">
+          <div>
+            <p class="eyebrow">Quản lý tài khoản</p>
+            <h1>Tạo user mới và phân quyền</h1>
+            <p>Chỉ tài khoản có quyền admin mới được tạo, sửa, xóa tài khoản và quản lý nội dung.</p>
+          </div>
+        </section>
+
+        <section class="manager-layout">
+          <form class="editor-panel" id="accountForm">
+            <input type="hidden" id="accountId" />
+            <label>
+              <span>Tên hiển thị</span>
+              <input id="accountName" type="text" placeholder="Ví dụ: Ban truyền thông" />
+            </label>
+            <label>
+              <span>User</span>
+              <input id="accountUsername" type="text" required placeholder="Ví dụ: media" />
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="accountPassword" type="password" placeholder="Nhập khi tạo mới hoặc muốn đổi" />
+            </label>
+            <label>
+              <span>Phân quyền</span>
+              <select id="accountRole" required>
+                <option value="viewer">Viewer - chỉ xem</option>
+                <option value="editor">Editor - chưa có quyền sửa nội dung</option>
+                <option value="admin">Admin - toàn quyền</option>
+              </select>
+            </label>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Lưu tài khoản</button>
+              <button class="ghost-button" type="button" id="clearAccountForm">Làm mới</button>
+            </div>
+            <p class="form-message" id="accountMessage"></p>
+          </form>
+
+          <section class="table-panel">
+            <div class="section-heading">
+              <h2>Danh sách tài khoản</h2>
+            </div>
+            <div class="admin-list" id="accountList"></div>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="accounts.js"></script>
+  </body>
+</html>
