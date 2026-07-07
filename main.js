@@ -1,11 +1,16 @@
 let content = null;
 let dailyIndex = 0;
+let dailyTimer = null;
 
 const imageOrFallback = (item) => item.image || fallbackImage;
 const detailLink = (type, id) => `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
 
 function summarizeText(text, maxLength = 115) {
-  const value = String(text || "").replace(/\s+/g, " ").trim();
+  const value = String(text || "")
+    .split(/\r?\n/)
+    .map((line) => line.replace(/[ \t]+/g, " ").trim())
+    .join("\n")
+    .trim();
   if (value.length <= maxLength) return value;
   return `${value.slice(0, maxLength).trim()}...`;
 }
@@ -73,19 +78,40 @@ function eventTemplate(item) {
 
 function renderDaily() {
   const daily = content.daily[dailyIndex];
-  document.querySelector("#dailyQuote").textContent = `“${daily.quote}”`;
-  document.querySelector("#dailyRef").textContent = `(${daily.ref})`;
+  const quote = daily.quote || daily.description || daily.title || "";
+  const ref = daily.ref || daily.meta || daily.title || "";
+  document.querySelector("#dailyQuote").textContent = `“${quote}”`;
+  document.querySelector("#dailyRef").textContent = ref ? `(${ref})` : "";
+  document.querySelector(".daily-card").style.setProperty("--daily-image", `url("${imageOrFallback(daily)}")`);
   document.querySelector("#dailyDots").innerHTML = content.daily
     .map((_, index) => `<span class="${index === dailyIndex ? "active" : ""}"></span>`)
     .join("");
 }
 
+function renderHeroBanner() {
+  const banner = content.banners?.[0];
+  if (!banner) return;
+  document.querySelector("#heroTitle").textContent = banner.title || "";
+  document.querySelector(".hero-content p").textContent = banner.description || "";
+  document.querySelector(".hero-bg").style.setProperty("--hero-image", `url("${imageOrFallback(banner)}")`);
+}
+
 function renderHome() {
+  renderHeroBanner();
   document.querySelector("#saintsList").innerHTML = content.saints.slice(0, 5).map((item) => cardTemplate(item, "saints")).join("");
   document.querySelector("#churchesList").innerHTML = content.churches.map(churchTemplate).join("");
   document.querySelector("#articlesList").innerHTML = content.articles.map(articleTemplate).join("");
   document.querySelector("#eventsList").innerHTML = content.events.map(eventTemplate).join("");
   renderDaily();
+}
+
+function startDailyAutoSlide() {
+  clearInterval(dailyTimer);
+  if (!content.daily || content.daily.length < 2) return;
+  dailyTimer = setInterval(() => {
+    dailyIndex = (dailyIndex + 1) % content.daily.length;
+    renderDaily();
+  }, 5000);
 }
 
 function renderLoadError(error) {
@@ -137,21 +163,26 @@ function setupSearch() {
 document.querySelector("#prevDaily").addEventListener("click", () => {
   dailyIndex = (dailyIndex - 1 + content.daily.length) % content.daily.length;
   renderDaily();
+  startDailyAutoSlide();
 });
 
 document.querySelector("#nextDaily").addEventListener("click", () => {
   dailyIndex = (dailyIndex + 1) % content.daily.length;
   renderDaily();
+  startDailyAutoSlide();
 });
 
 async function initHome() {
   try {
     content = await getContent();
     renderHome();
+    startDailyAutoSlide();
     setupSearch();
   } catch (error) {
     content = structuredClone(defaultContent);
+    renderHeroBanner();
     renderDaily();
+    startDailyAutoSlide();
     renderLoadError(error);
     setupSearch();
   }

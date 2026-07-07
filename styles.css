@@ -238,7 +238,8 @@ main {
   z-index: -2;
   background:
     linear-gradient(90deg, rgba(48, 29, 17, 0.1), rgba(255, 224, 176, 0.5)),
-    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center bottom/cover;
+    var(--hero-image, url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80")) center/cover no-repeat;
+  background-color: #f1dfc5;
 }
 
 .hero::after {
@@ -249,42 +250,6 @@ main {
   background:
     radial-gradient(circle at 72% 38%, rgba(255, 242, 197, 0.58), rgba(122, 69, 26, 0.05) 32%, rgba(56, 35, 22, 0.27) 76%),
     linear-gradient(0deg, rgba(91, 52, 16, 0.18), rgba(255, 248, 231, 0.1));
-}
-
-.hero-figure {
-  position: absolute;
-  left: 7%;
-  bottom: 0;
-  z-index: 0;
-  width: 132px;
-  height: 260px;
-  border-radius: 70px 70px 12px 12px;
-  background:
-    radial-gradient(circle at 50% 17%, #3b2a1e 0 26px, transparent 27px),
-    linear-gradient(115deg, transparent 0 23%, rgba(47, 29, 21, 0.9) 24% 100%);
-  opacity: 0.88;
-  filter: drop-shadow(0 20px 24px rgba(38, 24, 14, 0.28));
-}
-
-.hero-cross {
-  position: absolute;
-  right: 17%;
-  top: 74px;
-  z-index: 0;
-  width: 28px;
-  height: 238px;
-  background: #17120f;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
-}
-
-.hero-cross::before {
-  content: "";
-  position: absolute;
-  left: -76px;
-  top: 70px;
-  width: 180px;
-  height: 28px;
-  background: #17120f;
 }
 
 .hero-content {
@@ -307,9 +272,14 @@ main {
 .hero p {
   max-width: 600px;
   margin: 0 auto;
-  color: #3f2e22;
+  color: #fff8ec;
   font-size: 13px;
   line-height: 1.75;
+  white-space: pre-line;
+  -webkit-text-stroke: 0.35px rgba(49, 31, 18, 0.75);
+  text-shadow:
+    0 1px 1px rgba(49, 31, 18, 0.96),
+    0 2px 8px rgba(49, 31, 18, 0.72);
 }
 
 .hero-dots,
@@ -503,19 +473,19 @@ main {
 }
 
 .content-card img {
-  height: 170px;
+  height: 115px;
   object-fit: contain;
   background: #f7efe3;
 }
 
 .church-card img {
-  height: 154px;
+  height: 104px;
   object-fit: contain;
   background: #f7efe3;
 }
 
 .article-card img {
-  height: 170px;
+  height: 115px;
   object-fit: contain;
   background: #f7efe3;
 }
@@ -526,7 +496,7 @@ main {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 14px;
+  padding: 10px;
 }
 
 .content-card h3,
@@ -549,6 +519,7 @@ main {
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  white-space: pre-line;
 }
 
 .content-card a,
@@ -566,24 +537,32 @@ main {
 
 .daily-card {
   position: relative;
-  min-height: 244px;
+  min-height: 210px;
   display: grid;
-  grid-template-columns: 36px 1fr 36px;
+  grid-template-columns: 24px 1fr 24px;
   align-items: center;
-  gap: 10px;
-  padding: 20px;
+  gap: 8px;
+  padding: 18px;
   color: var(--white);
   background:
     linear-gradient(90deg, rgba(95, 53, 20, 0.92), rgba(115, 69, 25, 0.72)),
-    url("https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=1200&q=80") center/cover;
+    var(--daily-image, url("https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=1200&q=80")) center/cover no-repeat;
+  background-color: #5f3514;
 }
 
 .daily-card blockquote {
-  margin: 0 0 16px;
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 1.65;
+  margin: 0 0 10px;
+  font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.daily-card small {
+  font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
+  font-size: 10px;
 }
 
 .light-button {
@@ -596,10 +575,10 @@ main {
 }
 
 .round-arrow {
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   color: var(--gold-dark);
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .event-card {
@@ -630,6 +609,7 @@ main {
 
 .event-card p {
   margin: 0 0 4px;
+  white-space: pre-line;
 }
 
 .event-card small {
@@ -898,11 +878,13 @@ textarea {
   font-size: 18px;
   font-weight: 800;
   line-height: 1.75;
+  white-space: pre-line;
 }
 
 .detail-content p,
 .detail-empty p {
   line-height: 1.8;
+  white-space: pre-line;
 }
 
 .detail-body {
@@ -911,6 +893,7 @@ textarea {
   color: #4b3622;
   font-size: 16px;
   line-height: 1.8;
+  white-space: pre-line;
 }
 
 .detail-body p,
@@ -993,6 +976,8 @@ textarea {
 
 .category-card img {
   height: 210px;
+  object-fit: cover;
+  object-position: center 28%;
 }
 
 .category-card div {
@@ -1014,6 +999,7 @@ textarea {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.55;
+  white-space: pre-line;
 }
 
 .category-card small,
@@ -1083,6 +1069,9 @@ textarea {
 .admin-list {
   display: grid;
   gap: 14px;
+  max-height: 620px;
+  overflow-y: auto;
+  padding-right: 6px;
 }
 
 .admin-item {
@@ -1093,8 +1082,27 @@ textarea {
   padding: 12px;
 }
 
+.admin-item.is-draggable {
+  cursor: grab;
+}
+
+.admin-item.is-draggable:active {
+  cursor: grabbing;
+}
+
+.admin-item.dragging {
+  opacity: 0.55;
+}
+
+.admin-item.drag-over {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
 .admin-item img {
   height: 92px;
+  object-fit: contain;
+  background: #f7efe3;
   border-radius: 8px;
 }
 
@@ -1119,6 +1127,7 @@ textarea {
 
 .admin-item p {
   margin: 0 0 6px;
+  white-space: pre-line;
 }
 
 .row-actions {
@@ -1265,18 +1274,6 @@ textarea:disabled {
 
   .hero p {
     font-size: 12px;
-  }
-
-  .hero-cross {
-    right: 12%;
-    transform: scale(0.82);
-    transform-origin: top center;
-  }
-
-  .hero-figure {
-    left: 4%;
-    transform: scale(0.82);
-    transform-origin: bottom left;
   }
 
   .quick-links a {

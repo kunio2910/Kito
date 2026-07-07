@@ -1,5 +1,5 @@
 const fallbackImage = "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80";
-const CONTENT_TYPES = ["saints", "churches", "articles", "events"];
+const CONTENT_TYPES = ["saints", "churches", "articles", "events", "daily", "banners"];
 
 const defaultContent = {
   daily: [
@@ -141,6 +141,34 @@ const defaultContent = {
   ],
 };
 
+defaultContent.daily = defaultContent.daily.map((item, index) => ({
+  id: item.id || `daily-${index + 1}`,
+  type: "daily",
+  title: item.title || item.ref || `Loi Chua ${index + 1}`,
+  description: item.description || item.quote || "",
+  meta: item.meta || item.ref || "",
+  image:
+    item.image ||
+    [
+      "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1528357136257-0c25517acfea?auto=format&fit=crop&w=1200&q=80",
+    ][index % 3],
+  ...item,
+}));
+
+defaultContent.banners = [
+  {
+    id: "banner-main",
+    type: "banners",
+    title: "Duc Kito la anh sang the gian",
+    description:
+      "Thay la anh sang the gian: ai theo Thay, se khong di trong bong toi, nhung se duoc anh sang dem lai su song. (Ga 8,12)",
+    meta: "Banner chinh",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80",
+  },
+];
+
 function isFirebaseConfigured() {
   return Boolean(
     window.KITO_FIREBASE_CONFIG &&
@@ -167,7 +195,32 @@ function requireFirebase() {
 async function seedDefaultContentIfEmpty(force = false) {
   const { db } = requireFirebase();
   const sample = await db.collection("contents").limit(1).get();
-  if (!force && !sample.empty) return;
+  if (!force && !sample.empty) {
+    const current = await db.collection("contents").get();
+    const existingTypes = new Set();
+    current.forEach((doc) => {
+      const item = doc.data();
+      if (item.type) existingTypes.add(item.type);
+    });
+
+    const missingTypes = ["daily", "banners"].filter((type) => !existingTypes.has(type));
+    if (!missingTypes.length) return;
+
+    const missingBatch = db.batch();
+    missingTypes.forEach((type) => {
+      defaultContent[type].forEach((item, index) => {
+        const ref = db.collection("contents").doc(item.id);
+        missingBatch.set(ref, {
+          ...item,
+          sortOrder: index,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      });
+    });
+    await missingBatch.commit();
+    return;
+  }
 
   if (force) {
     const current = await db.collection("contents").get();
@@ -196,7 +249,8 @@ async function getContent() {
   const { db } = requireFirebase();
   const snapshot = await db.collection("contents").get();
   const content = {
-    daily: structuredClone(defaultContent.daily),
+    daily: [],
+    banners: [],
     saints: [],
     churches: [],
     articles: [],
@@ -217,6 +271,9 @@ async function getContent() {
       return orderA - orderB || String(b.createdAt || "").localeCompare(String(a.createdAt || ""));
     });
   });
+
+  if (!content.daily.length) content.daily = structuredClone(defaultContent.daily);
+  if (!content.banners.length) content.banners = structuredClone(defaultContent.banners);
 
   return content;
 }
@@ -239,6 +296,24 @@ async function saveContentItem(type, item) {
 
   await ref.set(payload, { merge: true });
   return id;
+}
+
+async function updateContentOrder(type, orderedIds) {
+  const { db } = requireFirebase();
+  const batch = db.batch();
+
+  orderedIds.forEach((id, index) => {
+    batch.set(
+      db.collection("contents").doc(id),
+      {
+        sortOrder: index,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+  });
+
+  await batch.commit();
 }
 
 async function deleteContentItem(id) {

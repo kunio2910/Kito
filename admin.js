@@ -1,4 +1,4 @@
-let content = null;
+﻿let content = null;
 let currentImage = "";
 let currentImagePath = "";
 let canManageContent = false;
@@ -8,6 +8,8 @@ const typeLabels = {
   churches: "Nhà thờ",
   articles: "Bài viết",
   events: "Sự kiện",
+  daily: "Lời Chúa mỗi ngày",
+  banners: "Banner chính",
 };
 
 const form = document.querySelector("#contentForm");
@@ -21,11 +23,13 @@ const itemDate = document.querySelector("#itemDate");
 const itemImageUrl = document.querySelector("#itemImageUrl");
 const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
+const adminList = document.querySelector("#adminList");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
 const loginMessage = document.querySelector("#loginMessage");
 const contentMessage = document.querySelector("#contentMessage");
+let draggedItem = null;
 
 function detailLink(type, id) {
   return `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
@@ -40,21 +44,22 @@ function summarizeText(text, maxLength = 120) {
 function getItemsForAdmin() {
   if (!content) return [];
   const selected = filterType.value;
-  const types = selected === "all" ? ["saints", "churches", "articles", "events"] : [selected];
-  return types.flatMap((type) => content[type].map((item) => ({ ...item, type })));
+  const types = selected === "all" ? CONTENT_TYPES : [selected];
+  return types.flatMap((type) => (content[type] || []).map((item) => ({ ...item, type })));
 }
 
 function renderAdminList() {
   const items = getItemsForAdmin();
-  document.querySelector("#adminList").innerHTML = items
+  const canReorder = canManageContent && filterType.value !== "all";
+  adminList.innerHTML = items
     .map(
       (item) => `
-        <article class="admin-item">
+        <article class="admin-item ${canReorder ? "is-draggable" : ""}" data-id="${item.id}" data-type="${item.type}" draggable="${canReorder}">
           <img src="${item.image || fallbackImage}" alt="${item.title}" />
           <div>
             <span>${typeLabels[item.type]}</span>
-            <h3>${item.title}</h3>
-            <p>${summarizeText(item.description, 130)}</p>
+            <h3>${item.title || item.ref || item.meta || ""}</h3>
+            <p>${summarizeText(item.description || item.quote, 130)}</p>
             <small>${item.meta || ""}</small>
           </div>
           ${
@@ -67,22 +72,6 @@ function renderAdminList() {
               `
               : `<div class="permission-badge">Chỉ xem</div>`
           }
-        </article>
-      `
-    )
-    .join("");
-
-  document.querySelector("#previewList").innerHTML = content.articles
-    .slice(0, 3)
-    .map(
-      (item) => `
-        <article class="article-card">
-          <img src="${item.image || fallbackImage}" alt="${item.title}" />
-          <div>
-            <h3>${item.title}</h3>
-            <p>${summarizeText(item.description, 120)}</p>
-            <a href="${detailLink("articles", item.id)}">Đọc thêm</a>
-          </div>
         </article>
       `
     )
@@ -107,8 +96,8 @@ function editItem(type, id) {
 
   itemId.value = item.id;
   itemType.value = type;
-  itemTitle.value = item.title;
-  itemDescription.value = item.description;
+  itemTitle.value = item.title || item.ref || item.meta || "";
+  itemDescription.value = item.description || item.quote || "";
   itemBodyHtml.value = item.bodyHtml || "";
   itemMeta.value = item.meta || "";
   itemDate.value = item.date || "";
@@ -139,6 +128,26 @@ async function deleteItem(type, id) {
   } catch (error) {
     alert(error.message);
   }
+}
+
+function moveItemInType(type, draggedId, targetId, placeAfter) {
+  const items = content[type] || [];
+  const fromIndex = items.findIndex((item) => item.id === draggedId);
+  const targetIndex = items.findIndex((item) => item.id === targetId);
+  if (fromIndex < 0 || targetIndex < 0 || draggedId === targetId) return false;
+
+  const [moved] = items.splice(fromIndex, 1);
+  const adjustedTargetIndex = items.findIndex((item) => item.id === targetId);
+  items.splice(adjustedTargetIndex + (placeAfter ? 1 : 0), 0, moved);
+  items.forEach((item, index) => {
+    item.sortOrder = index;
+  });
+  return true;
+}
+
+async function persistCurrentOrder(type) {
+  const ids = (content[type] || []).map((item) => item.id);
+  await updateContentOrder(type, ids);
 }
 
 itemImageUrl.addEventListener("input", () => {
@@ -176,6 +185,8 @@ form.addEventListener("submit", async (event) => {
       id,
       title: itemTitle.value.trim(),
       description: itemDescription.value.trim(),
+      quote: type === "daily" ? itemDescription.value.trim() : "",
+      ref: type === "daily" ? itemMeta.value.trim() : "",
       bodyHtml: itemBodyHtml.value.trim(),
       meta: itemMeta.value.trim(),
       date: itemDate.value,
@@ -195,7 +206,67 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-document.querySelector("#adminList").addEventListener("click", (event) => {
+adminList.addEventListener("dragstart", (event) => {
+  const item = event.target.closest(".admin-item");
+  if (!item || !canManageContent || filterType.value === "all" || event.target.closest("button")) {
+    event.preventDefault();
+    return;
+  }
+
+  draggedItem = {
+    id: item.dataset.id,
+    type: item.dataset.type,
+  };
+  item.classList.add("dragging");
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.setData("text/plain", draggedItem.id);
+});
+
+adminList.addEventListener("dragover", (event) => {
+  const target = event.target.closest(".admin-item");
+  if (!draggedItem || !target || target.dataset.type !== draggedItem.type || target.dataset.id === draggedItem.id) return;
+  event.preventDefault();
+  target.classList.add("drag-over");
+});
+
+adminList.addEventListener("dragleave", (event) => {
+  const target = event.target.closest(".admin-item");
+  if (target) target.classList.remove("drag-over");
+});
+
+adminList.addEventListener("drop", async (event) => {
+  const target = event.target.closest(".admin-item");
+  if (!draggedItem || !target || target.dataset.type !== draggedItem.type) return;
+  event.preventDefault();
+
+  const rect = target.getBoundingClientRect();
+  const placeAfter = event.clientY > rect.top + rect.height / 2;
+  const moved = moveItemInType(draggedItem.type, draggedItem.id, target.dataset.id, placeAfter);
+  if (!moved) return;
+
+  try {
+    renderAdminList();
+    contentMessage.textContent = "Đang lưu thứ tự nội dung...";
+    await persistCurrentOrder(draggedItem.type);
+    contentMessage.textContent = "Đã cập nhật thứ tự nội dung.";
+  } catch (error) {
+    contentMessage.textContent = error.message;
+    alert(error.message);
+    content = await getContent();
+    renderAdminList();
+  } finally {
+    draggedItem = null;
+  }
+});
+
+adminList.addEventListener("dragend", () => {
+  draggedItem = null;
+  adminList.querySelectorAll(".dragging, .drag-over").forEach((item) => {
+    item.classList.remove("dragging", "drag-over");
+  });
+});
+
+adminList.addEventListener("click", (event) => {
   const button = event.target.closest("button");
   if (!button) return;
   const { action, type, id } = button.dataset;
@@ -204,27 +275,16 @@ document.querySelector("#adminList").addEventListener("click", (event) => {
 });
 
 document.querySelector("#clearForm").addEventListener("click", clearForm);
-filterType.addEventListener("change", renderAdminList);
-
-document.querySelector("#resetData").addEventListener("click", async () => {
-  if (!canManageContent) return;
-  const confirmed = confirm("Khôi phục dữ liệu mẫu và xóa các nội dung đã chỉnh sửa?");
-  if (!confirmed) return;
-  try {
-    await resetContent();
-    content = await getContent();
-    clearForm();
-    renderAdminList();
-  } catch (error) {
-    alert(error.message);
-  }
+filterType.addEventListener("change", () => {
+  renderAdminList();
+  contentMessage.textContent =
+    filterType.value === "all" ? "Chọn một loại nội dung cụ thể để kéo thả đổi thứ tự." : "";
 });
 
 function setEditorEnabled(enabled) {
   form.querySelectorAll("input, select, textarea, button").forEach((control) => {
     control.disabled = !enabled;
   });
-  document.querySelector("#resetData").hidden = !enabled;
 }
 
 async function setupLogin() {

@@ -36,7 +36,11 @@ function categoryDetailLink(type, id) {
 }
 
 function categorySummary(text, maxLength = 150) {
-  const value = String(text || "").replace(/\s+/g, " ").trim();
+  const value = String(text || "")
+    .split(/\r?\n/)
+    .map((line) => line.replace(/[ \t]+/g, " ").trim())
+    .join("\n")
+    .trim();
   if (value.length <= maxLength) return value;
   return `${value.slice(0, maxLength).trim()}...`;
 }

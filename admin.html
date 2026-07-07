@@ -16,7 +16,6 @@
         <a href="index.html">Xem website</a>
         <a href="#contentManager">Nội dung</a>
         <a href="accounts.html">Tài khoản</a>
-        <a href="#preview">Xem trước</a>
       </nav>
       <div class="header-actions" id="adminAuthStatus"></div>
     </header>
@@ -48,7 +47,6 @@
           <h1>Thêm, sửa, xóa hình ảnh và nội dung truyền giáo</h1>
           <p>Nhập nội dung mới, dán URL ảnh, rồi lưu. Dữ liệu sẽ hiển thị ngay trên trang chủ.</p>
         </div>
-        <button class="danger-button" id="resetData">Khôi phục dữ liệu mẫu</button>
       </section>
 
       <section class="manager-layout" id="contentManager">
@@ -61,6 +59,8 @@
               <option value="churches">Nhà thờ</option>
               <option value="articles">Bài viết</option>
               <option value="events">Sự kiện</option>
+              <option value="daily">Lời Chúa mỗi ngày</option>
+              <option value="banners">Banner chính</option>
             </select>
           </label>
           <label>
@@ -106,19 +106,14 @@
               <option value="churches">Nhà thờ</option>
               <option value="articles">Bài viết</option>
               <option value="events">Sự kiện</option>
+              <option value="daily">Lời Chúa mỗi ngày</option>
+              <option value="banners">Banner chính</option>
             </select>
           </div>
           <div class="admin-list" id="adminList"></div>
         </section>
       </section>
 
-      <section class="section-block wide" id="preview">
-        <div class="section-heading">
-          <h2>Xem trước bài viết</h2>
-          <a href="index.html">Mở trang chủ</a>
-        </div>
-        <div class="article-grid" id="previewList"></div>
-      </section>
       </div>
     </main>
 
