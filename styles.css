@@ -17,6 +17,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -192,20 +194,24 @@ main {
 }
 
 @media (min-width: 1181px) {
+  body.home-page .site-header,
   body:has(.home-dashboard) .site-header {
     position: absolute;
     width: 52.4%;
     min-height: 62px;
   }
 
+  body.home-page .home-dashboard,
   body:has(.home-dashboard) .home-dashboard {
     min-height: 100vh;
   }
 
+  body.home-page .left-column,
   body:has(.home-dashboard) .left-column {
     padding-top: 62px;
   }
 
+  body.home-page .right-column,
   body:has(.home-dashboard) .right-column {
     border-left: 1px solid var(--line);
     padding-top: 25px;
@@ -931,6 +937,65 @@ textarea {
   background: #fff7ea;
 }
 
+.rating-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.rating-panel p {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.rating-panel .rating-note {
+  font-style: italic;
+}
+
+.rating-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.rating-group {
+  display: grid;
+  gap: 6px;
+}
+
+.rating-group strong {
+  color: var(--ink);
+}
+
+.rating-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.rating-stars button {
+  padding: 0;
+  border: 0;
+  color: #d7c6ad;
+  background: transparent;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.rating-stars button.active {
+  color: var(--gold);
+}
+
+.rating-panel small {
+  min-height: 18px;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
 .detail-empty {
   grid-column: 1 / -1;
   padding: 48px;
@@ -1125,6 +1190,25 @@ textarea {
   text-transform: uppercase;
 }
 
+.admin-state {
+  display: inline-flex;
+  width: fit-content;
+  margin: 2px 0;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.admin-state.is-on {
+  color: #1f6b3a;
+  background: #e9f7ee;
+}
+
+.admin-state.is-off {
+  color: #9a321d;
+  background: #fff0ec;
+}
+
 .admin-item p {
   margin: 0 0 6px;
   white-space: pre-line;
@@ -1133,6 +1217,25 @@ textarea {
 .row-actions {
   display: flex;
   gap: 8px;
+}
+
+.admin-actions {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.admin-rating {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: right;
+}
+
+.reset-rating-button {
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 11px;
 }
 
 .row-actions button {

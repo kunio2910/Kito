@@ -30,6 +30,7 @@ const categoryType = categoryParams.get("type") || "saints";
 const categoryAllowedTypes = ["saints", "churches", "articles", "events"];
 const activeType = categoryAllowedTypes.includes(categoryType) ? categoryType : "saints";
 const categoryInfo = categoryLabels[activeType];
+const activeCategoryItems = (items = []) => items.filter((item) => item.status !== "unactived");
 
 function categoryDetailLink(type, id) {
   return `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
@@ -92,9 +93,9 @@ async function initCategory() {
 
   try {
     const content = await getContent();
-    renderCategoryItems(content[activeType] || []);
+    renderCategoryItems(activeCategoryItems(content[activeType] || []));
   } catch (error) {
-    renderCategoryItems(defaultContent[activeType] || []);
+    renderCategoryItems(activeCategoryItems(defaultContent[activeType] || []));
   }
 }
 

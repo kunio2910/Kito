@@ -169,6 +169,114 @@ defaultContent.banners = [
   },
 ];
 
+const saintBiographyDefaults = {
+  "thanh-giuse": {
+    meta: "Đấng công chính",
+    description: "Thánh Giuse là bạn trăm năm của Đức Maria, cha nuôi của Chúa Giêsu và là mẫu gương âm thầm của đời sống gia đình.",
+    bodyHtml: `
+      <h2>Tiểu sử</h2>
+      <p>Thánh Giuse là người công chính thuộc dòng dõi vua Đavít. Tin Mừng mô tả ngài là bạn trăm năm của Đức Maria và là người được Thiên Chúa trao phó trách nhiệm chăm sóc Chúa Giêsu trong gia đình Nazareth.</p>
+      <p>Khi biết Đức Maria mang thai bởi quyền năng Chúa Thánh Thần, thánh Giuse đã lắng nghe lời sứ thần trong mộng và đón nhận Mẹ Maria về nhà. Ngài hiện diện trong những biến cố đầu đời của Chúa Giêsu: hành trình về Bêlem, cuộc trốn sang Ai Cập, rồi trở về Nazareth để sống đời lao động khiêm tốn.</p>
+      <h3>Nhân đức nổi bật</h3>
+      <p>Thánh Giuse nêu gương về sự vâng phục, thinh lặng, trách nhiệm và lòng tín thác. Ngài không để lại lời nói nào trong Kinh Thánh, nhưng đời sống của ngài là một chứng tá mạnh mẽ về đức tin được diễn tả bằng hành động.</p>
+      <h3>Ý nghĩa thiêng liêng</h3>
+      <p>Giáo Hội tôn kính thánh Giuse như bổn mạng của Hội Thánh hoàn vũ, của các gia đình, người lao động và những ai muốn sống đời công chính trong âm thầm.</p>
+    `,
+  },
+  "thanh-maria": {
+    meta: "Mẹ Thiên Chúa",
+    description: "Đức Maria là Mẹ Chúa Giêsu, mẫu gương của đức tin, sự vâng phục và lòng tín thác trọn vẹn vào Thiên Chúa.",
+    bodyHtml: `
+      <h2>Tiểu sử</h2>
+      <p>Đức Maria là người nữ Do Thái tại Nazareth, được Thiên Chúa tuyển chọn để làm Mẹ Đấng Cứu Thế. Trong biến cố Truyền Tin, Mẹ đã thưa lời xin vâng, đón nhận ý định của Thiên Chúa với lòng khiêm nhường và tín thác.</p>
+      <p>Mẹ Maria đồng hành với Chúa Giêsu từ mầu nhiệm Nhập Thể, sinh hạ Người tại Bêlem, chăm sóc Người trong đời sống ẩn dật tại Nazareth, cho đến khi đứng dưới chân thập giá. Sau Phục Sinh, Mẹ hiện diện với các môn đệ trong cầu nguyện.</p>
+      <h3>Nhân đức nổi bật</h3>
+      <p>Mẹ là mẫu gương của đức tin lắng nghe, lòng khiêm nhường, sự vâng phục và tình mẫu tử. Mẹ ghi nhớ và suy niệm mọi biến cố trong lòng, để luôn tìm kiếm thánh ý Thiên Chúa.</p>
+      <h3>Ý nghĩa thiêng liêng</h3>
+      <p>Người Kitô hữu tôn kính Đức Maria như Mẹ Thiên Chúa và người Mẹ dẫn đưa con cái đến với Chúa Giêsu. Nơi Mẹ, Hội Thánh nhận ra hình ảnh của người môn đệ hoàn hảo.</p>
+    `,
+  },
+  "thanh-phanxico-assisi": {
+    meta: "Sống nghèo khó và yêu thiên nhiên",
+    description: "Thánh Phanxicô Assisi là người sáng lập Dòng Anh Em Hèn Mọn, nổi bật với tinh thần nghèo khó, hòa bình và yêu mến công trình tạo dựng.",
+    bodyHtml: `
+      <h2>Tiểu sử</h2>
+      <p>Thánh Phanxicô Assisi sinh khoảng năm 1181 tại Assisi, nước Ý, trong một gia đình thương gia khá giả. Sau thời trẻ nhiều mơ mộng và biến cố bệnh tật, ngài dần nhận ra tiếng gọi của Thiên Chúa nơi người nghèo, người phong cùi và trong cầu nguyện.</p>
+      <p>Trước thánh giá tại nhà nguyện San Damiano, ngài nghe lời mời gọi hãy sửa lại Hội Thánh. Từ đó, Phanxicô từ bỏ của cải, chọn đời sống nghèo khó, rao giảng Tin Mừng bằng sự đơn sơ và thành lập Dòng Anh Em Hèn Mọn.</p>
+      <h3>Nhân đức nổi bật</h3>
+      <p>Ngài sống tinh thần nghèo khó triệt để, yêu mến hòa bình, khiêm hạ và gần gũi mọi thụ tạo. Tình yêu dành cho thiên nhiên của ngài xuất phát từ niềm tin rằng mọi loài đều phản chiếu vẻ đẹp của Đấng Tạo Hóa.</p>
+      <h3>Ý nghĩa thiêng liêng</h3>
+      <p>Thánh Phanxicô nhắc người Kitô hữu sống đơn sơ, phục vụ người nghèo và xây dựng hòa bình. Ngài cũng là bổn mạng của môi sinh và những ai dấn thân chăm sóc công trình tạo dựng.</p>
+    `,
+  },
+  "thanh-teresa-hai-dong-giesu": {
+    meta: "Con đường nhỏ",
+    description: "Thánh Têrêsa Hài Đồng Giêsu là nữ tu Cát Minh, tiến sĩ Hội Thánh, nổi tiếng với linh đạo con đường nhỏ của tình yêu và tín thác.",
+    bodyHtml: `
+      <h2>Tiểu sử</h2>
+      <p>Thánh Têrêsa Hài Đồng Giêsu, tên khai sinh là Marie-Françoise-Thérèse Martin, sinh năm 1873 tại Alençon, Pháp. Từ nhỏ, Têrêsa đã có lòng yêu mến Chúa sâu xa và khao khát dâng mình trong đời sống tu trì.</p>
+      <p>Năm 15 tuổi, sau nhiều khó khăn, ngài được vào đan viện Cát Minh Lisieux. Trong đời sống âm thầm của đan viện, Têrêsa khám phá con đường nên thánh qua những việc nhỏ bé được làm với tình yêu lớn lao.</p>
+      <h3>Nhân đức nổi bật</h3>
+      <p>Linh đạo của thánh Têrêsa được gọi là con đường nhỏ: sống khiêm nhường, tin tưởng như trẻ thơ, yêu mến Chúa trong từng bổn phận nhỏ hằng ngày và phó thác cả những yếu đuối cho lòng thương xót của Thiên Chúa.</p>
+      <h3>Ý nghĩa thiêng liêng</h3>
+      <p>Dù sống đời kín ẩn và qua đời khi còn rất trẻ, Têrêsa trở thành bổn mạng các xứ truyền giáo. Ngài cho thấy sự thánh thiện không hệ tại những việc phi thường, nhưng ở tình yêu trung thành trong điều bé nhỏ.</p>
+    `,
+  },
+  "thanh-phaolo": {
+    meta: "Tông đồ dân ngoại",
+    description: "Thánh Phaolô là vị tông đồ lớn của Hội Thánh sơ khai, người rao giảng Tin Mừng cho muôn dân sau biến cố hoán cải trên đường Đamas.",
+    bodyHtml: `
+      <h2>Tiểu sử</h2>
+      <p>Thánh Phaolô, trước kia là Saolô thành Tarsô, là người Do Thái nhiệt thành với Lề Luật. Ban đầu, ông tham gia bách hại các môn đệ Chúa Giêsu. Trên đường đi Đamas, Saolô gặp Đức Kitô Phục Sinh và được biến đổi tận căn.</p>
+      <p>Sau khi chịu phép rửa, Phaolô trở thành nhà truyền giáo lớn của Hội Thánh. Ngài thực hiện nhiều hành trình rao giảng, thành lập các cộng đoàn Kitô hữu và viết nhiều thư tín quan trọng trong Tân Ước.</p>
+      <h3>Nhân đức nổi bật</h3>
+      <p>Thánh Phaolô nổi bật với lòng nhiệt thành truyền giáo, tình yêu dành cho Đức Kitô và khả năng giải thích đức tin cho các dân ngoại. Ngài chịu nhiều gian nan nhưng luôn xác tín rằng không gì có thể tách người tín hữu khỏi tình yêu của Thiên Chúa.</p>
+      <h3>Ý nghĩa thiêng liêng</h3>
+      <p>Cuộc đời thánh Phaolô là chứng tá về sức mạnh của ơn hoán cải. Từ một người bách hại, ngài trở thành khí cụ loan báo Tin Mừng cho muôn dân.</p>
+    `,
+  },
+  "thanh-phero": {
+    meta: "Đá tảng của Hội Thánh",
+    description: "Thánh Phêrô là một trong Mười Hai Tông Đồ, người được Chúa Giêsu trao sứ mạng củng cố anh em và chăm sóc đoàn chiên.",
+    bodyHtml: `
+      <h2>Tiểu sử</h2>
+      <p>Thánh Phêrô, tên ban đầu là Simon, là một ngư phủ miền Galilê. Chúa Giêsu gọi ông đi theo Người và đặt tên là Phêrô, nghĩa là đá tảng. Ông thuộc nhóm môn đệ thân tín, chứng kiến nhiều biến cố quan trọng trong sứ vụ của Chúa.</p>
+      <p>Dù từng yếu đuối và chối Thầy trong cuộc Thương Khó, Phêrô đã được Chúa Phục Sinh tha thứ và trao sứ mạng chăn dắt đoàn chiên. Sau lễ Ngũ Tuần, ngài mạnh dạn rao giảng Đức Kitô và trở thành một trong những trụ cột của Hội Thánh sơ khai.</p>
+      <h3>Nhân đức nổi bật</h3>
+      <p>Thánh Phêrô cho thấy hành trình đức tin của người môn đệ: có nhiệt thành, có yếu đuối, có nước mắt sám hối và có ơn biến đổi. Sự khiêm nhường sau vấp ngã giúp ngài trở nên chứng nhân mạnh mẽ của lòng thương xót.</p>
+      <h3>Ý nghĩa thiêng liêng</h3>
+      <p>Ngài được truyền thống Kitô giáo tôn kính như vị lãnh đạo đầu tiên của Hội Thánh tại Rôma. Cuộc đời Phêrô nhắc người tín hữu biết đứng dậy sau yếu đuối và để Chúa dùng mình trong sứ mạng phục vụ.</p>
+    `,
+  },
+};
+
+function normalizeSaintKey(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function enrichSaintBiography(item) {
+  const key = normalizeSaintKey(item.title || item.id);
+  const fallback = saintBiographyDefaults[key];
+  if (!fallback) return item;
+
+  return {
+    ...item,
+    meta: item.meta || fallback.meta,
+    description:
+      !item.description || item.description.length < 80 ? fallback.description : item.description,
+    bodyHtml: item.bodyHtml || fallback.bodyHtml,
+  };
+}
+
+defaultContent.saints = defaultContent.saints.map(enrichSaintBiography);
+
 function isFirebaseConfigured() {
   return Boolean(
     window.KITO_FIREBASE_CONFIG &&
@@ -212,6 +320,7 @@ async function seedDefaultContentIfEmpty(force = false) {
         const ref = db.collection("contents").doc(item.id);
         missingBatch.set(ref, {
           ...item,
+          status: item.status || "actived",
           sortOrder: index,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -235,6 +344,7 @@ async function seedDefaultContentIfEmpty(force = false) {
       const ref = db.collection("contents").doc(item.id);
       batch.set(ref, {
         ...item,
+        status: item.status || "actived",
         sortOrder: index,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -258,7 +368,8 @@ async function getContent() {
   };
 
   snapshot.forEach((doc) => {
-    const item = { id: doc.id, ...doc.data() };
+    const rawItem = { id: doc.id, ...doc.data() };
+    const item = rawItem.type === "saints" ? enrichSaintBiography(rawItem) : rawItem;
     if (CONTENT_TYPES.includes(item.type)) {
       content[item.type].push(item);
     }
@@ -283,10 +394,12 @@ async function saveContentItem(type, item) {
   const id = item.id || `${type}-${Date.now()}`;
   const ref = db.collection("contents").doc(id);
   const exists = (await ref.get()).exists;
+  const preparedItem = type === "saints" ? enrichSaintBiography({ ...item, id, type }) : item;
   const payload = {
-    ...item,
+    ...preparedItem,
     id,
     type,
+    status: preparedItem.status || "actived",
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   };
 
@@ -296,6 +409,35 @@ async function saveContentItem(type, item) {
 
   await ref.set(payload, { merge: true });
   return id;
+}
+
+async function fillSaintBiographies() {
+  const { db } = requireFirebase();
+  const snapshot = await db.collection("contents").where("type", "==", "saints").get();
+  const batch = db.batch();
+  let updatedCount = 0;
+
+  snapshot.forEach((doc) => {
+    const current = { id: doc.id, ...doc.data() };
+    const enriched = enrichSaintBiography(current);
+    const patch = {};
+
+    if (!current.meta && enriched.meta) patch.meta = enriched.meta;
+    if ((!current.description || current.description.length < 80) && enriched.description) {
+      patch.description = enriched.description;
+    }
+    if (!current.bodyHtml && enriched.bodyHtml) patch.bodyHtml = enriched.bodyHtml;
+    if (!current.status) patch.status = "actived";
+
+    if (Object.keys(patch).length) {
+      patch.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+      batch.set(doc.ref, patch, { merge: true });
+      updatedCount += 1;
+    }
+  });
+
+  if (updatedCount) await batch.commit();
+  return updatedCount;
 }
 
 async function updateContentOrder(type, orderedIds) {
@@ -319,6 +461,40 @@ async function updateContentOrder(type, orderedIds) {
 async function deleteContentItem(id) {
   const { db } = requireFirebase();
   await db.collection("contents").doc(id).delete();
+}
+
+async function submitContentRating(id, ratings) {
+  const contentRating = Math.max(1, Math.min(5, Number(ratings?.content || 0)));
+  const layoutRating = Math.max(1, Math.min(5, Number(ratings?.layout || 0)));
+  if (!contentRating || !layoutRating) throw new Error("Vui lòng chọn đủ đánh giá nội dung và trình bày.");
+
+  const { db } = requireFirebase();
+  await db.collection("contents").doc(id).set(
+    {
+      contentRatingCount: firebase.firestore.FieldValue.increment(1),
+      contentRatingTotal: firebase.firestore.FieldValue.increment(contentRating),
+      layoutRatingCount: firebase.firestore.FieldValue.increment(1),
+      layoutRatingTotal: firebase.firestore.FieldValue.increment(layoutRating),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    },
+    { merge: true }
+  );
+}
+
+async function resetContentRating(id) {
+  const { db } = requireFirebase();
+  await db.collection("contents").doc(id).set(
+    {
+      ratingCount: 0,
+      ratingTotal: 0,
+      contentRatingCount: 0,
+      contentRatingTotal: 0,
+      layoutRatingCount: 0,
+      layoutRatingTotal: 0,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    },
+    { merge: true }
+  );
 }
 
 async function resetContent() {

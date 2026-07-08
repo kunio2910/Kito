@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý nội dung - Truyền Giáo Kitô</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260708-large2" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -86,6 +86,13 @@
             </label>
           </div>
           <label>
+            <span>Trạng thái hiển thị</span>
+            <select id="itemStatus">
+              <option value="actived">Actived - hiển thị</option>
+              <option value="unactived">Unactived - ẩn</option>
+            </select>
+          </label>
+          <label>
             <span>URL hình ảnh</span>
             <input id="itemImageUrl" type="url" placeholder="https://..." />
           </label>
@@ -93,6 +100,7 @@
           <div class="form-actions">
             <button class="primary-button" type="submit">Lưu nội dung</button>
             <button class="ghost-button" type="button" id="clearForm">Làm mới</button>
+            <button class="ghost-button" type="button" id="fillSaints">Tự điền tiểu sử các thánh</button>
           </div>
           <p class="form-message" id="contentMessage"></p>
         </form>
@@ -126,3 +134,4 @@
     <script src="admin.js"></script>
   </body>
 </html>
+

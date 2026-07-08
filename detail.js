@@ -11,6 +11,11 @@ const type = params.get("type");
 const id = params.get("id");
 const allowedTypes = ["saints", "churches", "articles", "events"];
 const detailArticle = document.querySelector("#detailArticle");
+let currentItem = null;
+let selectedRatings = {
+  content: 0,
+  layout: 0,
+};
 
 function detailLink(nextType, nextId) {
   return `detail.html?type=${encodeURIComponent(nextType)}&id=${encodeURIComponent(nextId)}`;
@@ -98,13 +103,14 @@ function renderMissing() {
 }
 
 function renderDetail() {
-  const currentList = allowedTypes.includes(type) ? content[type] : [];
+  const currentList = allowedTypes.includes(type) ? content[type].filter((entry) => entry.status !== "unactived") : [];
   const item = currentList.find((entry) => entry.id === id);
   if (!item) {
     renderMissing();
     return;
   }
 
+  currentItem = item;
   const dateInfo = item.date ? formatDateParts(item.date) : null;
   document.title = `${item.title} - Truyền Giáo Kitô`;
   detailArticle.innerHTML = `
@@ -122,12 +128,36 @@ function renderDetail() {
     </header>
     <div class="detail-content">
       <div class="detail-body">${sanitizeContentHtml(item.bodyHtml || defaultBodyHtml(item))}</div>
+      <section class="rating-panel" aria-label="Đánh giá bài viết">
+        <p class="rating-note">*Nội dung này được xây dựng để hỗ trợ việc học hỏi, cầu nguyện và chia sẻ Tin Mừng. Ước mong mỗi bài viết, mỗi hình ảnh và mỗi sự kiện nơi đây trở thành một lời mời gọi sống đức tin cụ thể hơn trong đời sống hằng ngày.<br />Trang có sử dụng tài nguyên AI. Bạn vui lòng giành ít phút để đánh giá về bài viết và chất lượng website.</p>
+        <div class="rating-group">
+          <strong>Đánh giá nội dung</strong>
+          <div class="rating-stars" role="radiogroup" aria-label="Đánh giá nội dung">
+            ${[1, 2, 3, 4, 5]
+              .map((value) => `<button type="button" data-rating-kind="content" data-rating="${value}" aria-label="${value} sao">★</button>`)
+              .join("")}
+          </div>
+        </div>
+        <div class="rating-group">
+          <strong>Đánh giá trình bày</strong>
+          <div class="rating-stars" role="radiogroup" aria-label="Đánh giá trình bày">
+            ${[1, 2, 3, 4, 5]
+              .map((value) => `<button type="button" data-rating-kind="layout" data-rating="${value}" aria-label="${value} sao">★</button>`)
+              .join("")}
+          </div>
+        </div>
+        <div class="rating-row">
+          <button class="primary-button" type="button" id="submitRating">Gửi</button>
+        </div>
+        <small id="ratingMessage"></small>
+      </section>
     </div>
   `;
+  setupRating();
 }
 
 function renderRelated() {
-  const currentList = allowedTypes.includes(type) ? content[type] : [];
+  const currentList = allowedTypes.includes(type) ? content[type].filter((entry) => entry.status !== "unactived") : [];
   const related = currentList.filter((entry) => entry.id !== id).slice(0, 3);
   document.querySelector("#relatedList").innerHTML = related
     .map(
@@ -143,6 +173,53 @@ function renderRelated() {
       `
     )
     .join("");
+}
+
+function paintStars() {
+  detailArticle.querySelectorAll("[data-rating]").forEach((button) => {
+    const kind = button.dataset.ratingKind;
+    button.classList.toggle("active", Number(button.dataset.rating) <= selectedRatings[kind]);
+  });
+}
+
+function setupRating() {
+  selectedRatings = {
+    content: 0,
+    layout: 0,
+  };
+  const message = detailArticle.querySelector("#ratingMessage");
+  const submitButton = detailArticle.querySelector("#submitRating");
+
+  detailArticle.querySelectorAll("[data-rating]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedRatings[button.dataset.ratingKind] = Number(button.dataset.rating);
+      message.textContent = "";
+      paintStars();
+    });
+  });
+
+  submitButton.addEventListener("click", async () => {
+    if (!selectedRatings.content || !selectedRatings.layout) {
+      message.textContent = "Vui lòng chọn đủ đánh giá nội dung và trình bày.";
+      return;
+    }
+
+    submitButton.disabled = true;
+    message.textContent = "Đang ghi nhận đánh giá...";
+    try {
+      await submitContentRating(currentItem.id, selectedRatings);
+      selectedRatings = {
+        content: 0,
+        layout: 0,
+      };
+      paintStars();
+      message.textContent = "Cảm ơn bạn đã đánh giá bài viết.";
+    } catch (error) {
+      message.textContent = error.message;
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
 }
 
 async function initDetail() {

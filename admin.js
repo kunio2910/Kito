@@ -20,10 +20,12 @@ const itemDescription = document.querySelector("#itemDescription");
 const itemBodyHtml = document.querySelector("#itemBodyHtml");
 const itemMeta = document.querySelector("#itemMeta");
 const itemDate = document.querySelector("#itemDate");
+const itemStatus = document.querySelector("#itemStatus");
 const itemImageUrl = document.querySelector("#itemImageUrl");
 const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
 const adminList = document.querySelector("#adminList");
+const fillSaintsButton = document.querySelector("#fillSaints");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
@@ -48,6 +50,18 @@ function getItemsForAdmin() {
   return types.flatMap((type) => (content[type] || []).map((item) => ({ ...item, type })));
 }
 
+function ratingText(item) {
+  const oldCount = Number(item.ratingCount || 0);
+  const oldTotal = Number(item.ratingTotal || 0);
+  const contentCount = Number(item.contentRatingCount || oldCount || 0);
+  const contentTotal = Number(item.contentRatingTotal || oldTotal || 0);
+  const layoutCount = Number(item.layoutRatingCount || 0);
+  const layoutTotal = Number(item.layoutRatingTotal || 0);
+  const contentText = contentCount ? `Nội dung: ${(contentTotal / contentCount).toFixed(1)}/5 (${contentCount} lượt)` : "Nội dung: chưa có";
+  const layoutText = layoutCount ? `Trình bày: ${(layoutTotal / layoutCount).toFixed(1)}/5 (${layoutCount} lượt)` : "Trình bày: chưa có";
+  return `${contentText}<br />${layoutText}`;
+}
+
 function renderAdminList() {
   const items = getItemsForAdmin();
   const canReorder = canManageContent && filterType.value !== "all";
@@ -61,16 +75,23 @@ function renderAdminList() {
             <h3>${item.title || item.ref || item.meta || ""}</h3>
             <p>${summarizeText(item.description || item.quote, 130)}</p>
             <small>${item.meta || ""}</small>
+            <small class="admin-state ${item.status === "unactived" ? "is-off" : "is-on"}">
+              ${item.status === "unactived" ? "Unactived - đang ẩn" : "Actived - đang hiển thị"}
+            </small>
           </div>
           ${
             canManageContent
               ? `
-                <div class="row-actions">
-                  <button type="button" data-action="edit" data-type="${item.type}" data-id="${item.id}">Sửa</button>
-                  <button type="button" data-action="delete" data-type="${item.type}" data-id="${item.id}">Xóa</button>
+                <div class="admin-actions">
+                  <div class="row-actions">
+                    <button type="button" data-action="edit" data-type="${item.type}" data-id="${item.id}">Sửa</button>
+                    <button type="button" data-action="delete" data-type="${item.type}" data-id="${item.id}">Xóa</button>
+                  </div>
+                  <small class="admin-rating">${ratingText(item)}</small>
+                  <button class="ghost-button reset-rating-button" type="button" data-action="reset-rating" data-type="${item.type}" data-id="${item.id}">Reset đánh giá</button>
                 </div>
               `
-              : `<div class="permission-badge">Chỉ xem</div>`
+              : `<div class="admin-actions"><div class="permission-badge">Chỉ xem</div><small class="admin-rating">${ratingText(item)}</small></div>`
           }
         </article>
       `
@@ -84,6 +105,7 @@ function clearForm() {
   currentImage = "";
   currentImagePath = "";
   itemImageUrl.value = "";
+  itemStatus.value = "actived";
   imagePreview.removeAttribute("src");
   imagePreview.classList.remove("show");
   contentMessage.textContent = "";
@@ -101,6 +123,7 @@ function editItem(type, id) {
   itemBodyHtml.value = item.bodyHtml || "";
   itemMeta.value = item.meta || "";
   itemDate.value = item.date || "";
+  itemStatus.value = item.status || "actived";
   currentImage = item.image || "";
   currentImagePath = item.imagePath || "";
   itemImageUrl.value = currentImage;
@@ -126,6 +149,24 @@ async function deleteItem(type, id) {
     renderAdminList();
     clearForm();
   } catch (error) {
+    alert(error.message);
+  }
+}
+
+async function resetItemRating(type, id) {
+  if (!canManageContent) return;
+  const item = content[type].find((entry) => entry.id === id);
+  if (!item) return;
+  const confirmed = confirm(`Reset lượt đánh giá của "${item.title || item.ref || item.meta || id}" về 0?`);
+  if (!confirmed) return;
+
+  try {
+    await resetContentRating(id);
+    content = await getContent();
+    renderAdminList();
+    contentMessage.textContent = "Đã reset lượt đánh giá về 0.";
+  } catch (error) {
+    contentMessage.textContent = error.message;
     alert(error.message);
   }
 }
@@ -190,6 +231,7 @@ form.addEventListener("submit", async (event) => {
       bodyHtml: itemBodyHtml.value.trim(),
       meta: itemMeta.value.trim(),
       date: itemDate.value,
+      status: itemStatus.value || "actived",
       image: imageUrl,
       imagePath: "",
     });
@@ -272,9 +314,33 @@ adminList.addEventListener("click", (event) => {
   const { action, type, id } = button.dataset;
   if (action === "edit") editItem(type, id);
   if (action === "delete") deleteItem(type, id);
+  if (action === "reset-rating") resetItemRating(type, id);
 });
 
 document.querySelector("#clearForm").addEventListener("click", clearForm);
+fillSaintsButton.addEventListener("click", async () => {
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền cập nhật tiểu sử các thánh.");
+    return;
+  }
+
+  fillSaintsButton.disabled = true;
+  contentMessage.textContent = "Đang tự điền tiểu sử các thánh...";
+
+  try {
+    const updatedCount = await fillSaintBiographies();
+    content = await getContent();
+    renderAdminList();
+    contentMessage.textContent = updatedCount
+      ? `Đã cập nhật tiểu sử cho ${updatedCount} mục trong danh mục Các thánh.`
+      : "Các mục Các thánh đã có đủ tiểu sử, không cần cập nhật thêm.";
+  } catch (error) {
+    contentMessage.textContent = error.message;
+    alert(error.message);
+  } finally {
+    fillSaintsButton.disabled = !canManageContent;
+  }
+});
 filterType.addEventListener("change", () => {
   renderAdminList();
   contentMessage.textContent =
@@ -285,6 +351,7 @@ function setEditorEnabled(enabled) {
   form.querySelectorAll("input, select, textarea, button").forEach((control) => {
     control.disabled = !enabled;
   });
+  if (fillSaintsButton) fillSaintsButton.disabled = !enabled;
 }
 
 async function setupLogin() {

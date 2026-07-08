@@ -4,6 +4,7 @@ let dailyTimer = null;
 
 const imageOrFallback = (item) => item.image || fallbackImage;
 const detailLink = (type, id) => `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+const activeItems = (items = []) => items.filter((item) => item.status !== "unactived");
 
 function summarizeText(text, maxLength = 115) {
   const value = String(text || "")
@@ -77,19 +78,22 @@ function eventTemplate(item) {
 }
 
 function renderDaily() {
-  const daily = content.daily[dailyIndex];
+  const dailyItems = activeItems(content.daily);
+  if (!dailyItems.length) return;
+  if (dailyIndex >= dailyItems.length) dailyIndex = 0;
+  const daily = dailyItems[dailyIndex];
   const quote = daily.quote || daily.description || daily.title || "";
   const ref = daily.ref || daily.meta || daily.title || "";
   document.querySelector("#dailyQuote").textContent = `“${quote}”`;
   document.querySelector("#dailyRef").textContent = ref ? `(${ref})` : "";
   document.querySelector(".daily-card").style.setProperty("--daily-image", `url("${imageOrFallback(daily)}")`);
-  document.querySelector("#dailyDots").innerHTML = content.daily
+  document.querySelector("#dailyDots").innerHTML = dailyItems
     .map((_, index) => `<span class="${index === dailyIndex ? "active" : ""}"></span>`)
     .join("");
 }
 
 function renderHeroBanner() {
-  const banner = content.banners?.[0];
+  const banner = activeItems(content.banners)?.[0];
   if (!banner) return;
   document.querySelector("#heroTitle").textContent = banner.title || "";
   document.querySelector(".hero-content p").textContent = banner.description || "";
@@ -98,18 +102,19 @@ function renderHeroBanner() {
 
 function renderHome() {
   renderHeroBanner();
-  document.querySelector("#saintsList").innerHTML = content.saints.slice(0, 5).map((item) => cardTemplate(item, "saints")).join("");
-  document.querySelector("#churchesList").innerHTML = content.churches.map(churchTemplate).join("");
-  document.querySelector("#articlesList").innerHTML = content.articles.map(articleTemplate).join("");
-  document.querySelector("#eventsList").innerHTML = content.events.map(eventTemplate).join("");
+  document.querySelector("#saintsList").innerHTML = activeItems(content.saints).slice(0, 5).map((item) => cardTemplate(item, "saints")).join("");
+  document.querySelector("#churchesList").innerHTML = activeItems(content.churches).slice(0, 3).map(churchTemplate).join("");
+  document.querySelector("#articlesList").innerHTML = activeItems(content.articles).slice(0, 3).map(articleTemplate).join("");
+  document.querySelector("#eventsList").innerHTML = activeItems(content.events).slice(0, 3).map(eventTemplate).join("");
   renderDaily();
 }
 
 function startDailyAutoSlide() {
   clearInterval(dailyTimer);
-  if (!content.daily || content.daily.length < 2) return;
+  const dailyItems = activeItems(content.daily);
+  if (dailyItems.length < 2) return;
   dailyTimer = setInterval(() => {
-    dailyIndex = (dailyIndex + 1) % content.daily.length;
+    dailyIndex = (dailyIndex + 1) % dailyItems.length;
     renderDaily();
   }, 5000);
 }
@@ -133,7 +138,7 @@ function setupSearch() {
   const input = document.querySelector("#searchInput");
   const resultBox = document.querySelector("#searchResults");
   const allItems = ["saints", "churches", "articles", "events"].flatMap((type) =>
-    content[type].map((item) => ({ ...item, type }))
+    activeItems(content[type]).map((item) => ({ ...item, type }))
   );
 
   document.querySelector("#searchToggle").addEventListener("click", () => {
@@ -161,13 +166,17 @@ function setupSearch() {
 }
 
 document.querySelector("#prevDaily").addEventListener("click", () => {
-  dailyIndex = (dailyIndex - 1 + content.daily.length) % content.daily.length;
+  const dailyItems = activeItems(content.daily);
+  if (!dailyItems.length) return;
+  dailyIndex = (dailyIndex - 1 + dailyItems.length) % dailyItems.length;
   renderDaily();
   startDailyAutoSlide();
 });
 
 document.querySelector("#nextDaily").addEventListener("click", () => {
-  dailyIndex = (dailyIndex + 1) % content.daily.length;
+  const dailyItems = activeItems(content.daily);
+  if (!dailyItems.length) return;
+  dailyIndex = (dailyIndex + 1) % dailyItems.length;
   renderDaily();
   startDailyAutoSlide();
 });
