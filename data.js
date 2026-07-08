@@ -502,10 +502,130 @@ async function resetContent() {
 }
 
 function formatDateParts(value) {
-  if (!value) return { day: "--", month: "THÁNG --" };
-  const date = new Date(`${value}T00:00:00`);
+  const rawValue = String(value || "").trim();
+  if (!rawValue) return { day: "--", month: "THÁNG --", display: "" };
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(rawValue)) {
+    return {
+      day: "",
+      month: rawValue,
+      display: rawValue,
+      isText: true,
+    };
+  }
+
+  const date = new Date(`${rawValue}T00:00:00`);
+  if (Number.isNaN(date.getTime())) {
+    return {
+      day: "",
+      month: rawValue,
+      display: rawValue,
+      isText: true,
+    };
+  }
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = `THÁNG ${String(date.getMonth() + 1).padStart(2, "0")}`;
   return {
-    day: String(date.getDate()).padStart(2, "0"),
-    month: `THÁNG ${String(date.getMonth() + 1).padStart(2, "0")}`,
+    day,
+    month,
+    display: `${day} ${month}`,
+    isText: false,
   };
+}
+
+const navigationPageTitles = {
+  saints: "Các thánh tiêu biểu",
+  churches: "Giới thiệu nhà thờ",
+  articles: "Bài viết & suy niệm",
+  events: "Sự kiện sắp tới",
+};
+
+function cleanNavigationTitle(title) {
+  const value = String(title || "")
+    .replace(/\s+-\s+Truyền Giáo Kitô\s*$/i, "")
+    .trim();
+
+  if (!value || value === "Truyền Giáo Kitô") return "Trang chủ";
+  return value;
+}
+
+function getNavigationTitleFromUrl(url) {
+  try {
+    const parsed = new URL(url, window.location.href);
+    const path = parsed.pathname.toLowerCase();
+
+    if (path.endsWith("/") || path.endsWith("/index.html")) return "Trang chủ";
+    if (path.endsWith("/admin.html")) return "trang quản lý";
+    if (path.endsWith("/accounts.html")) return "trang tài khoản";
+    if (path.endsWith("/category.html")) {
+      return navigationPageTitles[parsed.searchParams.get("type")] || "trang danh mục";
+    }
+  } catch (error) {
+    return "";
+  }
+
+  return "";
+}
+
+function getStoredNavigationPage() {
+  try {
+    const current = JSON.parse(sessionStorage.getItem("kitoCurrentPage") || "null");
+    if (!current?.url) return null;
+    const currentUrl = new URL(window.location.href);
+    const storedUrl = new URL(current.url, window.location.href);
+    if (currentUrl.href === storedUrl.href) return null;
+    return current;
+  } catch (error) {
+    return null;
+  }
+}
+
+function setupBackLink(fallbackUrl = "index.html", fallbackTitle = "Trang chủ", options = {}) {
+  const link = document.querySelector(".back-link");
+  if (!link) return;
+
+  const storedPage = options.useStored === false ? null : getStoredNavigationPage();
+  let sameOriginReferrer = false;
+  if (document.referrer) {
+    try {
+      sameOriginReferrer = new URL(document.referrer).origin === window.location.origin;
+    } catch (error) {
+      sameOriginReferrer = false;
+    }
+  }
+  const referrerTitle = sameOriginReferrer ? getNavigationTitleFromUrl(document.referrer) : "";
+  const referrerPage = sameOriginReferrer && referrerTitle
+    ? {
+        url: document.referrer,
+        title: referrerTitle,
+      }
+    : null;
+  const target = referrerPage || storedPage || {
+    url: sameOriginReferrer ? document.referrer : fallbackUrl,
+    title: referrerTitle || fallbackTitle,
+  };
+
+  link.href = target.url || fallbackUrl;
+  link.textContent = `← Quay lại ${cleanNavigationTitle(target.title)}`;
+  link.addEventListener("click", (event) => {
+    if (options.useHistory !== false && target.url && window.history.length > 1) {
+      event.preventDefault();
+      window.history.back();
+    }
+  });
+}
+
+function rememberCurrentPage(title = document.title) {
+  try {
+    sessionStorage.setItem(
+      "kitoCurrentPage",
+      JSON.stringify({
+        title: cleanNavigationTitle(title),
+        url: window.location.href,
+      })
+    );
+  } catch (error) {
+    // Session history is a small enhancement; navigation still works without it.
+  }
 }

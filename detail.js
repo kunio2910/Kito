@@ -1,11 +1,4 @@
 let content = null;
-const typeLabels = {
-  saints: "Các thánh",
-  churches: "Nhà thờ",
-  articles: "Bài viết & suy niệm",
-  events: "Sự kiện",
-};
-
 const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 const id = params.get("id");
@@ -112,19 +105,28 @@ function renderDetail() {
 
   currentItem = item;
   const dateInfo = item.date ? formatDateParts(item.date) : null;
+  const description = item.description || "";
   document.title = `${item.title} - Truyền Giáo Kitô`;
   detailArticle.innerHTML = `
     <figure class="detail-cover">
       <img src="${item.image || fallbackImage}" alt="${item.title}" />
     </figure>
     <header class="detail-heading">
-      <p class="eyebrow">${typeLabels[type]}</p>
       <h1>${item.title}</h1>
       <div class="detail-meta">
-        ${item.meta ? `<span>${item.meta}</span>` : ""}
-        ${dateInfo ? `<span>${dateInfo.day} ${dateInfo.month}</span>` : ""}
+        ${item.meta ? `<span><span class="detail-meta-icon cross-tile-icon" aria-hidden="true"></span>${item.meta}</span>` : ""}
+        ${dateInfo ? `<span><span class="detail-meta-icon calendar-clock-icon" aria-hidden="true"></span>${dateInfo.display}</span>` : ""}
       </div>
-      <p class="lead">${item.description}</p>
+      ${
+        description
+          ? `
+            <div class="lead-box">
+              <span class="lead-icon" aria-hidden="true">“</span>
+              <p class="lead">${description}</p>
+            </div>
+          `
+          : ""
+      }
     </header>
     <div class="detail-content">
       <div class="detail-body">${sanitizeContentHtml(item.bodyHtml || defaultBodyHtml(item))}</div>
@@ -223,6 +225,7 @@ function setupRating() {
 }
 
 async function initDetail() {
+  setupBackLink();
   try {
     content = await getContent();
     renderDetail();

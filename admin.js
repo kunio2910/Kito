@@ -25,7 +25,6 @@ const itemImageUrl = document.querySelector("#itemImageUrl");
 const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
 const adminList = document.querySelector("#adminList");
-const fillSaintsButton = document.querySelector("#fillSaints");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
@@ -318,29 +317,6 @@ adminList.addEventListener("click", (event) => {
 });
 
 document.querySelector("#clearForm").addEventListener("click", clearForm);
-fillSaintsButton.addEventListener("click", async () => {
-  if (!canManageContent) {
-    alert("Chỉ tài khoản admin mới có quyền cập nhật tiểu sử các thánh.");
-    return;
-  }
-
-  fillSaintsButton.disabled = true;
-  contentMessage.textContent = "Đang tự điền tiểu sử các thánh...";
-
-  try {
-    const updatedCount = await fillSaintBiographies();
-    content = await getContent();
-    renderAdminList();
-    contentMessage.textContent = updatedCount
-      ? `Đã cập nhật tiểu sử cho ${updatedCount} mục trong danh mục Các thánh.`
-      : "Các mục Các thánh đã có đủ tiểu sử, không cần cập nhật thêm.";
-  } catch (error) {
-    contentMessage.textContent = error.message;
-    alert(error.message);
-  } finally {
-    fillSaintsButton.disabled = !canManageContent;
-  }
-});
 filterType.addEventListener("change", () => {
   renderAdminList();
   contentMessage.textContent =
@@ -351,7 +327,6 @@ function setEditorEnabled(enabled) {
   form.querySelectorAll("input, select, textarea, button").forEach((control) => {
     control.disabled = !enabled;
   });
-  if (fillSaintsButton) fillSaintsButton.disabled = !enabled;
 }
 
 async function setupLogin() {

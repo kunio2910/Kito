@@ -63,9 +63,8 @@ function eventTemplate(item) {
   const link = detailLink("events", item.id);
   return `
     <article class="event-card clickable-card" onclick="window.location.href='${link}'">
-      <div class="event-date">
-        <strong>${date.day}</strong>
-        <span>${date.month}</span>
+      <div class="event-date ${date.isText ? "is-text-date" : ""}">
+        ${date.isText ? `<span>${date.display}</span>` : `<strong>${date.day}</strong><span>${date.month}</span>`}
       </div>
       <div>
         <h3>${item.title}</h3>
@@ -195,6 +194,7 @@ async function initHome() {
     renderLoadError(error);
     setupSearch();
   }
+  rememberCurrentPage("Trang chủ");
 }
 
 initHome();

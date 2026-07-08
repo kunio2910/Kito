@@ -70,7 +70,7 @@ function renderCategoryItems(items) {
             <p class="eyebrow">${item.meta || categoryInfo.eyebrow}</p>
             <h2>${item.title}</h2>
             <p>${categorySummary(item.description)}</p>
-            ${date ? `<small>${date.day} ${date.month}</small>` : ""}
+            ${date ? `<small>${date.display}</small>` : ""}
             <a href="${link}" onclick="event.stopPropagation()">${categoryInfo.action}</a>
           </div>
         </article>
@@ -80,7 +80,7 @@ function renderCategoryItems(items) {
 }
 
 async function initCategory() {
-  document.querySelector("#categoryEyebrow").textContent = categoryInfo.eyebrow;
+  setupBackLink("index.html", "Trang chủ", { useStored: false, useHistory: false });
   document.querySelector("#categoryTitle").textContent = categoryInfo.title;
   document.querySelector("#categoryDescription").textContent = categoryInfo.description;
   document.title = `${categoryInfo.title} - Truyền Giáo Kitô`;
@@ -97,6 +97,7 @@ async function initCategory() {
   } catch (error) {
     renderCategoryItems(activeCategoryItems(defaultContent[activeType] || []));
   }
+  rememberCurrentPage(categoryInfo.title);
 }
 
 initCategory();
