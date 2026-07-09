@@ -38,6 +38,7 @@ img {
   display: block;
   width: 100%;
   object-fit: cover;
+  background: #f7efe3;
 }
 
 a {
@@ -392,6 +393,14 @@ main {
   min-width: 0;
 }
 
+.left-column .section-block,
+.right-column .section-block,
+.related-section,
+.category-grid {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 520px;
+}
+
 .section-heading {
   display: flex;
   align-items: center;
@@ -462,6 +471,7 @@ main {
   min-width: 100%;
   animation: prayer-marquee 72s linear infinite;
   backface-visibility: hidden;
+  contain: layout paint style;
   transform: translate3d(0, 0, 0);
   will-change: transform;
 }
@@ -632,6 +642,7 @@ main {
   min-height: 158px;
   display: grid;
   align-items: center;
+  contain: layout paint;
   color: var(--white);
   background:
     linear-gradient(90deg, rgba(95, 53, 20, 0.94), rgba(115, 69, 25, 0.62)),
@@ -1209,6 +1220,7 @@ textarea {
 .detail-body img {
   width: min(100%, 560px);
   max-height: 420px;
+  aspect-ratio: 4 / 3;
   border-radius: 8px;
   object-fit: contain;
   background: #f7efe3;

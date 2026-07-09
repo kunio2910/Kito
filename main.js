@@ -5,6 +5,61 @@ let dailyTimer = null;
 const imageOrFallback = (item) => item.image || fallbackImage;
 const detailLink = (type, id) => `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
 const activeItems = (items = []) => items.filter((item) => item.status !== "unactived");
+const lazyImageAttrs = 'loading="lazy" decoding="async"';
+const preloadedImages = new Set();
+
+function preloadImage(src) {
+  const imageUrl = String(src || "").trim();
+  if (!imageUrl || preloadedImages.has(imageUrl)) return;
+  preloadedImages.add(imageUrl);
+  const link = document.createElement("link");
+  link.rel = "preload";
+  link.as = "image";
+  link.href = imageUrl;
+  link.fetchPriority = "high";
+  document.head.appendChild(link);
+}
+
+function dailySeed(key) {
+  const now = new Date();
+  const today = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+  ].join("-");
+  const text = `${today}:${key}`;
+  let seed = 2166136261;
+  for (let index = 0; index < text.length; index += 1) {
+    seed ^= text.charCodeAt(index);
+    seed = Math.imul(seed, 16777619);
+  }
+  return seed >>> 0;
+}
+
+function seededRandom(seed) {
+  let value = seed >>> 0;
+  return () => {
+    value = Math.imul(value + 0x6d2b79f5, 1);
+    let result = value;
+    result = Math.imul(result ^ (result >>> 15), result | 1);
+    result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
+    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function dailyShuffle(items, key) {
+  const shuffled = [...items];
+  const random = seededRandom(dailySeed(key));
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function dailyRandomItems(items = [], key, limit) {
+  return dailyShuffle(activeItems(items), key).slice(0, limit);
+}
 
 function summarizeText(text, maxLength = 115) {
   const value = String(text || "")
@@ -26,7 +81,7 @@ function cardTemplate(item, type = "saints") {
   const link = detailLink(type, item.id);
   return `
     <article class="content-card clickable-card" onclick="window.location.href='${link}'">
-      <img src="${imageOrFallback(item)}" alt="${item.title}" />
+      <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
       <div>
         <h3>${item.title}</h3>
         <p>${summarizeText(item.description, 105)}</p>
@@ -40,7 +95,7 @@ function churchTemplate(item) {
   const link = detailLink("churches", item.id);
   return `
     <article class="church-card clickable-card" onclick="window.location.href='${link}'">
-      <img src="${imageOrFallback(item)}" alt="${item.title}" />
+      <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
       <div>
         <h3>${item.title}</h3>
         <p>📍 ${item.meta || "Việt Nam"}</p>
@@ -54,7 +109,7 @@ function articleTemplate(item) {
   const link = detailLink("articles", item.id);
   return `
     <article class="article-card clickable-card" onclick="window.location.href='${link}'">
-      <img src="${imageOrFallback(item)}" alt="${item.title}" />
+      <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
       <div>
         <h3>${item.title}</h3>
         <p>${summarizeText(item.description, 105)}</p>
@@ -102,6 +157,7 @@ function renderDaily() {
   const daily = dailyItems[dailyIndex];
   const quote = daily.quote || daily.description || daily.title || "";
   const ref = daily.ref || daily.meta || daily.title || "";
+  preloadImage(imageOrFallback(daily));
   document.querySelector("#dailyQuote").textContent = `“${quote}”`;
   document.querySelector("#dailyRef").textContent = ref ? `(${ref})` : "";
   document.querySelector(".daily-card").style.setProperty("--daily-image", `url("${imageOrFallback(daily)}")`);
@@ -113,6 +169,7 @@ function renderDaily() {
 function renderHeroBanner() {
   const banner = activeItems(content.banners)?.[0];
   if (!banner) return;
+  preloadImage(imageOrFallback(banner));
   document.querySelector("#heroTitle").textContent = banner.title || "";
   document.querySelector(".hero-content p").textContent = banner.description || "";
   document.querySelector(".hero-bg").style.setProperty("--hero-image", `url("${imageOrFallback(banner)}")`);
@@ -120,11 +177,11 @@ function renderHeroBanner() {
 
 function renderHome() {
   renderHeroBanner();
-  document.querySelector("#saintsList").innerHTML = activeItems(content.saints).slice(0, 5).map((item) => cardTemplate(item, "saints")).join("");
-  document.querySelector("#churchesList").innerHTML = activeItems(content.churches).slice(0, 3).map(churchTemplate).join("");
-  document.querySelector("#articlesList").innerHTML = activeItems(content.articles).slice(0, 3).map(articleTemplate).join("");
+  document.querySelector("#saintsList").innerHTML = dailyRandomItems(content.saints, "saints", 5).map((item) => cardTemplate(item, "saints")).join("");
+  document.querySelector("#churchesList").innerHTML = dailyRandomItems(content.churches, "churches", 3).map(churchTemplate).join("");
+  document.querySelector("#articlesList").innerHTML = dailyRandomItems(content.articles, "articles", 3).map(articleTemplate).join("");
   document.querySelector("#eventsList").innerHTML = activeItems(content.events).slice(0, 3).map(eventTemplate).join("");
-  const prayerItems = activeItems(content.prayers).slice(0, 6);
+  const prayerItems = dailyRandomItems(content.prayers, "prayers", 6);
   const prayerTrackItems = prayerItems.length > 1 ? [...prayerItems, ...prayerItems] : prayerItems;
   document.querySelector("#prayersList").innerHTML = prayerTrackItems.map(prayerTemplate).join("");
   renderDaily();

@@ -38,6 +38,7 @@ const activeType = categoryAllowedTypes.includes(categoryType) ? categoryType : 
 const categoryInfo = categoryLabels[activeType];
 const activeCategoryItems = (items = []) => items.filter((item) => item.status !== "unactived");
 const ITEMS_PER_PAGE = 9;
+const lazyImageAttrs = 'loading="lazy" decoding="async"';
 let allCategoryItems = [];
 let currentPage = 1;
 
@@ -105,7 +106,7 @@ function renderCategoryItems(items) {
       const link = categoryDetailLink(activeType, item.id);
       return `
         <article class="category-card clickable-card" onclick="window.location.href='${link}'">
-          <img src="${item.image || fallbackImage}" alt="${item.title}" />
+          <img src="${item.image || fallbackImage}" alt="${item.title}" ${lazyImageAttrs} />
           <div>
             <p class="eyebrow">${item.meta || categoryInfo.eyebrow}</p>
             <h2>${item.title}</h2>

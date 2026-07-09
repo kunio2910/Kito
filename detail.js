@@ -4,6 +4,7 @@ const type = params.get("type");
 const id = params.get("id");
 const allowedTypes = ["saints", "churches", "articles", "events", "prayers"];
 const detailArticle = document.querySelector("#detailArticle");
+const lazyImageAttrs = 'loading="lazy" decoding="async"';
 let currentItem = null;
 let selectedRatings = {
   content: 0,
@@ -63,6 +64,8 @@ function sanitizeContentHtml(value) {
     if (element.tagName === "IMG") {
       const src = element.getAttribute("src") || "";
       if (!/^https?:\/\//i.test(src)) element.remove();
+      element.setAttribute("loading", "lazy");
+      element.setAttribute("decoding", "async");
     }
   });
 
@@ -111,7 +114,7 @@ function renderDetail() {
   document.title = `${item.title} - Truyền Giáo Kitô`;
   detailArticle.innerHTML = `
     <figure class="detail-cover">
-      <img src="${item.image || fallbackImage}" alt="${item.title}" />
+      <img src="${item.image || fallbackImage}" alt="${item.title}" fetchpriority="high" decoding="async" />
     </figure>
     <header class="detail-heading">
       <h1>${item.title}</h1>
@@ -177,7 +180,7 @@ function renderRelated() {
     .map(
       (entry) => `
         <article class="article-card">
-          <img src="${entry.image || fallbackImage}" alt="${entry.title}" />
+          <img src="${entry.image || fallbackImage}" alt="${entry.title}" ${lazyImageAttrs} />
           <div>
             <h3>${entry.title}</h3>
             <p>${entry.description}</p>
