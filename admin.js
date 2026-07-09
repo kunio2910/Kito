@@ -24,11 +24,14 @@ const itemDescription = document.querySelector("#itemDescription");
 const itemBodyHtml = document.querySelector("#itemBodyHtml");
 const itemMeta = document.querySelector("#itemMeta");
 const itemDate = document.querySelector("#itemDate");
+const itemCreatedDate = document.querySelector("#itemCreatedDate");
 const itemStatus = document.querySelector("#itemStatus");
 const itemImageUrl = document.querySelector("#itemImageUrl");
 const itemSourceUrl = document.querySelector("#itemSourceUrl");
 const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
+const adminSearch = document.querySelector("#adminSearch");
+const adminSort = document.querySelector("#adminSort");
 const adminList = document.querySelector("#adminList");
 const feedbackList = document.querySelector("#feedbackList");
 const prayerReviewList = document.querySelector("#prayerReviewList");
@@ -75,6 +78,84 @@ function safeFeedbackUrl(value) {
   return /^https?:\/\//i.test(url) ? escapeHtml(url) : "";
 }
 
+function currentDateTimeLocal() {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return now.toISOString().slice(0, 16);
+}
+
+function toDateTimeLocal(value) {
+  if (!value) return "";
+  const date = value?.toDate ? value.toDate() : new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  return date.toISOString().slice(0, 16);
+}
+
+function displayCreatedDate(item) {
+  const value = item.createdDate || item.createdAtText || item.createdAt;
+  const date = value?.toDate ? value.toDate() : new Date(value || "");
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+function itemTimeValue(item) {
+  const createdDate = item.createdDate || item.createdAtText || item.createdAt;
+  const createdTime = createdDate?.toDate ? createdDate.toDate().getTime() : Date.parse(String(createdDate || ""));
+  if (!Number.isNaN(createdTime)) return createdTime;
+
+  const dateText = String(item.date || "").trim();
+  const directTime = Date.parse(dateText);
+  if (!Number.isNaN(directTime)) return directTime;
+
+  const dateParts = dateText.match(/(\d{1,2})[\/\-.](\d{1,2})(?:[\/\-.](\d{2,4}))?/);
+  if (dateParts) {
+    const year = dateParts[3] ? Number(dateParts[3].length === 2 ? `20${dateParts[3]}` : dateParts[3]) : new Date().getFullYear();
+    const parsed = new Date(year, Number(dateParts[2]) - 1, Number(dateParts[1])).getTime();
+    if (!Number.isNaN(parsed)) return parsed;
+  }
+
+  const idTime = String(item.id || "").match(/(\d{10,})$/);
+  return idTime ? Number(idTime[1]) : 0;
+}
+
+function searchAdminItems(items) {
+  const keyword = String(adminSearch?.value || "").trim().toLowerCase();
+  if (!keyword) return items;
+  return items.filter((item) =>
+    `${item.title || ""} ${item.description || ""} ${item.quote || ""} ${item.meta || ""} ${item.date || ""} ${item.createdDate || ""} ${typeLabels[item.type] || ""}`
+      .toLowerCase()
+      .includes(keyword)
+  );
+}
+
+function sortAdminItems(items) {
+  const sortValue = adminSort?.value || "default";
+  const collator = new Intl.Collator("vi", { sensitivity: "base", numeric: true });
+  const sorted = [...items];
+
+  if (sortValue === "title-asc") {
+    sorted.sort((a, b) => collator.compare(a.title || a.ref || "", b.title || b.ref || ""));
+  }
+  if (sortValue === "title-desc") {
+    sorted.sort((a, b) => collator.compare(b.title || b.ref || "", a.title || a.ref || ""));
+  }
+  if (sortValue === "time-desc") {
+    sorted.sort((a, b) => itemTimeValue(b) - itemTimeValue(a));
+  }
+  if (sortValue === "time-asc") {
+    sorted.sort((a, b) => itemTimeValue(a) - itemTimeValue(b));
+  }
+
+  return sorted;
+}
+
 function getItemsForAdmin() {
   if (!content) return [];
   const selected = filterType.value;
@@ -95,8 +176,22 @@ function ratingText(item) {
 }
 
 function renderAdminList() {
-  const items = getItemsForAdmin();
-  const canReorder = canManageContent && filterType.value !== "all";
+  const items = sortAdminItems(searchAdminItems(getItemsForAdmin()));
+  const isCustomView = adminSearch.value.trim() || adminSort.value !== "default";
+  const canReorder = canManageContent && filterType.value !== "all" && !isCustomView;
+  if (!items.length) {
+    adminList.innerHTML = `
+      <article class="admin-item">
+        <div></div>
+        <div>
+          <span>Không có dữ liệu</span>
+          <h3>Không tìm thấy nội dung phù hợp</h3>
+          <p>Hãy thử đổi từ khóa tìm kiếm, loại nội dung hoặc cách sắp xếp.</p>
+        </div>
+      </article>
+    `;
+    return;
+  }
   adminList.innerHTML = items
     .map(
       (item) => `
@@ -107,6 +202,7 @@ function renderAdminList() {
             <h3>${item.title || item.ref || item.meta || ""}</h3>
             <p>${summarizeText(item.description || item.quote, 130)}</p>
             <small>${item.meta || ""}</small>
+            <small>${displayCreatedDate(item) ? `Ngày tạo: ${displayCreatedDate(item)}` : ""}</small>
             <small class="admin-state ${item.status === "unactived" ? "is-off" : "is-on"}">
               ${item.status === "unactived" ? "Unactived - đang ẩn" : "Actived - đang hiển thị"}
             </small>
@@ -254,6 +350,7 @@ function editPrayerRequest(id) {
   itemBodyHtml.value = prayerTextToHtml(request.prayerText);
   itemMeta.value = displayName;
   itemDate.value = formatFeedbackTime(request);
+  itemCreatedDate.value = currentDateTimeLocal();
   itemStatus.value = "actived";
   currentImage = fallbackImage;
   currentImagePath = "";
@@ -274,6 +371,7 @@ function clearForm() {
   currentImagePath = "";
   itemImageUrl.value = "";
   itemSourceUrl.value = "";
+  itemCreatedDate.value = currentDateTimeLocal();
   itemStatus.value = "actived";
   imagePreview.removeAttribute("src");
   imagePreview.classList.remove("show");
@@ -292,6 +390,7 @@ function editItem(type, id) {
   itemBodyHtml.value = item.bodyHtml || "";
   itemMeta.value = item.meta || "";
   itemDate.value = item.date || "";
+  itemCreatedDate.value = toDateTimeLocal(item.createdDate || item.createdAtText || item.createdAt) || currentDateTimeLocal();
   itemStatus.value = item.status || "actived";
   currentImage = item.image || "";
   currentImagePath = item.imagePath || "";
@@ -401,6 +500,7 @@ form.addEventListener("submit", async (event) => {
       bodyHtml: itemBodyHtml.value.trim(),
       meta: itemMeta.value.trim(),
       date: itemDate.value,
+      createdDate: itemCreatedDate.value || currentDateTimeLocal(),
       status: itemStatus.value || "actived",
       image: imageUrl,
       imagePath: "",
@@ -434,7 +534,8 @@ form.addEventListener("submit", async (event) => {
 
 adminList.addEventListener("dragstart", (event) => {
   const item = event.target.closest(".admin-item");
-  if (!item || !canManageContent || filterType.value === "all" || event.target.closest("button")) {
+  const isCustomView = adminSearch.value.trim() || adminSort.value !== "default";
+  if (!item || !canManageContent || filterType.value === "all" || isCustomView || event.target.closest("button")) {
     event.preventDefault();
     return;
   }
@@ -566,6 +667,14 @@ filterType.addEventListener("change", () => {
   contentMessage.textContent =
     filterType.value === "all" ? "Chọn một loại nội dung cụ thể để kéo thả đổi thứ tự." : "";
 });
+adminSearch.addEventListener("input", () => {
+  renderAdminList();
+});
+adminSort.addEventListener("change", () => {
+  renderAdminList();
+  contentMessage.textContent =
+    adminSort.value === "default" ? "" : "Khi đang sắp xếp, chức năng kéo thả đổi thứ tự sẽ tạm tắt.";
+});
 
 function setEditorEnabled(enabled) {
   form.querySelectorAll("input, select, textarea, button").forEach((control) => {
@@ -587,6 +696,9 @@ async function setupLogin() {
   protectedPanel.hidden = false;
   canManageContent = user.role === "admin";
   setEditorEnabled(canManageContent);
+  if (canManageContent && !itemCreatedDate.value) {
+    itemCreatedDate.value = currentDateTimeLocal();
+  }
 
   if (!canManageContent) {
     document.querySelector(".admin-intro").insertAdjacentHTML(

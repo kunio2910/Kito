@@ -1144,20 +1144,6 @@ textarea {
   overflow: hidden;
 }
 
-.lead-box::after {
-  content: "";
-  position: absolute;
-  right: 22px;
-  bottom: 10px;
-  width: 96px;
-  height: 96px;
-  background:
-    radial-gradient(ellipse at 45% 70%, rgba(194, 125, 28, 0.12) 0 10%, transparent 11%),
-    linear-gradient(42deg, transparent 47%, rgba(194, 125, 28, 0.11) 48% 52%, transparent 53%);
-  opacity: 0.45;
-  pointer-events: none;
-}
-
 .lead-icon {
   position: relative;
   z-index: 1;
@@ -1589,6 +1575,14 @@ textarea {
   margin-top: 18px;
 }
 
+.category-search + .category-search {
+  margin-top: 12px;
+}
+
+.category-search select {
+  max-width: 280px;
+}
+
 .category-search span {
   color: var(--gold-dark);
   font-weight: 800;
@@ -1706,7 +1700,7 @@ textarea {
 
 .two-fields {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -1724,6 +1718,13 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.admin-list-tools {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 240px);
+  gap: 12px;
+  margin: 0 0 14px;
 }
 
 .admin-list {
@@ -1874,7 +1875,8 @@ textarea:disabled {
   }
 
   .quick-links,
-  .manager-layout {
+  .manager-layout,
+  .admin-list-tools {
     grid-template-columns: 1fr;
   }
 

@@ -46,6 +46,46 @@ function categoryDetailLink(type, id) {
   return `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
 }
 
+function itemTimeValue(item) {
+  const createdDate = item.createdDate || item.createdAtText || item.createdAt;
+  const createdTime = createdDate?.toDate ? createdDate.toDate().getTime() : Date.parse(String(createdDate || ""));
+  if (!Number.isNaN(createdTime)) return createdTime;
+
+  const dateText = String(item.date || "").trim();
+  const directTime = Date.parse(dateText);
+  if (!Number.isNaN(directTime)) return directTime;
+
+  const dateParts = dateText.match(/(\d{1,2})[\/\-.](\d{1,2})(?:[\/\-.](\d{2,4}))?/);
+  if (dateParts) {
+    const year = dateParts[3] ? Number(dateParts[3].length === 2 ? `20${dateParts[3]}` : dateParts[3]) : new Date().getFullYear();
+    const parsed = new Date(year, Number(dateParts[2]) - 1, Number(dateParts[1])).getTime();
+    if (!Number.isNaN(parsed)) return parsed;
+  }
+
+  const idTime = String(item.id || "").match(/(\d{10,})$/);
+  return idTime ? Number(idTime[1]) : 0;
+}
+
+function sortCategoryItems(items, sortValue) {
+  const collator = new Intl.Collator("vi", { sensitivity: "base", numeric: true });
+  const sorted = [...items];
+
+  if (sortValue === "title-asc") {
+    sorted.sort((a, b) => collator.compare(a.title || "", b.title || ""));
+  }
+  if (sortValue === "title-desc") {
+    sorted.sort((a, b) => collator.compare(b.title || "", a.title || ""));
+  }
+  if (sortValue === "time-desc") {
+    sorted.sort((a, b) => itemTimeValue(b) - itemTimeValue(a));
+  }
+  if (sortValue === "time-asc") {
+    sorted.sort((a, b) => itemTimeValue(a) - itemTimeValue(b));
+  }
+
+  return sorted;
+}
+
 function categorySummary(text, maxLength = 150) {
   const value = String(text || "")
     .split(/\r?\n/)
@@ -123,7 +163,8 @@ function renderCategoryItems(items) {
 
 function renderCategoryView() {
   const keyword = document.querySelector("#categorySearch").value;
-  renderCategoryItems(searchCategoryItems(allCategoryItems, keyword));
+  const sortValue = document.querySelector("#categorySort").value;
+  renderCategoryItems(sortCategoryItems(searchCategoryItems(allCategoryItems, keyword), sortValue));
 }
 
 async function initCategory() {
@@ -139,6 +180,11 @@ async function initCategory() {
   });
 
   document.querySelector("#categorySearch").addEventListener("input", () => {
+    currentPage = 1;
+    renderCategoryView();
+  });
+
+  document.querySelector("#categorySort").addEventListener("change", () => {
     currentPage = 1;
     renderCategoryView();
   });

@@ -449,6 +449,7 @@ async function saveContentItem(type, item) {
     id,
     type,
     status: preparedItem.status || "actived",
+    createdDate: preparedItem.createdDate || new Date().toISOString(),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   };
 
@@ -650,6 +651,7 @@ async function approvePrayerRequest(id, payload) {
       image: fallbackImage,
       status: "actived",
       source: "prayer-request",
+      createdDate: new Date().toISOString(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     },

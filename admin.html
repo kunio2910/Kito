@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý nội dung - Truyền Giáo Kitô</title>
-    <link rel="stylesheet" href="styles.css?v=20260709-perf" />
+    <link rel="stylesheet" href="styles.css?v=20260709-clean" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -85,6 +85,10 @@
               <span>Ngày sự kiện</span>
               <input id="itemDate" type="text" placeholder="Ví dụ: 19 THÁNG 03, 27/12 hoặc Chúa Nhật" />
             </label>
+            <label>
+              <span>Ngày tạo</span>
+              <input id="itemCreatedDate" type="datetime-local" />
+            </label>
           </div>
           <label>
             <span>Trạng thái hiển thị</span>
@@ -123,6 +127,22 @@
               <option value="banners">Banner chính</option>
             </select>
           </div>
+          <div class="admin-list-tools">
+            <label>
+              <span>Tìm kiếm</span>
+              <input id="adminSearch" type="search" placeholder="Tìm theo tiêu đề, mô tả, thông tin phụ..." />
+            </label>
+            <label>
+              <span>Sắp xếp</span>
+              <select id="adminSort">
+                <option value="default">Mặc định</option>
+                <option value="title-asc">Chữ cái A-Z</option>
+                <option value="title-desc">Chữ cái Z-A</option>
+                <option value="time-desc">Thời gian mới nhất</option>
+                <option value="time-asc">Thời gian cũ nhất</option>
+              </select>
+            </label>
+          </div>
           <div class="admin-list" id="adminList"></div>
         </section>
       </section>
@@ -150,7 +170,7 @@
     <script src="firebase-config.js"></script>
     <script src="data.js"></script>
     <script src="auth.js"></script>
-    <script src="admin.js"></script>
+    <script src="admin.js?v=20260709-created"></script>
   </body>
 </html>
 
