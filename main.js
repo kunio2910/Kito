@@ -76,6 +76,19 @@ function eventTemplate(item) {
   `;
 }
 
+function prayerTemplate(item) {
+  const link = detailLink("prayers", item.id);
+  return `
+    <article class="prayer-card clickable-card" style="--prayer-image: url('${imageOrFallback(item)}')" onclick="window.location.href='${link}'">
+      <div>
+        <p>${item.meta || "Cầu nguyện"}</p>
+        <h3>${item.title}</h3>
+        <blockquote>“${summarizeText(item.description, 125)}”</blockquote>
+      </div>
+    </article>
+  `;
+}
+
 function renderDaily() {
   const dailyItems = activeItems(content.daily);
   if (!dailyItems.length) return;
@@ -105,6 +118,7 @@ function renderHome() {
   document.querySelector("#churchesList").innerHTML = activeItems(content.churches).slice(0, 3).map(churchTemplate).join("");
   document.querySelector("#articlesList").innerHTML = activeItems(content.articles).slice(0, 3).map(articleTemplate).join("");
   document.querySelector("#eventsList").innerHTML = activeItems(content.events).slice(0, 3).map(eventTemplate).join("");
+  document.querySelector("#prayersList").innerHTML = activeItems(content.prayers).slice(0, 3).map(prayerTemplate).join("");
   renderDaily();
 }
 
@@ -130,13 +144,14 @@ function renderLoadError(error) {
   document.querySelector("#churchesList").innerHTML = "";
   document.querySelector("#articlesList").innerHTML = "";
   document.querySelector("#eventsList").innerHTML = "";
+  document.querySelector("#prayersList").innerHTML = "";
 }
 
 function setupSearch() {
   const drawer = document.querySelector("#searchDrawer");
   const input = document.querySelector("#searchInput");
   const resultBox = document.querySelector("#searchResults");
-  const allItems = ["saints", "churches", "articles", "events"].flatMap((type) =>
+  const allItems = ["saints", "churches", "articles", "events", "prayers"].flatMap((type) =>
     activeItems(content[type]).map((item) => ({ ...item, type }))
   );
 

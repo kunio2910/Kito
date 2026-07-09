@@ -2,7 +2,7 @@ let content = null;
 const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 const id = params.get("id");
-const allowedTypes = ["saints", "churches", "articles", "events"];
+const allowedTypes = ["saints", "churches", "articles", "events", "prayers"];
 const detailArticle = document.querySelector("#detailArticle");
 let currentItem = null;
 let selectedRatings = {
@@ -72,14 +72,6 @@ function sanitizeContentHtml(value) {
 function defaultBodyHtml(item) {
   return `
     <p>${item.description}</p>
-    <p>
-      Nội dung này được xây dựng để hỗ trợ việc học hỏi, cầu nguyện và chia sẻ Tin Mừng
-      trong cộng đoàn. Bạn có thể cập nhật phần chữ, hình ảnh và thông tin phụ tại trang quản lý.
-    </p>
-    <p>
-      Ước mong mỗi bài viết, mỗi hình ảnh và mỗi sự kiện nơi đây trở thành một lời mời gọi
-      sống đức tin cụ thể hơn trong đời sống hằng ngày.
-    </p>
   `;
 }
 

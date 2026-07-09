@@ -23,11 +23,17 @@ const categoryLabels = {
     description: "Các thánh lễ, giờ cầu nguyện, khóa tĩnh tâm và sinh hoạt cộng đoàn.",
     action: "Chi tiết",
   },
+  prayers: {
+    eyebrow: "Cầu nguyện",
+    title: "Cầu nguyện",
+    description: "Những lời cầu nguyện giúp nâng đỡ đời sống đức tin trong từng hoàn cảnh hằng ngày.",
+    action: "Chi tiết",
+  },
 };
 
 const categoryParams = new URLSearchParams(window.location.search);
 const categoryType = categoryParams.get("type") || "saints";
-const categoryAllowedTypes = ["saints", "churches", "articles", "events"];
+const categoryAllowedTypes = ["saints", "churches", "articles", "events", "prayers"];
 const activeType = categoryAllowedTypes.includes(categoryType) ? categoryType : "saints";
 const categoryInfo = categoryLabels[activeType];
 const activeCategoryItems = (items = []) => items.filter((item) => item.status !== "unactived");

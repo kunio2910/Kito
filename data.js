@@ -1,5 +1,5 @@
 const fallbackImage = "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80";
-const CONTENT_TYPES = ["saints", "churches", "articles", "events", "daily", "banners"];
+const CONTENT_TYPES = ["saints", "churches", "articles", "events", "prayers", "daily", "banners"];
 
 const defaultContent = {
   daily: [
@@ -137,6 +137,53 @@ const defaultContent = {
       meta: "08:00 - Trung tâm Mục vụ",
       date: "2026-09-05",
       image: fallbackImage,
+    },
+  ],
+  prayers: [
+    {
+      id: "prayer-1",
+      type: "prayers",
+      title: "Cầu nguyện buổi sáng",
+      description: "Lạy Chúa, xin dẫn con bước vào ngày mới với trái tim bình an, biết yêu thương và phục vụ mọi người.",
+      meta: "Dâng ngày mới",
+      image: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml: "<p>Lạy Chúa, con xin dâng lên Chúa ngày sống hôm nay. Xin soi sáng suy nghĩ, lời nói và việc làm của con, để mọi sự con làm đều trở nên lời ca tụng Chúa.</p><p>Xin cho con biết sống hiền hòa, kiên nhẫn và quảng đại với những người con gặp gỡ.</p>",
+    },
+    {
+      id: "prayer-2",
+      type: "prayers",
+      title: "Cầu nguyện trước khi học hỏi Lời Chúa",
+      description: "Xin Chúa Thánh Thần mở lòng con, để con lắng nghe Lời Chúa bằng đức tin và đem ra thực hành.",
+      meta: "Xin ơn soi sáng",
+      image: "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml: "<p>Lạy Chúa Thánh Thần, xin đến soi sáng trí lòng con. Xin giúp con đọc Lời Chúa với tâm hồn khiêm tốn, biết lắng nghe điều Chúa muốn nói với con hôm nay.</p><p>Xin biến đổi Lời Chúa thành ánh sáng dẫn đường cho đời sống của con.</p>",
+    },
+    {
+      id: "prayer-3",
+      type: "prayers",
+      title: "Cầu nguyện cho gia đình",
+      description: "Xin Chúa gìn giữ gia đình con trong yêu thương, tha thứ và hiệp nhất mỗi ngày.",
+      meta: "Gia đình yêu thương",
+      image: "https://images.unsplash.com/photo-1514896856000-91cb6de818e0?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml: "<p>Lạy Chúa Giêsu, xin ở lại trong gia đình con. Xin dạy chúng con biết lắng nghe, tha thứ và nâng đỡ nhau trong mọi hoàn cảnh.</p><p>Xin cho mỗi thành viên trong gia đình con biết trở nên dấu chỉ tình yêu của Chúa.</p>",
+    },
+    {
+      id: "prayer-4",
+      type: "prayers",
+      title: "Cầu nguyện khi gặp khó khăn",
+      description: "Lạy Chúa, xin nâng đỡ con trong thử thách và giúp con tín thác vào tình yêu quan phòng của Ngài.",
+      meta: "Tín thác",
+      image: "https://images.unsplash.com/photo-1528357136257-0c25517acfea?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml: "<p>Lạy Chúa, khi con mệt mỏi và lo âu, xin nhắc con nhớ rằng Chúa vẫn đồng hành. Xin ban cho con sức mạnh để bước tiếp trong tin tưởng.</p><p>Xin giúp con nhìn thấy hy vọng ngay cả giữa những điều chưa rõ ràng.</p>",
+    },
+    {
+      id: "prayer-5",
+      type: "prayers",
+      title: "Cầu nguyện buổi tối",
+      description: "Xin Chúa đón nhận ngày sống đã qua, tha thứ những thiếu sót và ban cho con giấc ngủ bình an.",
+      meta: "Tạ ơn cuối ngày",
+      image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml: "<p>Lạy Chúa, con tạ ơn Chúa vì một ngày đã qua. Xin tha thứ những điều con thiếu sót và chữa lành những gì còn nặng nề trong lòng con.</p><p>Xin gìn giữ con trong bình an của Chúa suốt đêm nay.</p>",
     },
   ],
 };
@@ -311,7 +358,7 @@ async function seedDefaultContentIfEmpty(force = false) {
       if (item.type) existingTypes.add(item.type);
     });
 
-    const missingTypes = ["daily", "banners"].filter((type) => !existingTypes.has(type));
+    const missingTypes = CONTENT_TYPES.filter((type) => !existingTypes.has(type));
     if (!missingTypes.length) return;
 
     const missingBatch = db.batch();
@@ -365,6 +412,7 @@ async function getContent() {
     churches: [],
     articles: [],
     events: [],
+    prayers: [],
   };
 
   snapshot.forEach((doc) => {
@@ -385,6 +433,7 @@ async function getContent() {
 
   if (!content.daily.length) content.daily = structuredClone(defaultContent.daily);
   if (!content.banners.length) content.banners = structuredClone(defaultContent.banners);
+  if (!content.prayers.length) content.prayers = structuredClone(defaultContent.prayers);
 
   return content;
 }
@@ -517,6 +566,111 @@ async function deleteContentFeedback(id) {
   await db.collection("feedbacks").doc(id).delete();
 }
 
+async function submitPrayerRequest(payload) {
+  const prayerTitle = String(payload?.prayerTitle || "").trim();
+  if (!prayerTitle) throw new Error("Vui lòng nhập tiêu đề.");
+
+  const prayerText = String(payload?.prayerText || "").trim();
+  if (!prayerText) throw new Error("Vui lòng nhập lời cầu nguyện.");
+
+  const anonymous = Boolean(payload?.anonymous);
+  const displayName = anonymous ? "Anonymous" : String(payload?.displayName || "").trim();
+  if (!anonymous && !displayName) throw new Error("Vui lòng nhập họ tên hoặc chọn ẩn danh.");
+
+  const { db } = requireFirebase();
+  await db.collection("prayerRequests").add({
+    displayName,
+    anonymous,
+    prayerTitle,
+    prayerText,
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createdAtText: new Date().toISOString(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+async function getPrayerRequests(limit = 100) {
+  const { db } = requireFirebase();
+  const snapshot = await db.collection("prayerRequests").orderBy("createdAt", "desc").limit(limit).get();
+  const requests = [];
+  snapshot.forEach((doc) => {
+    requests.push({ id: doc.id, ...doc.data() });
+  });
+  return requests;
+}
+
+async function savePrayerRequest(id, payload) {
+  const { db } = requireFirebase();
+  const patch = {
+    displayName: payload.displayName || "Anonymous",
+    anonymous: Boolean(payload.anonymous),
+    prayerTitle: payload.prayerTitle || "",
+    prayerText: payload.prayerText || "",
+    status: payload.status || "pending",
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+  if (payload.contentId) patch.contentId = payload.contentId;
+  await db.collection("prayerRequests").doc(id).set(patch, { merge: true });
+}
+
+async function approvePrayerRequest(id, payload) {
+  const { db } = requireFirebase();
+  const displayName = payload.anonymous ? "Anonymous" : payload.displayName || "Anonymous";
+  const prayerTitle = String(payload.prayerTitle || "").trim() || `Lời cầu nguyện của ${displayName}`;
+
+  const prayerText = String(payload.prayerText || "").trim();
+  if (!prayerText) throw new Error("Lời cầu nguyện không được để trống.");
+
+  const contentId = `prayer-request-${id}`;
+  const batch = db.batch();
+  batch.set(
+    db.collection("prayerRequests").doc(id),
+    {
+      displayName,
+      anonymous: Boolean(payload.anonymous),
+      prayerTitle,
+      prayerText,
+      status: "approved",
+      approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      contentId,
+    },
+    { merge: true }
+  );
+  batch.set(
+    db.collection("contents").doc(contentId),
+    {
+      id: contentId,
+      type: "prayers",
+      title: prayerTitle,
+      description: prayerTitle,
+      meta: displayName,
+      bodyHtml: `<p>${prayerText.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "</p><p>")}</p>`,
+      image: fallbackImage,
+      status: "actived",
+      source: "prayer-request",
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    },
+    { merge: true }
+  );
+  await batch.commit();
+}
+
+async function deletePrayerRequest(id) {
+  const { db } = requireFirebase();
+  const ref = db.collection("prayerRequests").doc(id);
+  const snapshot = await ref.get();
+  const request = snapshot.exists ? snapshot.data() : null;
+  const batch = db.batch();
+  batch.delete(ref);
+  if (request?.contentId) {
+    batch.delete(db.collection("contents").doc(request.contentId));
+  }
+  await batch.commit();
+}
+
 async function resetContentRating(id) {
   const { db } = requireFirebase();
   await db.collection("contents").doc(id).set(
@@ -575,6 +729,7 @@ const navigationPageTitles = {
   churches: "Giới thiệu nhà thờ",
   articles: "Bài viết & suy niệm",
   events: "Sự kiện sắp tới",
+  prayers: "Cầu nguyện",
 };
 
 function cleanNavigationTitle(title) {

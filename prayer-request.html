@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gửi lời cầu nguyện - Truyền Giáo Kitô</title>
+    <link rel="stylesheet" href="styles.css?v=20260708-large2" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">✝</span>
+        <span>Truyền Giáo<br />Kitô</span>
+      </a>
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="index.html">Trang chủ</a>
+        <a href="category.html?type=saints">Các Thánh</a>
+        <a href="category.html?type=churches">Nhà Thờ</a>
+        <a href="category.html?type=articles">Bài viết</a>
+        <a href="category.html?type=events">Sự kiện</a>
+      </nav>
+      <div class="header-actions">
+        <a class="login-button" href="admin.html">Đăng nhập</a>
+      </div>
+    </header>
+
+    <main class="prayer-request-shell">
+      <a class="back-link" href="index.html">← Quay lại Trang chủ</a>
+      <section class="prayer-request-panel">
+        <div>
+          <h1>Gửi lời cầu nguyện</h1>
+          <p class="prayer-request-help">
+            Bạn hãy viết lời cầu nguyện, tâm tình để gửi tới Chúa và những người thân thương !<br />
+            Lời cầu nguyện của bạn sẽ được hiển thị trong trang web
+          </p>
+        </div>
+        <form id="prayerRequestForm" class="prayer-request-form">
+          <div class="name-anonymous-row">
+            <label>
+              <span>Họ tên</span>
+              <input id="prayerName" type="text" required placeholder="Nhập họ tên của bạn" />
+            </label>
+            <button class="anonymous-switch" id="anonymousToggle" type="button" aria-pressed="false">
+              <span class="switch-track"><span class="switch-thumb"></span></span>
+              <span class="anonymous-label">Ẩn danh</span>
+            </button>
+          </div>
+          <label>
+            <span>Tiêu đề</span>
+            <input id="prayerTitle" type="text" required placeholder="Nhập tiêu đề lời cầu nguyện" />
+          </label>
+          <label>
+            <span>Lời cầu nguyện</span>
+            <textarea id="prayerText" rows="8" required placeholder="Nhập lời cầu nguyện của bạn..."></textarea>
+          </label>
+          <button class="primary-button submit-prayer-button" type="submit">Gửi</button>
+          <p class="form-message" id="prayerRequestMessage"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div>
+        <strong>Truyền Giáo Kitô</strong>
+        <p>Lan tỏa Tin Mừng bằng lời cầu nguyện, học hỏi và phục vụ.</p>
+      </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="data.js"></script>
+    <script src="prayer-request.js"></script>
+  </body>
+</html>

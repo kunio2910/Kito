@@ -3,12 +3,15 @@ let currentImage = "";
 let currentImagePath = "";
 let canManageContent = false;
 let feedbackItems = [];
+let prayerRequests = [];
+let editingPrayerRequestId = "";
 
 const typeLabels = {
   saints: "Các thánh",
   churches: "Nhà thờ",
   articles: "Bài viết",
   events: "Sự kiện",
+  prayers: "Cầu nguyện",
   daily: "Lời Chúa mỗi ngày",
   banners: "Banner chính",
 };
@@ -28,6 +31,7 @@ const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
 const adminList = document.querySelector("#adminList");
 const feedbackList = document.querySelector("#feedbackList");
+const prayerReviewList = document.querySelector("#prayerReviewList");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
@@ -151,7 +155,10 @@ function renderFeedbackList() {
               <time>${formatFeedbackTime(feedback)}</time>
             </div>
             <p>${escapeHtml(feedback.message)}</p>
-            ${feedbackUrl ? `<a href="${feedbackUrl}" target="_blank" rel="noopener noreferrer">Mở bài viết</a>` : ""}
+            <div class="feedback-actions">
+              ${feedbackUrl ? `<a href="${feedbackUrl}" target="_blank" rel="noopener noreferrer">Mở bài viết</a>` : ""}
+              <button type="button" data-action="delete-feedback" data-id="${feedback.id}">Xóa</button>
+            </div>
           </article>
         `;
       }
@@ -159,9 +166,110 @@ function renderFeedbackList() {
     .join("");
 }
 
+function renderPrayerReviewList() {
+  if (!prayerReviewList) return;
+
+  const visibleRequests = prayerRequests.filter((item) => {
+    const linkedContentId = item.contentId || `prayer-request-${item.id}`;
+    const linkedContent = content?.prayers?.find((entry) => entry.id === linkedContentId);
+    return !(item.status === "approved" && linkedContent?.status === "actived");
+  });
+
+  if (!visibleRequests.length) {
+    prayerReviewList.innerHTML = `
+      <article class="feedback-item">
+        <h3>Chưa có lời cầu nguyện chờ duyệt</h3>
+        <p>Các lời cầu nguyện người xem gửi sẽ xuất hiện tại đây.</p>
+      </article>
+    `;
+    return;
+  }
+
+  prayerReviewList.innerHTML = visibleRequests
+    .map(
+      (item) => `
+        <article class="feedback-item prayer-review-item" data-id="${item.id}">
+          <div class="feedback-item-head">
+            <h3>${escapeHtml(item.prayerTitle || item.displayName || "Anonymous")}</h3>
+            <div class="prayer-review-meta">
+              <time>${formatFeedbackTime(item)}</time>
+              <small class="admin-state ${item.status === "approved" ? "is-on" : "is-off"}">
+                ${item.status === "approved" ? "Đã duyệt" : "Chờ duyệt"}
+              </small>
+            </div>
+          </div>
+          <small>${escapeHtml(item.displayName || "Anonymous")}</small>
+          <p>${escapeHtml(item.prayerText || "")}</p>
+          <div class="feedback-actions">
+            <button type="button" data-action="edit-prayer">Sửa</button>
+            <button type="button" data-action="approve-prayer">Duyệt hiển thị</button>
+            <button type="button" data-action="delete-prayer">Xóa</button>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function prayerRequestById(id) {
+  return prayerRequests.find((item) => item.id === id);
+}
+
+function prayerTextToHtml(value) {
+  return String(value || "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => `<p>${escapeHtml(line)}</p>`)
+    .join("");
+}
+
+function htmlToPlainText(value) {
+  const template = document.createElement("template");
+  template.innerHTML = String(value || "");
+  return (template.content.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function prayerRequestPayload(item) {
+  return {
+    displayName: item?.displayName || "Anonymous",
+    anonymous: Boolean(item?.anonymous),
+    prayerTitle: item?.prayerTitle || "",
+    prayerText: item?.prayerText || "",
+    status: item?.status || "pending",
+  };
+}
+
+function editPrayerRequest(id) {
+  if (!canManageContent) return;
+  const request = prayerRequestById(id);
+  if (!request) return;
+
+  const displayName = request.displayName || "Anonymous";
+  editingPrayerRequestId = request.id;
+  itemId.value = `prayer-request-${request.id}`;
+  itemType.value = "prayers";
+  itemTitle.value = request.prayerTitle || `Lời cầu nguyện của ${displayName}`;
+  itemDescription.value = request.prayerTitle || "";
+  itemBodyHtml.value = prayerTextToHtml(request.prayerText);
+  itemMeta.value = displayName;
+  itemDate.value = formatFeedbackTime(request);
+  itemStatus.value = "actived";
+  currentImage = fallbackImage;
+  currentImagePath = "";
+  itemImageUrl.value = fallbackImage;
+  itemSourceUrl.value = "";
+
+  imagePreview.src = fallbackImage;
+  imagePreview.classList.add("show");
+  contentMessage.textContent = "Đã đưa lời cầu nguyện vào khung chỉnh sửa. Kiểm tra rồi bấm Lưu nội dung để hiển thị.";
+  document.querySelector("#contentManager").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 function clearForm() {
   form.reset();
   itemId.value = "";
+  editingPrayerRequestId = "";
   currentImage = "";
   currentImagePath = "";
   itemImageUrl.value = "";
@@ -299,6 +407,19 @@ form.addEventListener("submit", async (event) => {
       sourceUrl: itemSourceUrl.value.trim(),
     });
 
+    if (editingPrayerRequestId) {
+      await savePrayerRequest(editingPrayerRequestId, {
+        displayName: itemMeta.value.trim() || "Anonymous",
+        anonymous: itemMeta.value.trim().toLowerCase() === "anonymous",
+        prayerTitle: itemDescription.value.trim(),
+        prayerText: htmlToPlainText(itemBodyHtml.value) || itemDescription.value.trim(),
+        status: "approved",
+        contentId: id,
+      });
+      prayerRequests = await getPrayerRequests();
+      renderPrayerReviewList();
+    }
+
     content = await getContent();
     renderAdminList();
     clearForm();
@@ -380,6 +501,65 @@ adminList.addEventListener("click", (event) => {
   if (action === "reset-rating") resetItemRating(type, id);
 });
 
+feedbackList?.addEventListener("click", async (event) => {
+  const button = event.target.closest("button");
+  if (!button || button.dataset.action !== "delete-feedback") return;
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền xóa ý kiến đóng góp.");
+    return;
+  }
+
+  const feedbackId = button.dataset.id;
+  const confirmed = confirm("Xóa ý kiến đóng góp này?");
+  if (!confirmed) return;
+
+  try {
+    button.disabled = true;
+    await deleteContentFeedback(feedbackId);
+    feedbackItems = feedbackItems.filter((item) => item.id !== feedbackId);
+    renderFeedbackList();
+  } catch (error) {
+    alert(error.message);
+    button.disabled = false;
+  }
+});
+
+prayerReviewList?.addEventListener("click", async (event) => {
+  const button = event.target.closest("button");
+  if (!button || !canManageContent) return;
+  const card = button.closest(".prayer-review-item");
+  if (!card) return;
+  const id = card.dataset.id;
+  const request = prayerRequestById(id);
+  if (!request) return;
+
+  try {
+    button.disabled = true;
+    if (button.dataset.action === "edit-prayer") {
+      editPrayerRequest(id);
+      return;
+    }
+    if (button.dataset.action === "approve-prayer") {
+      await approvePrayerRequest(id, prayerRequestPayload(request));
+      contentMessage.textContent = "Đã duyệt và hiển thị lời cầu nguyện.";
+    }
+    if (button.dataset.action === "delete-prayer") {
+      const confirmed = confirm("Xóa lời cầu nguyện này?");
+      if (!confirmed) return;
+      await deletePrayerRequest(id);
+      contentMessage.textContent = "Đã xóa lời cầu nguyện.";
+    }
+    prayerRequests = await getPrayerRequests();
+    content = await getContent();
+    renderPrayerReviewList();
+    renderAdminList();
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    button.disabled = false;
+  }
+});
+
 document.querySelector("#clearForm").addEventListener("click", clearForm);
 filterType.addEventListener("change", () => {
   renderAdminList();
@@ -424,8 +604,10 @@ async function setupLogin() {
   try {
     content = await getContent();
     feedbackItems = await getContentFeedbacks();
+    prayerRequests = await getPrayerRequests();
     renderAdminList();
     renderFeedbackList();
+    renderPrayerReviewList();
   } catch (error) {
     document.querySelector("#adminList").innerHTML = `
       <article class="admin-item">
@@ -440,6 +622,14 @@ async function setupLogin() {
       feedbackList.innerHTML = `
         <article class="feedback-item">
           <h3>Không thể tải ý kiến đóng góp</h3>
+          <p>${escapeHtml(error.message)}</p>
+        </article>
+      `;
+    }
+    if (prayerReviewList) {
+      prayerReviewList.innerHTML = `
+        <article class="feedback-item">
+          <h3>Không thể tải lời cầu nguyện</h3>
           <p>${escapeHtml(error.message)}</p>
         </article>
       `;
