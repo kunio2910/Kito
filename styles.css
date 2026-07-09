@@ -1253,6 +1253,8 @@ textarea {
 }
 
 .rating-panel .rating-note {
+  font-size: 85%;
+  line-height: 1.55;
   font-style: italic;
 }
 
@@ -1569,18 +1571,22 @@ textarea {
   line-height: 1.7;
 }
 
-.category-search {
-  display: grid;
-  gap: 8px;
+.category-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
   margin-top: 18px;
 }
 
-.category-search + .category-search {
-  margin-top: 12px;
+.category-search {
+  display: grid;
+  gap: 8px;
 }
 
+.category-search input,
 .category-search select {
-  max-width: 280px;
+  width: min(280px, 100%);
 }
 
 .category-search span {

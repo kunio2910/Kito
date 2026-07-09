@@ -9,9 +9,10 @@ let editingPrayerRequestId = "";
 const typeLabels = {
   saints: "Các thánh",
   churches: "Nhà thờ",
-  articles: "Bài viết",
-  events: "Sự kiện",
-  prayers: "Cầu nguyện",
+  articles: "Bài Viết",
+  events: "Sự Kiện",
+  prayers: "Cầu Nguyện",
+  catechism: "Giáo Lý",
   daily: "Lời Chúa mỗi ngày",
   banners: "Banner chính",
 };

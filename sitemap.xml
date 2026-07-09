@@ -36,6 +36,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://baigiangtrennui.vercel.app/category.html?type=catechism</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://baigiangtrennui.vercel.app/prayer-request.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

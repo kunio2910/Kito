@@ -12,28 +12,34 @@ const categoryLabels = {
     action: "Chi tiết",
   },
   articles: {
-    eyebrow: "Bài viết & suy niệm",
-    title: "Bài viết & suy niệm",
+    eyebrow: "Bài Viết & Suy Niệm",
+    title: "Bài Viết & Suy Niệm",
     description: "Các bài suy niệm, chia sẻ Lời Chúa và nội dung nâng đỡ đời sống cầu nguyện.",
     action: "Đọc thêm",
   },
   events: {
-    eyebrow: "Sự kiện",
-    title: "Sự kiện sắp tới",
+    eyebrow: "Sự Kiện",
+    title: "Sự Kiện sắp tới",
     description: "Các thánh lễ, giờ cầu nguyện, khóa tĩnh tâm và sinh hoạt cộng đoàn.",
     action: "Chi tiết",
   },
   prayers: {
-    eyebrow: "Cầu nguyện",
-    title: "Cầu nguyện",
+    eyebrow: "Cầu Nguyện",
+    title: "Cầu Nguyện",
     description: "Những lời cầu nguyện giúp nâng đỡ đời sống đức tin trong từng hoàn cảnh hằng ngày.",
+    action: "Chi tiết",
+  },
+  catechism: {
+    eyebrow: "Giáo Lý",
+    title: "Giáo Lý",
+    description: "Tổng hợp các kinh nguyện và nội dung giáo lý căn bản trong đời sống Công Giáo.",
     action: "Chi tiết",
   },
 };
 
 const categoryParams = new URLSearchParams(window.location.search);
 const categoryType = categoryParams.get("type") || "saints";
-const categoryAllowedTypes = ["saints", "churches", "articles", "events", "prayers"];
+const categoryAllowedTypes = ["saints", "churches", "articles", "events", "prayers", "catechism"];
 const activeType = categoryAllowedTypes.includes(categoryType) ? categoryType : "saints";
 const categoryInfo = categoryLabels[activeType];
 const activeCategoryItems = (items = []) => items.filter((item) => item.status !== "unactived");

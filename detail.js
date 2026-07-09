@@ -2,7 +2,7 @@ let content = null;
 const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 const id = params.get("id");
-const allowedTypes = ["saints", "churches", "articles", "events", "prayers"];
+const allowedTypes = ["saints", "churches", "articles", "events", "prayers", "catechism"];
 const detailArticle = document.querySelector("#detailArticle");
 const lazyImageAttrs = 'loading="lazy" decoding="async"';
 let currentItem = null;

@@ -1,5 +1,5 @@
 const fallbackImage = "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80";
-const CONTENT_TYPES = ["saints", "churches", "articles", "events", "prayers", "daily", "banners"];
+const CONTENT_TYPES = ["saints", "churches", "articles", "events", "prayers", "catechism", "daily", "banners"];
 
 const defaultContent = {
   daily: [
@@ -184,6 +184,58 @@ const defaultContent = {
       meta: "Tạ ơn cuối ngày",
       image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=1200&q=80",
       bodyHtml: "<p>Lạy Chúa, con tạ ơn Chúa vì một ngày đã qua. Xin tha thứ những điều con thiếu sót và chữa lành những gì còn nặng nề trong lòng con.</p><p>Xin gìn giữ con trong bình an của Chúa suốt đêm nay.</p>",
+    },
+  ],
+  catechism: [
+    {
+      id: "catechism-1",
+      type: "catechism",
+      title: "Kinh Lạy Cha",
+      description: "Kinh nguyện Chúa Giêsu dạy, giúp người tín hữu hướng lòng về Thiên Chúa là Cha và sống tinh thần phó thác.",
+      meta: "Kinh căn bản",
+      image: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml:
+        "<p>Kinh Lạy Cha là lời cầu nguyện trung tâm của đời sống Kitô hữu, được chính Chúa Giêsu dạy cho các môn đệ.</p><p>Lạy Cha chúng con ở trên trời, chúng con nguyện danh Cha cả sáng, nước Cha trị đến, ý Cha thể hiện dưới đất cũng như trên trời. Xin Cha cho chúng con hôm nay lương thực hằng ngày, và tha nợ chúng con như chúng con cũng tha kẻ có nợ chúng con. Xin chớ để chúng con sa chước cám dỗ, nhưng cứu chúng con cho khỏi sự dữ. Amen.</p>",
+    },
+    {
+      id: "catechism-2",
+      type: "catechism",
+      title: "Kinh Kính Mừng",
+      description: "Lời kinh tôn kính Đức Maria, Mẹ Thiên Chúa, và xin Mẹ chuyển cầu cho người tín hữu trong đời sống đức tin.",
+      meta: "Kính Đức Mẹ",
+      image: "https://images.unsplash.com/photo-1605130284535-11dd9eedc58a?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml:
+        "<p>Kinh Kính Mừng kết hợp lời chào của sứ thần Gabriel, lời chúc tụng của bà Êlisabét và lời khẩn cầu của Hội Thánh.</p><p>Kính mừng Maria đầy ơn phúc, Đức Chúa Trời ở cùng Bà. Bà có phúc lạ hơn mọi người nữ, và Giêsu con lòng Bà gồm phúc lạ. Thánh Maria Đức Mẹ Chúa Trời, cầu cho chúng con là kẻ có tội, khi nay và trong giờ lâm tử. Amen.</p>",
+    },
+    {
+      id: "catechism-3",
+      type: "catechism",
+      title: "Kinh Sáng Danh",
+      description: "Lời kinh chúc tụng Ba Ngôi Thiên Chúa, thường được đọc để kết thúc các lời cầu nguyện.",
+      meta: "Chúc tụng Ba Ngôi",
+      image: "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml:
+        "<p>Kinh Sáng Danh là lời tuyên xưng và chúc tụng vinh quang Chúa Cha, Chúa Con và Chúa Thánh Thần.</p><p>Sáng danh Đức Chúa Cha, và Đức Chúa Con, và Đức Chúa Thánh Thần. Như đã có trước vô cùng, và bây giờ, và hằng có, và đời đời chẳng cùng. Amen.</p>",
+    },
+    {
+      id: "catechism-4",
+      type: "catechism",
+      title: "Kinh Tin Kính",
+      description: "Lời tuyên xưng đức tin của Hội Thánh, tóm lược những điều căn bản người Công Giáo tin nhận.",
+      meta: "Tuyên xưng đức tin",
+      image: "https://images.unsplash.com/photo-1528357136257-0c25517acfea?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml:
+        "<p>Kinh Tin Kính giúp người tín hữu tuyên xưng niềm tin vào Thiên Chúa Ba Ngôi, mầu nhiệm Nhập Thể, Cứu Độ và sự sống đời đời.</p><p>Tôi tin kính Đức Chúa Trời là Cha phép tắc vô cùng dựng nên trời đất. Tôi tin kính Đức Chúa Giêsu Kitô là Con Một Đức Chúa Cha cùng là Chúa chúng tôi...</p><p>Trong phụng vụ, Kinh Tin Kính thường được đọc trong Thánh lễ Chúa Nhật và các lễ trọng như lời đáp trả đức tin của cộng đoàn.</p>",
+    },
+    {
+      id: "catechism-5",
+      type: "catechism",
+      title: "Kinh Ăn Năn Tội",
+      description: "Lời kinh diễn tả lòng sám hối, xin Chúa tha thứ và quyết tâm trở về với tình yêu của Người.",
+      meta: "Sám hối",
+      image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=1200&q=80",
+      bodyHtml:
+        "<p>Kinh Ăn Năn Tội giúp người tín hữu nhìn nhận lỗi lầm trước mặt Chúa, tin vào lòng thương xót của Người và quyết tâm đổi mới đời sống.</p><p>Lạy Chúa con, Chúa là Đấng trọn tốt trọn lành vô cùng. Chúa đã dựng nên con, và cho Con Chúa ra đời chịu nạn chịu chết vì con, mà con đã cả lòng phản nghịch lỗi nghĩa cùng Chúa, thì con lo buồn đau đớn cùng chê ghét mọi tội con trên hết mọi sự...</p>",
     },
   ],
 };
@@ -413,6 +465,7 @@ async function getContent() {
     articles: [],
     events: [],
     prayers: [],
+    catechism: [],
   };
 
   snapshot.forEach((doc) => {
@@ -434,6 +487,7 @@ async function getContent() {
   if (!content.daily.length) content.daily = structuredClone(defaultContent.daily);
   if (!content.banners.length) content.banners = structuredClone(defaultContent.banners);
   if (!content.prayers.length) content.prayers = structuredClone(defaultContent.prayers);
+  if (!content.catechism.length) content.catechism = structuredClone(defaultContent.catechism);
 
   return content;
 }
@@ -729,9 +783,10 @@ function formatDateParts(value) {
 const navigationPageTitles = {
   saints: "Các thánh tiêu biểu",
   churches: "Giới thiệu nhà thờ",
-  articles: "Bài viết & suy niệm",
-  events: "Sự kiện sắp tới",
-  prayers: "Cầu nguyện",
+  articles: "Bài Viết & Suy Niệm",
+  events: "Sự Kiện sắp tới",
+  prayers: "Cầu Nguyện",
+  catechism: "Giáo Lý",
 };
 
 function cleanNavigationTitle(title) {

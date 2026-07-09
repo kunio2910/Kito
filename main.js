@@ -216,20 +216,41 @@ function setupSearch() {
   const drawer = document.querySelector("#searchDrawer");
   const input = document.querySelector("#searchInput");
   const resultBox = document.querySelector("#searchResults");
-  const allItems = ["saints", "churches", "articles", "events", "prayers"].flatMap((type) =>
+  const searchToggle = document.querySelector("#searchToggle");
+  const allItems = ["saints", "churches", "articles", "events", "prayers", "catechism"].flatMap((type) =>
     activeItems(content[type]).map((item) => ({ ...item, type }))
   );
 
-  document.querySelector("#searchToggle").addEventListener("click", () => {
+  function closeSearchDrawer() {
+    drawer.classList.remove("open");
+    drawer.setAttribute("aria-hidden", "true");
+  }
+
+  searchToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
     const open = drawer.classList.toggle("open");
     drawer.setAttribute("aria-hidden", String(!open));
     if (open) {
-      const rect = document.querySelector("#searchToggle").getBoundingClientRect();
+      const rect = searchToggle.getBoundingClientRect();
       drawer.style.top = `${Math.round(rect.top)}px`;
       drawer.style.left = `${Math.round(rect.right + 10)}px`;
       drawer.style.right = "auto";
       input.focus();
     }
+  });
+
+  drawer.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!drawer.classList.contains("open")) return;
+    if (drawer.contains(event.target) || searchToggle.contains(event.target)) return;
+    closeSearchDrawer();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeSearchDrawer();
   });
 
   input.addEventListener("input", () => {
