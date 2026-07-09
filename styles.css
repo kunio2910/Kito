@@ -98,6 +98,14 @@ a {
   min-height: 100%;
 }
 
+.site-header:not(.admin-header) .main-nav a + a::before {
+  content: "";
+  width: 1px;
+  height: 14px;
+  margin-right: 12px;
+  background: rgba(189, 123, 27, 0.55);
+}
+
 .main-nav a:hover,
 .main-nav a.active {
   color: var(--gold-dark);
@@ -112,6 +120,11 @@ a {
   bottom: 8px;
   height: 2px;
   background: var(--gold);
+}
+
+.site-header:not(.admin-header) .main-nav a + a.active::after,
+.site-header:not(.admin-header) .main-nav a + a:hover::after {
+  left: 13px;
 }
 
 .header-actions {
