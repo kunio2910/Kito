@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --font-main: Tahoma, "Segoe UI", Arial, sans-serif;
   --font-heading: "Segoe UI", Tahoma, Arial, sans-serif;
   --ink: #3c2a18;
@@ -481,7 +481,7 @@ main {
 }
 
 #prayers:hover .prayer-grid {
-  animation-play-state: paused;
+  animation-play-state: running;
 }
 
 .prayer-grid .prayer-card {
@@ -1876,7 +1876,49 @@ textarea:disabled {
 }
 
 @media (max-width: 1100px) {
-  .main-nav {
+  .site-header:not(.admin-header) {
+    flex-wrap: wrap;
+    align-content: center;
+    row-gap: 4px;
+    min-height: 82px;
+  }
+
+  .site-header:not(.admin-header) .main-nav {
+    order: 3;
+    display: flex;
+    flex: 1 0 100%;
+    align-self: auto;
+    gap: 14px;
+    min-height: 32px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 2px 4px;
+    margin-top: 2px;
+    font-size: 13px;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .site-header:not(.admin-header) .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-header:not(.admin-header) .main-nav a {
+    flex: 0 0 auto;
+    min-height: 30px;
+  }
+
+  .site-header:not(.admin-header) .main-nav a + a::before {
+    display: none;
+  }
+
+  .site-header:not(.admin-header) .main-nav a.active::after,
+  .site-header:not(.admin-header) .main-nav a:hover::after {
+    bottom: 0;
+    left: 0;
+  }
+
+  .admin-header .main-nav {
     display: none;
   }
 
@@ -1912,6 +1954,11 @@ textarea:disabled {
     padding: 0 12px;
   }
 
+  .site-header:not(.admin-header) {
+    min-height: 86px;
+    padding: 6px 12px 4px;
+  }
+
   .brand {
     min-width: 0;
     font-size: 8px;
@@ -1942,6 +1989,30 @@ textarea:disabled {
     font-size: 10px;
   }
 
+  .category-tools {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .category-search {
+    grid-template-columns: 76px minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+  }
+
+  .category-search span {
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .category-search input,
+  .category-search select {
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+  }
   .home-dashboard {
     min-height: 0;
     grid-template-columns: minmax(0, 1fr);
@@ -2108,3 +2179,5 @@ textarea:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+

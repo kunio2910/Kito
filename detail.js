@@ -1,4 +1,4 @@
-let content = null;
+﻿let content = null;
 const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 const id = params.get("id");
@@ -83,19 +83,19 @@ function sourceLinkHtml(value) {
   if (!/^https?:\/\//i.test(sourceUrl)) return "";
   return `
     <p class="detail-source">
-      Nguồn: <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${sourceUrl}</a>
+      Nguá»“n: <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${sourceUrl}</a>
     </p>
   `;
 }
 
 function renderMissing() {
-  document.title = "Không tìm thấy nội dung - Truyền Giáo Kitô";
+  document.title = "KhÃ´ng tÃ¬m tháº¥y ná»™i dung - Truyá»n GiÃ¡o KitÃ´";
   detailArticle.innerHTML = `
     <div class="detail-empty">
-      <p class="eyebrow">Không tìm thấy</p>
-      <h1>Nội dung này không còn tồn tại</h1>
-      <p>Vui lòng quay lại trang chủ hoặc vào trang quản lý để kiểm tra lại dữ liệu.</p>
-      <a class="primary-button" href="index.html">Về trang chủ</a>
+      <p class="eyebrow">KhÃ´ng tÃ¬m tháº¥y</p>
+      <h1>Ná»™i dung nÃ y khÃ´ng cÃ²n tá»“n táº¡i</h1>
+      <p>Vui lÃ²ng quay láº¡i trang chá»§ hoáº·c vÃ o trang quáº£n lÃ½ Ä‘á»ƒ kiá»ƒm tra láº¡i dá»¯ liá»‡u.</p>
+      <a class="primary-button" href="index.html">Vá» trang chá»§</a>
     </div>
   `;
 }
@@ -111,7 +111,7 @@ function renderDetail() {
   currentItem = item;
   const dateInfo = item.date ? formatDateParts(item.date) : null;
   const description = item.description || "";
-  document.title = `${item.title} - Truyền Giáo Kitô`;
+  document.title = `${item.title} - Truyá»n GiÃ¡o KitÃ´`;
   detailArticle.innerHTML = `
     <figure class="detail-cover">
       <img src="${item.image || fallbackImage}" alt="${item.title}" fetchpriority="high" decoding="async" />
@@ -126,7 +126,7 @@ function renderDetail() {
         description
           ? `
             <div class="lead-box">
-              <span class="lead-icon" aria-hidden="true">“</span>
+              <span class="lead-icon" aria-hidden="true">â€œ</span>
               <p class="lead">${description}</p>
             </div>
           `
@@ -136,33 +136,33 @@ function renderDetail() {
     <div class="detail-content">
       <div class="detail-body">${sanitizeContentHtml(item.bodyHtml || defaultBodyHtml(item))}</div>
       ${sourceLinkHtml(item.sourceUrl)}
-      <section class="rating-panel" aria-label="Đánh giá bài viết">
-        <p class="rating-note">*Nội dung này được xây dựng để hỗ trợ việc học hỏi, cầu nguyện và chia sẻ Tin Mừng. Ước mong mỗi bài viết, mỗi hình ảnh và mỗi sự kiện nơi đây trở thành một lời mời gọi sống đức tin cụ thể hơn trong đời sống hằng ngày.<br />Trang có sử dụng tài nguyên AI. Bạn vui lòng giành ít phút để đánh giá về bài viết và chất lượng website.</p>
+      <section class="rating-panel" aria-label="ÄÃ¡nh giÃ¡ bÃ i viáº¿t">
+        <p class="rating-note">*Ná»™i dung nÃ y Ä‘Æ°á»£c xÃ¢y dá»±ng Ä‘á»ƒ há»— trá»£ viá»‡c há»c há»i, cáº§u nguyá»‡n vÃ  chia sáº» Tin Má»«ng. Æ¯á»›c mong má»—i bÃ i viáº¿t, má»—i hÃ¬nh áº£nh vÃ  má»—i sá»± kiá»‡n nÆ¡i Ä‘Ã¢y trá»Ÿ thÃ nh má»™t lá»i má»i gá»i sá»‘ng Ä‘á»©c tin cá»¥ thá»ƒ hÆ¡n trong Ä‘á»i sá»‘ng háº±ng ngÃ y.<br />Trang cÃ³ sá»­ dá»¥ng tÃ i nguyÃªn AI. Báº¡n vui lÃ²ng giÃ nh Ã­t phÃºt Ä‘á»ƒ Ä‘Ã¡nh giÃ¡ vá» bÃ i viáº¿t vÃ  cháº¥t lÆ°á»£ng website.</p>
         <div class="rating-group">
-          <strong>Đánh giá nội dung</strong>
-          <div class="rating-stars" role="radiogroup" aria-label="Đánh giá nội dung">
+          <strong>ÄÃ¡nh giÃ¡ ná»™i dung</strong>
+          <div class="rating-stars" role="radiogroup" aria-label="ÄÃ¡nh giÃ¡ ná»™i dung">
             ${[1, 2, 3, 4, 5]
-              .map((value) => `<button type="button" data-rating-kind="content" data-rating="${value}" aria-label="${value} sao">★</button>`)
+              .map((value) => `<button type="button" data-rating-kind="content" data-rating="${value}" aria-label="${value} sao">â˜…</button>`)
               .join("")}
           </div>
         </div>
         <div class="rating-group">
-          <strong>Đánh giá trình bày</strong>
-          <div class="rating-stars" role="radiogroup" aria-label="Đánh giá trình bày">
+          <strong>ÄÃ¡nh giÃ¡ trÃ¬nh bÃ y</strong>
+          <div class="rating-stars" role="radiogroup" aria-label="ÄÃ¡nh giÃ¡ trÃ¬nh bÃ y">
             ${[1, 2, 3, 4, 5]
-              .map((value) => `<button type="button" data-rating-kind="layout" data-rating="${value}" aria-label="${value} sao">★</button>`)
+              .map((value) => `<button type="button" data-rating-kind="layout" data-rating="${value}" aria-label="${value} sao">â˜…</button>`)
               .join("")}
           </div>
         </div>
         <div class="rating-row">
-          <button class="primary-button" type="button" id="submitRating">Gửi</button>
+          <button class="primary-button" type="button" id="submitRating">Gá»­i</button>
         </div>
         <small id="ratingMessage"></small>
         <div class="feedback-box">
-          <label for="feedbackMessage">Ý kiến đóng góp</label>
-          <textarea id="feedbackMessage" rows="4" placeholder="Nhập ý kiến đóng góp của bạn..."></textarea>
+          <label for="feedbackMessage">Ã kiáº¿n Ä‘Ã³ng gÃ³p</label>
+          <textarea id="feedbackMessage" rows="4" placeholder="Nháº­p Ã½ kiáº¿n Ä‘Ã³ng gÃ³p cá»§a báº¡n..."></textarea>
           <div class="rating-row">
-            <button class="primary-button" type="button" id="submitFeedback">Gửi ý kiến</button>
+            <button class="primary-button" type="button" id="submitFeedback">Gá»­i Ã½ kiáº¿n</button>
           </div>
           <small id="feedbackStatus"></small>
         </div>
@@ -179,12 +179,12 @@ function renderRelated() {
   document.querySelector("#relatedList").innerHTML = related
     .map(
       (entry) => `
-        <article class="article-card">
+        <article class="article-card clickable-card" onclick="window.location.href='${detailLink(type, entry.id)}'">
           <img src="${entry.image || fallbackImage}" alt="${entry.title}" ${lazyImageAttrs} />
           <div>
             <h3>${entry.title}</h3>
             <p>${entry.description}</p>
-            <a href="${detailLink(type, entry.id)}">Chi tiết</a>
+            <a href="${detailLink(type, entry.id)}" onclick="event.stopPropagation()">Chi ti\u1ebft</a>
           </div>
         </article>
       `
@@ -217,12 +217,12 @@ function setupRating() {
 
   submitButton.addEventListener("click", async () => {
     if (!selectedRatings.content || !selectedRatings.layout) {
-      message.textContent = "Vui lòng chọn đủ đánh giá nội dung và trình bày.";
+      message.textContent = "Vui lÃ²ng chá»n Ä‘á»§ Ä‘Ã¡nh giÃ¡ ná»™i dung vÃ  trÃ¬nh bÃ y.";
       return;
     }
 
     submitButton.disabled = true;
-    message.textContent = "Đang ghi nhận đánh giá...";
+    message.textContent = "Äang ghi nháº­n Ä‘Ã¡nh giÃ¡...";
     try {
       await submitContentRating(currentItem.id, selectedRatings);
       selectedRatings = {
@@ -230,7 +230,7 @@ function setupRating() {
         layout: 0,
       };
       paintStars();
-      message.textContent = "Cảm ơn bạn đã đánh giá bài viết.";
+      message.textContent = "Cáº£m Æ¡n báº¡n Ä‘Ã£ Ä‘Ã¡nh giÃ¡ bÃ i viáº¿t.";
     } catch (error) {
       message.textContent = error.message;
     } finally {
@@ -247,12 +247,12 @@ function setupFeedback() {
   submitButton.addEventListener("click", async () => {
     const message = textarea.value.trim();
     if (!message) {
-      status.textContent = "Vui lòng nhập ý kiến đóng góp.";
+      status.textContent = "Vui lÃ²ng nháº­p Ã½ kiáº¿n Ä‘Ã³ng gÃ³p.";
       return;
     }
 
     submitButton.disabled = true;
-    status.textContent = "Đang gửi ý kiến đóng góp...";
+    status.textContent = "Äang gá»­i Ã½ kiáº¿n Ä‘Ã³ng gÃ³p...";
 
     try {
       await submitContentFeedback(
@@ -264,7 +264,7 @@ function setupFeedback() {
         message
       );
       textarea.value = "";
-      status.textContent = "Cảm ơn bạn đã gửi ý kiến đóng góp.";
+      status.textContent = "Cáº£m Æ¡n báº¡n Ä‘Ã£ gá»­i Ã½ kiáº¿n Ä‘Ã³ng gÃ³p.";
     } catch (error) {
       status.textContent = error.message;
     } finally {
@@ -287,3 +287,4 @@ async function initDetail() {
 }
 
 initDetail();
+
