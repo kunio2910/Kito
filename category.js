@@ -49,8 +49,10 @@ const SITE_URL = "https://www.baigiangtrennui.com";
 let allCategoryItems = [];
 let currentPage = 1;
 
-function categoryDetailLink(type, id) {
-  return `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+function categoryDetailLink(type, item) {
+  return typeof contentDetailUrl === "function"
+    ? contentDetailUrl(type, item)
+    : `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(item?.id || item || "")}`;
 }
 
 function setMeta(selector, attribute, value) {
@@ -175,7 +177,7 @@ function renderCategoryItems(items) {
   list.innerHTML = pageItems
     .map((item) => {
       const date = item.date ? formatDateParts(item.date) : null;
-      const link = categoryDetailLink(activeType, item.id);
+      const link = categoryDetailLink(activeType, item);
       return `
         <article class="category-card clickable-card" onclick="window.location.href='${link}'">
           <img src="${item.image || fallbackImage}" alt="${item.title}" ${lazyImageAttrs} />

@@ -1,7 +1,13 @@
 ﻿let content = null;
-const params = new URLSearchParams(window.location.search);
-const type = params.get("type");
-const id = params.get("id");
+const route = typeof parseContentRoute === "function"
+  ? parseContentRoute(window.location)
+  : (() => {
+      const params = new URLSearchParams(window.location.search);
+      return { type: params.get("type"), id: params.get("id"), slug: params.get("slug") };
+    })();
+const type = route.type;
+const id = route.id;
+const slug = route.slug;
 const allowedTypes = ["saints", "churches", "articles", "events", "prayers", "catechism"];
 const detailArticle = document.querySelector("#detailArticle");
 const lazyImageAttrs = 'loading="lazy" decoding="async"';
@@ -12,8 +18,10 @@ let selectedRatings = {
   layout: 0,
 };
 
-function detailLink(nextType, nextId) {
-  return `detail.html?type=${encodeURIComponent(nextType)}&id=${encodeURIComponent(nextId)}`;
+function detailLink(nextType, nextItem) {
+  return typeof contentDetailUrl === "function"
+    ? contentDetailUrl(nextType, nextItem)
+    : `detail.html?type=${encodeURIComponent(nextType)}&id=${encodeURIComponent(nextItem?.id || nextItem || "")}`;
 }
 
 function setMeta(selector, attribute, value) {
@@ -32,7 +40,7 @@ function setMeta(selector, attribute, value) {
 
 function updateDetailSeo(item) {
   const description = item.description || item.meta || "Nội dung Công Giáo trên Bài Giảng Trên Núi.";
-  const url = `${SITE_URL}/detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+  const url = `${SITE_URL}${detailLink(type, item)}`;
   const title = `${item.title} - Bài Giảng Trên Núi`;
   document.title = title;
   setMeta('meta[name="description"]', "content", description);
@@ -130,7 +138,10 @@ function renderMissing() {
 
 function renderDetail() {
   const currentList = allowedTypes.includes(type) ? content[type].filter((entry) => entry.status !== "unactived") : [];
-  const item = currentList.find((entry) => entry.id === id);
+  const item = currentList.find((entry) => {
+    const entrySlug = typeof contentSlug === "function" ? contentSlug(entry) : entry.slug;
+    return (id && entry.id === id) || (slug && entrySlug === slug);
+  });
   if (!item) {
     renderMissing();
     return;
@@ -138,11 +149,11 @@ function renderDetail() {
 
   currentItem = item;
   trackPageView({
-    key: `content_${type}_${id}`,
-    label: item.title || `${type}/${id}`,
+    key: `content_${type}_${item.id}`,
+    label: item.title || `${type}/${item.id}`,
     kind: "content",
     contentType: type,
-    contentId: id,
+    contentId: item.id,
   });
   const dateInfo = item.date ? formatDateParts(item.date) : null;
   const description = item.description || "";
@@ -210,16 +221,16 @@ function renderDetail() {
 
 function renderRelated() {
   const currentList = allowedTypes.includes(type) ? content[type].filter((entry) => entry.status !== "unactived") : [];
-  const related = currentList.filter((entry) => entry.id !== id).slice(0, 3);
+  const related = currentList.filter((entry) => entry.id !== currentItem?.id).slice(0, 3);
   document.querySelector("#relatedList").innerHTML = related
     .map(
       (entry) => `
-        <article class="article-card clickable-card" onclick="window.location.href='${detailLink(type, entry.id)}'">
+        <article class="article-card clickable-card" onclick="window.location.href='${detailLink(type, entry)}'">
           <img src="${entry.image || fallbackImage}" alt="${entry.title}" ${lazyImageAttrs} />
           <div>
             <h3>${entry.title}</h3>
             <p>${entry.description}</p>
-            <a href="${detailLink(type, entry.id)}" onclick="event.stopPropagation()">Chi ti\u1ebft</a>
+            <a href="${detailLink(type, entry)}" onclick="event.stopPropagation()">Chi ti\u1ebft</a>
           </div>
         </article>
       `

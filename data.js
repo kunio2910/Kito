@@ -1,5 +1,57 @@
 ﻿const fallbackImage = "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80";
 const CONTENT_TYPES = ["saints", "churches", "articles", "events", "prayers", "catechism", "daily", "banners"];
+const CONTENT_TYPE_PATHS = {
+  saints: "cac-thanh",
+  churches: "nha-tho",
+  articles: "bai-viet",
+  events: "su-kien",
+  prayers: "cau-nguyen",
+  catechism: "giao-ly",
+};
+const CONTENT_PATH_TYPES = Object.fromEntries(Object.entries(CONTENT_TYPE_PATHS).map(([type, path]) => [path, type]));
+
+function slugifyText(value) {
+  const repaired = typeof repairMojibakeText === "function" ? repairMojibakeText(value) : value;
+  return String(repaired || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function contentSlug(item = {}) {
+  return item.slug || slugifyText(item.title || item.ref || item.meta || item.id) || String(item.id || "");
+}
+
+function contentDetailUrl(type, item = {}) {
+  const path = CONTENT_TYPE_PATHS[type] || type;
+  const slug = contentSlug(item);
+  if (!path || !slug) {
+    return `detail.html?type=${encodeURIComponent(type || "")}&id=${encodeURIComponent(item.id || "")}`;
+  }
+  return `/${path}/${encodeURIComponent(slug)}`;
+}
+
+function parseContentRoute(location = window.location) {
+  const params = new URLSearchParams(location.search);
+  const queryType = params.get("type");
+  const queryId = params.get("id");
+  const querySlug = params.get("slug");
+  if (queryType || queryId || querySlug) {
+    return { type: queryType, id: queryId, slug: querySlug };
+  }
+
+  const parts = location.pathname.split("/").filter(Boolean);
+  const pathType = CONTENT_PATH_TYPES[parts[0]];
+  return {
+    type: pathType || null,
+    id: null,
+    slug: pathType ? decodeURIComponent(parts[1] || "") : null,
+  };
+}
 
 const defaultContent = {
   daily: [
@@ -419,6 +471,7 @@ async function seedDefaultContentIfEmpty(force = false) {
         const ref = db.collection("contents").doc(item.id);
         missingBatch.set(ref, {
           ...item,
+          slug: contentSlug(item),
           status: item.status || "actived",
           sortOrder: index,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -443,6 +496,7 @@ async function seedDefaultContentIfEmpty(force = false) {
       const ref = db.collection("contents").doc(item.id);
       batch.set(ref, {
         ...item,
+        slug: contentSlug(item),
         status: item.status || "actived",
         sortOrder: index,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -470,7 +524,8 @@ async function getContent() {
 
   snapshot.forEach((doc) => {
     const rawItem = { id: doc.id, ...doc.data() };
-    const item = rawItem.type === "saints" ? enrichSaintBiography(rawItem) : rawItem;
+    const enrichedItem = rawItem.type === "saints" ? enrichSaintBiography(rawItem) : rawItem;
+    const item = { ...enrichedItem, slug: contentSlug(enrichedItem) };
     if (CONTENT_TYPES.includes(item.type)) {
       content[item.type].push(item);
     }
@@ -489,6 +544,10 @@ async function getContent() {
   if (!content.prayers.length) content.prayers = structuredClone(defaultContent.prayers);
   if (!content.catechism.length) content.catechism = structuredClone(defaultContent.catechism);
 
+  CONTENT_TYPES.forEach((type) => {
+    content[type] = content[type].map((item) => ({ ...item, slug: contentSlug(item) }));
+  });
+
   return content;
 }
 
@@ -502,6 +561,7 @@ async function saveContentItem(type, item) {
     ...preparedItem,
     id,
     type,
+    slug: preparedItem.slug || slugifyText(preparedItem.title || preparedItem.ref || preparedItem.meta || id),
     status: preparedItem.status || "actived",
     createdDate: preparedItem.createdDate || new Date().toISOString(),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),

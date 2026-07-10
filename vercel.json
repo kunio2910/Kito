@@ -1,0 +1,28 @@
+{
+  "rewrites": [
+    {
+      "source": "/cac-thanh/:slug",
+      "destination": "/detail.html?type=saints&slug=:slug"
+    },
+    {
+      "source": "/nha-tho/:slug",
+      "destination": "/detail.html?type=churches&slug=:slug"
+    },
+    {
+      "source": "/bai-viet/:slug",
+      "destination": "/detail.html?type=articles&slug=:slug"
+    },
+    {
+      "source": "/su-kien/:slug",
+      "destination": "/detail.html?type=events&slug=:slug"
+    },
+    {
+      "source": "/cau-nguyen/:slug",
+      "destination": "/detail.html?type=prayers&slug=:slug"
+    },
+    {
+      "source": "/giao-ly/:slug",
+      "destination": "/detail.html?type=catechism&slug=:slug"
+    }
+  ]
+}

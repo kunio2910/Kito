@@ -49,8 +49,10 @@ const loginMessage = document.querySelector("#loginMessage");
 const contentMessage = document.querySelector("#contentMessage");
 let draggedItem = null;
 
-function detailLink(type, id) {
-  return `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+function detailLink(type, item) {
+  return typeof contentDetailUrl === "function"
+    ? contentDetailUrl(type, item)
+    : `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(item?.id || item || "")}`;
 }
 
 function summarizeText(text, maxLength = 120) {

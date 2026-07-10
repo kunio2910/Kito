@@ -3,7 +3,10 @@ let dailyIndex = 0;
 let dailyTimer = null;
 
 const imageOrFallback = (item) => item.image || fallbackImage;
-const detailLink = (type, id) => `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+const detailLink = (type, item) =>
+  typeof contentDetailUrl === "function"
+    ? contentDetailUrl(type, item)
+    : `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(item?.id || item || "")}`;
 const activeItems = (items = []) => items.filter((item) => item.status !== "unactived");
 const lazyImageAttrs = 'loading="lazy" decoding="async"';
 const preloadedImages = new Set();
@@ -82,7 +85,7 @@ function htmlToText(value) {
 }
 
 function cardTemplate(item, type = "saints") {
-  const link = detailLink(type, item.id);
+  const link = detailLink(type, item);
   return `
     <article class="content-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
@@ -96,7 +99,7 @@ function cardTemplate(item, type = "saints") {
 }
 
 function churchTemplate(item) {
-  const link = detailLink("churches", item.id);
+  const link = detailLink("churches", item);
   return `
     <article class="church-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
@@ -110,7 +113,7 @@ function churchTemplate(item) {
 }
 
 function articleTemplate(item) {
-  const link = detailLink("articles", item.id);
+  const link = detailLink("articles", item);
   return `
     <article class="article-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
@@ -125,7 +128,7 @@ function articleTemplate(item) {
 
 function eventTemplate(item) {
   const date = formatDateParts(item.date);
-  const link = detailLink("events", item.id);
+  const link = detailLink("events", item);
   return `
     <article class="event-card clickable-card" onclick="window.location.href='${link}'">
       <div class="event-date ${date.isText ? "is-text-date" : ""}">
@@ -142,7 +145,7 @@ function eventTemplate(item) {
 }
 
 function prayerTemplate(item) {
-  const link = detailLink("prayers", item.id);
+  const link = detailLink("prayers", item);
   const prayerExcerpt = htmlToText(item.bodyHtml) || item.description || "";
   return `
     <article class="prayer-card clickable-card" style="--prayer-image: url('${imageOrFallback(item)}')" onclick="window.location.href='${link}'">
@@ -277,7 +280,7 @@ function setupSearch() {
     );
 
     resultBox.innerHTML = keyword
-      ? matches.map((item) => `<a href="${detailLink(item.type, item.id)}"><strong>${item.title}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
+      ? matches.map((item) => `<a href="${detailLink(item.type, item)}"><strong>${item.title}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
       : "";
   });
 }

@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.baigiangtrennui.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.baigiangtrennui.com/index.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.baigiangtrennui.com/category.html?type=saints</loc>
@@ -46,52 +41,52 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-1</loc>
+    <loc>https://www.baigiangtrennui.com/giao-ly/kinh-lay-cha</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-2</loc>
+    <loc>https://www.baigiangtrennui.com/giao-ly/kinh-kinh-mung</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-3</loc>
+    <loc>https://www.baigiangtrennui.com/giao-ly/kinh-sang-danh</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-4</loc>
+    <loc>https://www.baigiangtrennui.com/giao-ly/kinh-tin-kinh</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-5</loc>
+    <loc>https://www.baigiangtrennui.com/giao-ly/kinh-an-nan-toi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=articles&amp;id=article-1</loc>
+    <loc>https://www.baigiangtrennui.com/bai-viet/suc-manh-cua-loi-cau-nguyen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=articles&amp;id=article-2</loc>
+    <loc>https://www.baigiangtrennui.com/bai-viet/y-nghia-cua-thap-gia</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=articles&amp;id=article-3</loc>
+    <loc>https://www.baigiangtrennui.com/bai-viet/chua-da-song-lai</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=saints&amp;id=saint-1</loc>
+    <loc>https://www.baigiangtrennui.com/cac-thanh/thanh-giuse</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.baigiangtrennui.com/detail.html?type=prayers&amp;id=prayer-1</loc>
+    <loc>https://www.baigiangtrennui.com/cau-nguyen/cau-nguyen-buoi-sang</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
