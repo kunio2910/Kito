@@ -131,7 +131,7 @@ function renderMissing() {
       <p class="eyebrow">Không tìm thấy</p>
       <h1>Nội dung này không còn tồn tại</h1>
       <p>Vui lòng quay lại trang chủ hoặc vào trang quản lý để kiểm tra lại dữ liệu.</p>
-      <a class="primary-button" href="index.html">Về trang chủ</a>
+      <a class="primary-button" href="/">Về trang chủ</a>
     </div>
   `;
 }

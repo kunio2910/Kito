@@ -35,6 +35,11 @@ function contentDetailUrl(type, item = {}) {
   return `/${path}/${encodeURIComponent(slug)}`;
 }
 
+function categoryUrl(type) {
+  const path = CONTENT_TYPE_PATHS[type];
+  return path ? `/${path}` : `/category.html?type=${encodeURIComponent(type || "")}`;
+}
+
 function parseContentRoute(location = window.location) {
   const params = new URLSearchParams(location.search);
   const queryType = params.get("type");
@@ -51,6 +56,15 @@ function parseContentRoute(location = window.location) {
     id: null,
     slug: pathType ? decodeURIComponent(parts[1] || "") : null,
   };
+}
+
+function parseCategoryRoute(location = window.location) {
+  const params = new URLSearchParams(location.search);
+  const queryType = params.get("type");
+  if (queryType) return queryType;
+
+  const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+  return CONTENT_PATH_TYPES[firstSegment] || "saints";
 }
 
 const defaultContent = {
@@ -1018,6 +1032,11 @@ function getNavigationTitleFromUrl(url) {
     if (path.endsWith("/") || path.endsWith("/index.html")) return "Trang chủ";
     if (path.endsWith("/admin.html")) return "trang quản lý";
     if (path.endsWith("/accounts.html")) return "trang tài khoản";
+    if (path.endsWith("/gui-loi-cau-nguyen") || path.endsWith("/prayer-request.html")) return "Gửi lời cầu nguyện";
+    const firstSegment = path.split("/").filter(Boolean)[0];
+    if (CONTENT_PATH_TYPES[firstSegment] && path.split("/").filter(Boolean).length === 1) {
+      return navigationPageTitles[CONTENT_PATH_TYPES[firstSegment]] || "trang danh mục";
+    }
     if (path.endsWith("/category.html")) {
       return navigationPageTitles[parsed.searchParams.get("type")] || "trang danh mục";
     }
@@ -1041,7 +1060,7 @@ function getStoredNavigationPage() {
   }
 }
 
-function setupBackLink(fallbackUrl = "index.html", fallbackTitle = "Trang chủ", options = {}) {
+function setupBackLink(fallbackUrl = "/", fallbackTitle = "Trang chủ", options = {}) {
   const link = document.querySelector(".back-link");
   if (!link) return;
 

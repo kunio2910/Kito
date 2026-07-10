@@ -13,13 +13,13 @@ const TYPE_PATHS = {
 
 const CATEGORY_PATHS = [
   ["/", { changefreq: "daily", priority: "1.0" }],
-  ["/category.html?type=saints", { changefreq: "weekly", priority: "0.8" }],
-  ["/category.html?type=churches", { changefreq: "weekly", priority: "0.8" }],
-  ["/category.html?type=articles", { changefreq: "weekly", priority: "0.8" }],
-  ["/category.html?type=events", { changefreq: "weekly", priority: "0.8" }],
-  ["/category.html?type=prayers", { changefreq: "weekly", priority: "0.8" }],
-  ["/category.html?type=catechism", { changefreq: "weekly", priority: "0.8" }],
-  ["/prayer-request.html", { changefreq: "monthly", priority: "0.7" }],
+  ["/cac-thanh", { changefreq: "weekly", priority: "0.8" }],
+  ["/nha-tho", { changefreq: "weekly", priority: "0.8" }],
+  ["/bai-viet", { changefreq: "weekly", priority: "0.8" }],
+  ["/su-kien", { changefreq: "weekly", priority: "0.8" }],
+  ["/cau-nguyen", { changefreq: "weekly", priority: "0.8" }],
+  ["/giao-ly", { changefreq: "weekly", priority: "0.8" }],
+  ["/gui-loi-cau-nguyen", { changefreq: "monthly", priority: "0.7" }],
 ];
 
 const FALLBACK_CONTENT_URLS = [

@@ -8,7 +8,7 @@ const anonymousToggle = document.querySelector("#anonymousToggle");
 const prayerMessage = document.querySelector("#prayerRequestMessage");
 let isAnonymous = false;
 
-setupBackLink("index.html", "Trang chá»§", { useStored: false, useHistory: false });
+setupBackLink("/", "Trang chủ", { useStored: false, useHistory: false });
 
 anonymousToggle.addEventListener("click", () => {
   isAnonymous = !isAnonymous;

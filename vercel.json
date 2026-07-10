@@ -5,6 +5,34 @@
       "destination": "/api/sitemap"
     },
     {
+      "source": "/cac-thanh",
+      "destination": "/category.html?type=saints"
+    },
+    {
+      "source": "/nha-tho",
+      "destination": "/category.html?type=churches"
+    },
+    {
+      "source": "/bai-viet",
+      "destination": "/category.html?type=articles"
+    },
+    {
+      "source": "/su-kien",
+      "destination": "/category.html?type=events"
+    },
+    {
+      "source": "/cau-nguyen",
+      "destination": "/category.html?type=prayers"
+    },
+    {
+      "source": "/giao-ly",
+      "destination": "/category.html?type=catechism"
+    },
+    {
+      "source": "/gui-loi-cau-nguyen",
+      "destination": "/prayer-request.html"
+    },
+    {
       "source": "/cac-thanh/:slug",
       "destination": "/detail.html?type=saints&slug=:slug"
     },

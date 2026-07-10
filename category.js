@@ -38,7 +38,7 @@
 };
 
 const categoryParams = new URLSearchParams(window.location.search);
-const categoryType = categoryParams.get("type") || "saints";
+const categoryType = typeof parseCategoryRoute === "function" ? parseCategoryRoute(window.location) : categoryParams.get("type") || "saints";
 const categoryAllowedTypes = ["saints", "churches", "articles", "events", "prayers", "catechism"];
 const activeType = categoryAllowedTypes.includes(categoryType) ? categoryType : "saints";
 const categoryInfo = categoryLabels[activeType];
@@ -70,7 +70,7 @@ function setMeta(selector, attribute, value) {
 }
 
 function updateCategorySeo() {
-  const url = `${SITE_URL}/category.html?type=${encodeURIComponent(activeType)}`;
+  const url = `${SITE_URL}${typeof categoryUrl === "function" ? categoryUrl(activeType) : `/category.html?type=${encodeURIComponent(activeType)}`}`;
   const title = `${categoryInfo.title} - Bài Giảng Trên Núi`;
   document.title = title;
   setMeta('meta[name="description"]', "content", categoryInfo.description);
@@ -203,13 +203,13 @@ function renderCategoryView() {
 
 async function initCategory() {
   trackPageView({ key: `category_${activeType}`, label: `Danh mục: ${categoryInfo.title}`, kind: "category", contentType: activeType });
-  setupBackLink("index.html", "Trang chủ", { useStored: false, useHistory: false });
+  setupBackLink("/", "Trang chủ", { useStored: false, useHistory: false });
   document.querySelector("#categoryTitle").textContent = categoryInfo.title;
   document.querySelector("#categoryDescription").textContent = categoryInfo.description;
   updateCategorySeo();
 
   document.querySelectorAll(".main-nav a").forEach((link) => {
-    if (link.getAttribute("href") === `category.html?type=${activeType}`) {
+    if (link.getAttribute("href") === (typeof categoryUrl === "function" ? categoryUrl(activeType) : `category.html?type=${activeType}`)) {
       link.classList.add("active");
     }
   });

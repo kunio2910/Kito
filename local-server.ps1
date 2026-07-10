@@ -36,9 +36,14 @@ function Get-SafePath {
     $decodedPath = "index.html"
   }
 
-  $firstSegment = $decodedPath.Split("/")[0]
+  if ($decodedPath -eq "gui-loi-cau-nguyen") {
+    $decodedPath = "prayer-request.html"
+  }
+
+  $segments = $decodedPath.Split("/")
+  $firstSegment = $segments[0]
   if ($rewriteTypes.ContainsKey($firstSegment)) {
-    $decodedPath = "detail.html"
+    $decodedPath = if ($segments.Length -eq 1) { "category.html" } else { "detail.html" }
   }
 
   $fullPath = [System.IO.Path]::GetFullPath((Join-Path $root $decodedPath))
