@@ -45,11 +45,37 @@ const categoryInfo = categoryLabels[activeType];
 const activeCategoryItems = (items = []) => items.filter((item) => item.status !== "unactived");
 const ITEMS_PER_PAGE = 9;
 const lazyImageAttrs = 'loading="lazy" decoding="async"';
+const SITE_URL = "https://www.baigiangtrennui.com";
 let allCategoryItems = [];
 let currentPage = 1;
 
 function categoryDetailLink(type, id) {
   return `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+}
+
+function setMeta(selector, attribute, value) {
+  let element = document.head.querySelector(selector);
+  if (!element) {
+    element = document.createElement(selector.startsWith("link") ? "link" : "meta");
+    if (selector.includes("canonical")) element.setAttribute("rel", "canonical");
+    const nameMatch = selector.match(/name="([^"]+)"/);
+    const propertyMatch = selector.match(/property="([^"]+)"/);
+    if (nameMatch) element.setAttribute("name", nameMatch[1]);
+    if (propertyMatch) element.setAttribute("property", propertyMatch[1]);
+    document.head.appendChild(element);
+  }
+  element.setAttribute(attribute, value);
+}
+
+function updateCategorySeo() {
+  const url = `${SITE_URL}/category.html?type=${encodeURIComponent(activeType)}`;
+  const title = `${categoryInfo.title} - Bài Giảng Trên Núi`;
+  document.title = title;
+  setMeta('meta[name="description"]', "content", categoryInfo.description);
+  setMeta('link[rel="canonical"]', "href", url);
+  setMeta('meta[property="og:title"]', "content", title);
+  setMeta('meta[property="og:description"]', "content", categoryInfo.description);
+  setMeta('meta[property="og:url"]', "content", url);
 }
 
 function itemTimeValue(item) {
@@ -178,7 +204,7 @@ async function initCategory() {
   setupBackLink("index.html", "Trang chủ", { useStored: false, useHistory: false });
   document.querySelector("#categoryTitle").textContent = categoryInfo.title;
   document.querySelector("#categoryDescription").textContent = categoryInfo.description;
-  document.title = `${categoryInfo.title} - Truyền Giáo Kitô`;
+  updateCategorySeo();
 
   document.querySelectorAll(".main-nav a").forEach((link) => {
     if (link.getAttribute("href") === `category.html?type=${activeType}`) {

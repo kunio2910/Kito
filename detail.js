@@ -5,6 +5,7 @@ const id = params.get("id");
 const allowedTypes = ["saints", "churches", "articles", "events", "prayers", "catechism"];
 const detailArticle = document.querySelector("#detailArticle");
 const lazyImageAttrs = 'loading="lazy" decoding="async"';
+const SITE_URL = "https://www.baigiangtrennui.com";
 let currentItem = null;
 let selectedRatings = {
   content: 0,
@@ -13,6 +14,33 @@ let selectedRatings = {
 
 function detailLink(nextType, nextId) {
   return `detail.html?type=${encodeURIComponent(nextType)}&id=${encodeURIComponent(nextId)}`;
+}
+
+function setMeta(selector, attribute, value) {
+  let element = document.head.querySelector(selector);
+  if (!element) {
+    element = document.createElement(selector.startsWith("link") ? "link" : "meta");
+    if (selector.includes("canonical")) element.setAttribute("rel", "canonical");
+    const nameMatch = selector.match(/name="([^"]+)"/);
+    const propertyMatch = selector.match(/property="([^"]+)"/);
+    if (nameMatch) element.setAttribute("name", nameMatch[1]);
+    if (propertyMatch) element.setAttribute("property", propertyMatch[1]);
+    document.head.appendChild(element);
+  }
+  element.setAttribute(attribute, value);
+}
+
+function updateDetailSeo(item) {
+  const description = item.description || item.meta || "Nội dung Công Giáo trên Bài Giảng Trên Núi.";
+  const url = `${SITE_URL}/detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+  const title = `${item.title} - Bài Giảng Trên Núi`;
+  document.title = title;
+  setMeta('meta[name="description"]', "content", description);
+  setMeta('link[rel="canonical"]', "href", url);
+  setMeta('meta[property="og:title"]', "content", title);
+  setMeta('meta[property="og:description"]', "content", description);
+  setMeta('meta[property="og:image"]', "content", item.image || fallbackImage);
+  setMeta('meta[property="og:url"]', "content", url);
 }
 
 function sanitizeContentHtml(value) {
@@ -118,7 +146,7 @@ function renderDetail() {
   });
   const dateInfo = item.date ? formatDateParts(item.date) : null;
   const description = item.description || "";
-  document.title = `${item.title} - Truyền Giáo Kitô`;
+  updateDetailSeo(item);
   detailArticle.innerHTML = `
     <figure class="detail-cover">
       <img src="${item.image || fallbackImage}" alt="${item.title}" fetchpriority="high" decoding="async" />

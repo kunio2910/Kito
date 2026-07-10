@@ -45,4 +45,54 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-2</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-3</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-4</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=catechism&amp;id=catechism-5</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=articles&amp;id=article-1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=articles&amp;id=article-2</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=articles&amp;id=article-3</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=saints&amp;id=saint-1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.baigiangtrennui.com/detail.html?type=prayers&amp;id=prayer-1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
