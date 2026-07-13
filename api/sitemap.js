@@ -141,7 +141,9 @@ function dateOnly(value) {
 function contentPath(item) {
   const typePath = TYPE_PATHS[item.type];
   if (!typePath || item.status === "unactived") return "";
-  const slug = item.slug || slugifyText(item.title || item.ref || item.meta || item.id);
+  const baseSlug = item.slug || slugifyText(item.title || item.ref || item.meta || item.id);
+  const id = String(item.id || "").trim();
+  const slug = id && !baseSlug.endsWith(`--${id}`) ? `${baseSlug}--${id}` : baseSlug;
   return slug ? `/${typePath}/${slug}` : "";
 }
 

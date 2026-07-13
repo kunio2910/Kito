@@ -206,6 +206,8 @@ async function initCategory() {
   setupBackLink("/", "Trang chủ", { useStored: false, useHistory: false });
   document.querySelector("#categoryTitle").textContent = categoryInfo.title;
   document.querySelector("#categoryDescription").textContent = categoryInfo.description;
+  const prayerRequestLink = document.querySelector("#prayerRequestLink");
+  if (prayerRequestLink) prayerRequestLink.hidden = activeType !== "prayers";
   updateCategorySeo();
 
   document.querySelectorAll(".main-nav a").forEach((link) => {

@@ -1,4 +1,4 @@
-﻿const fallbackImage = "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80";
+﻿const fallbackImage = "/Default.jpg";
 const CONTENT_TYPES = ["saints", "churches", "articles", "events", "prayers", "catechism", "daily", "banners"];
 const CONTENT_TYPE_PATHS = {
   saints: "cac-thanh",
@@ -9,6 +9,57 @@ const CONTENT_TYPE_PATHS = {
   catechism: "giao-ly",
 };
 const CONTENT_PATH_TYPES = Object.fromEntries(Object.entries(CONTENT_TYPE_PATHS).map(([type, path]) => [path, type]));
+const THEME_STORAGE_KEY = "kitoTheme";
+
+function getStoredTheme() {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY) === "dark" ? "dark" : "light";
+  } catch (error) {
+    return "light";
+  }
+}
+
+function applyTheme(theme) {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = nextTheme;
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+  } catch (error) {
+    // Theme still applies for this page even if storage is unavailable.
+  }
+}
+
+applyTheme(getStoredTheme());
+
+function setupThemeToggle() {
+  if (document.querySelector("#themeToggle")) return;
+
+  const button = document.createElement("button");
+  button.id = "themeToggle";
+  button.className = "theme-toggle";
+  button.type = "button";
+  document.body.appendChild(button);
+
+  const syncLabel = () => {
+    const isDark = document.documentElement.dataset.theme === "dark";
+    button.textContent = isDark ? "☀" : "☾";
+    button.setAttribute("aria-label", isDark ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện tối");
+    button.title = isDark ? "Chế độ sáng" : "Chế độ tối";
+  };
+
+  syncLabel();
+  button.addEventListener("click", () => {
+    const isDark = document.documentElement.dataset.theme === "dark";
+    applyTheme(isDark ? "light" : "dark");
+    syncLabel();
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupThemeToggle);
+} else {
+  setupThemeToggle();
+}
 
 function slugifyText(value) {
   const repaired = typeof repairMojibakeText === "function" ? repairMojibakeText(value) : value;
@@ -26,9 +77,17 @@ function contentSlug(item = {}) {
   return item.slug || slugifyText(item.title || item.ref || item.meta || item.id) || String(item.id || "");
 }
 
+function contentRouteSlug(item = {}) {
+  const baseSlug = contentSlug(item);
+  const itemId = String(item.id || "").trim();
+  if (!itemId) return baseSlug;
+  if (baseSlug.endsWith(`--${itemId}`)) return baseSlug;
+  return `${baseSlug}--${itemId}`;
+}
+
 function contentDetailUrl(type, item = {}) {
   const path = CONTENT_TYPE_PATHS[type] || type;
-  const slug = contentSlug(item);
+  const slug = contentRouteSlug(item);
   if (!path || !slug) {
     return `detail.html?type=${encodeURIComponent(type || "")}&id=${encodeURIComponent(item.id || "")}`;
   }
@@ -51,10 +110,12 @@ function parseContentRoute(location = window.location) {
 
   const parts = location.pathname.split("/").filter(Boolean);
   const pathType = CONTENT_PATH_TYPES[parts[0]];
+  const pathSlug = pathType ? decodeURIComponent(parts[1] || "") : null;
+  const slugIdMatch = pathSlug ? pathSlug.match(/--([^/]+)$/) : null;
   return {
     type: pathType || null,
-    id: null,
-    slug: pathType ? decodeURIComponent(parts[1] || "") : null,
+    id: slugIdMatch ? slugIdMatch[1] : null,
+    slug: pathSlug,
   };
 }
 
@@ -793,12 +854,26 @@ async function deletePrayerRequest(id) {
   const ref = db.collection("prayerRequests").doc(id);
   const snapshot = await ref.get();
   const request = snapshot.exists ? snapshot.data() : null;
+
+  if (request?.status === "approved" || request?.contentId) {
+    await ref.set(
+      {
+        reviewHidden: true,
+        hiddenFromReviewAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+    return "hidden";
+  }
+
   const batch = db.batch();
   batch.delete(ref);
   if (request?.contentId) {
     batch.delete(db.collection("contents").doc(request.contentId));
   }
   await batch.commit();
+  return "deleted";
 }
 
 async function resetContentRating(id) {

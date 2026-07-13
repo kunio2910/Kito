@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260710-seo" />
+    <link rel="stylesheet" href="styles.css?v=20260713-admin-tabs" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -52,32 +52,14 @@
         </div>
       </section>
 
-      <section class="visit-panel" id="visitPanel">
-        <div class="section-heading visit-heading">
-          <h2>Thống kê truy cập</h2>
-          <button class="danger-button" type="button" id="resetVisitStats">Xóa lượt truy cập</button>
-        </div>
-        <div class="visit-summary" id="visitSummary"></div>
-        <div class="visit-tools">
-          <label>
-            <span>Tìm kiếm</span>
-            <input id="visitSearch" type="search" placeholder="Tìm theo tên trang, bài viết, đường dẫn..." />
-          </label>
-          <label>
-            <span>Sắp xếp</span>
-            <select id="visitSort">
-              <option value="views-desc">Lượt truy cập cao nhất</option>
-              <option value="views-asc">Lượt truy cập thấp nhất</option>
-              <option value="time-desc">Cập nhật mới nhất</option>
-              <option value="time-asc">Cập nhật cũ nhất</option>
-              <option value="title-asc">Tên A-Z</option>
-              <option value="title-desc">Tên Z-A</option>
-            </select>
-          </label>
-        </div>
-        <div class="visit-list" id="visitStatsList"></div>
-      </section>
-      <section class="manager-layout" id="contentManager">
+      <nav class="admin-tabs" aria-label="Khu vực quản trị">
+        <button class="admin-tab-button active" type="button" data-admin-tab="content">Nội dung</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="visits">Thống kê truy cập</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="feedback">Ý kiến đóng góp</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="prayers">Duyệt lời cầu nguyện</button>
+      </nav>
+
+      <section class="manager-layout admin-tab-panel active" id="contentManager" data-admin-panel="content">
         <form class="editor-panel" id="contentForm">
           <input type="hidden" id="itemId" />
           <label>
@@ -177,14 +159,40 @@
         </section>
       </section>
 
-      <section class="feedback-panel">
+      <section class="visit-panel admin-tab-panel" id="visitPanel" data-admin-panel="visits" hidden>
+        <div class="section-heading visit-heading">
+          <h2>Thống kê truy cập</h2>
+          <button class="danger-button" type="button" id="resetVisitStats">Xóa lượt truy cập</button>
+        </div>
+        <div class="visit-summary" id="visitSummary"></div>
+        <div class="visit-tools">
+          <label>
+            <span>Tìm kiếm</span>
+            <input id="visitSearch" type="search" placeholder="Tìm theo tên trang, bài viết, đường dẫn..." />
+          </label>
+          <label>
+            <span>Sắp xếp</span>
+            <select id="visitSort">
+              <option value="views-desc">Lượt truy cập cao nhất</option>
+              <option value="views-asc">Lượt truy cập thấp nhất</option>
+              <option value="time-desc">Cập nhật mới nhất</option>
+              <option value="time-asc">Cập nhật cũ nhất</option>
+              <option value="title-asc">Tên A-Z</option>
+              <option value="title-desc">Tên Z-A</option>
+            </select>
+          </label>
+        </div>
+        <div class="visit-list" id="visitStatsList"></div>
+      </section>
+
+      <section class="feedback-panel admin-tab-panel" data-admin-panel="feedback" hidden>
         <div class="section-heading">
           <h2>Ý kiến đóng góp</h2>
         </div>
         <div class="feedback-list" id="feedbackList"></div>
       </section>
 
-      <section class="feedback-panel">
+      <section class="feedback-panel admin-tab-panel" data-admin-panel="prayers" hidden>
         <div class="section-heading">
           <h2>Duyệt lời cầu nguyện</h2>
         </div>
@@ -198,9 +206,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="data.js?v=20260710-pretty-url"></script>
+    <script src="data.js?v=20260713-default-image"></script>
     <script src="auth.js"></script>
-    <script src="admin.js?v=20260709-visit-tools"></script>
+    <script src="admin.js?v=20260713-prayer-review-hide"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

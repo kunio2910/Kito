@@ -22,7 +22,8 @@ prayerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = prayerForm.querySelector("button[type='submit']");
   submitButton.disabled = true;
-  prayerMessage.textContent = "Äang gá»­i lá»i cáº§u nguyá»‡n...";
+  prayerMessage.classList.remove("success", "error");
+  prayerMessage.textContent = "\u0110ang g\u1eedi l\u1eddi c\u1ea7u nguy\u1ec7n...";
 
   try {
     await submitPrayerRequest({
@@ -36,9 +37,11 @@ prayerForm.addEventListener("submit", async (event) => {
     anonymousToggle.classList.remove("active");
     anonymousToggle.setAttribute("aria-pressed", "false");
     prayerName.disabled = false;
+    prayerMessage.classList.add("success");
     prayerMessage.textContent =
-      "Lá»i cáº§u nguyá»‡n cá»§a báº¡n sáº½ Ä‘Æ°á»£c gá»­i Ä‘áº¿n ban quáº£n trá»‹ Ä‘á»ƒ duyá»‡t trÆ°á»›c khi hiá»ƒn thá»‹ trÃªn website.";
+      "L\u1eddi c\u1ea7u nguy\u1ec7n c\u1ee7a b\u1ea1n s\u1ebd \u0111\u01b0\u1ee3c g\u1eedi \u0111\u1ebfn ban qu\u1ea3n tr\u1ecb \u0111\u1ec3 duy\u1ec7t tr\u01b0\u1edbc khi hi\u1ec3n th\u1ecb tr\u00ean website.";
   } catch (error) {
+    prayerMessage.classList.add("error");
     prayerMessage.textContent = error.message;
   } finally {
     submitButton.disabled = false;

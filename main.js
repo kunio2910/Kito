@@ -64,6 +64,10 @@ function dailyRandomItems(items = [], key, limit) {
   return dailyShuffle(activeItems(items), key).slice(0, limit);
 }
 
+function fixedHomeItems(items = [], limit) {
+  return activeItems(items).slice(0, limit);
+}
+
 function displayText(value) {
   const text = String(value || "");
   return typeof repairMojibakeText === "function" ? repairMojibakeText(text) : text;
@@ -187,7 +191,7 @@ function renderHome() {
   document.querySelector("#saintsList").innerHTML = dailyRandomItems(content.saints, "saints", 5).map((item) => cardTemplate(item, "saints")).join("");
   document.querySelector("#churchesList").innerHTML = dailyRandomItems(content.churches, "churches", 3).map(churchTemplate).join("");
   document.querySelector("#articlesList").innerHTML = dailyRandomItems(content.articles, "articles", 3).map(articleTemplate).join("");
-  document.querySelector("#eventsList").innerHTML = activeItems(content.events).slice(0, 3).map(eventTemplate).join("");
+  document.querySelector("#eventsList").innerHTML = fixedHomeItems(content.events, 3).map(eventTemplate).join("");
   const prayerItems = dailyRandomItems(content.prayers, "prayers", 6);
   const prayerTrackItems = prayerItems.length > 1 ? [...prayerItems, ...prayerItems] : prayerItems;
   const prayerList = document.querySelector("#prayersList");

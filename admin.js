@@ -42,12 +42,46 @@ const visitStatsList = document.querySelector("#visitStatsList");
 const visitSearch = document.querySelector("#visitSearch");
 const visitSort = document.querySelector("#visitSort");
 const resetVisitStatsButton = document.querySelector("#resetVisitStats");
+const adminTabButtons = document.querySelectorAll("[data-admin-tab]");
+const adminTabPanels = document.querySelectorAll("[data-admin-panel]");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
 const loginMessage = document.querySelector("#loginMessage");
 const contentMessage = document.querySelector("#contentMessage");
 let draggedItem = null;
+
+function activateAdminTab(tabName) {
+  if (!adminTabButtons.length || !adminTabPanels.length) return;
+
+  adminTabButtons.forEach((button) => {
+    const isActive = button.dataset.adminTab === tabName;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  });
+
+  adminTabPanels.forEach((panel) => {
+    const isActive = panel.dataset.adminPanel === tabName;
+    panel.classList.toggle("active", isActive);
+    panel.hidden = !isActive;
+  });
+}
+
+function setupAdminTabs() {
+  if (!adminTabButtons.length || !adminTabPanels.length) return;
+
+  adminTabButtons.forEach((button) => {
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-selected", button.classList.contains("active") ? "true" : "false");
+    button.addEventListener("click", () => activateAdminTab(button.dataset.adminTab));
+  });
+
+  adminTabPanels.forEach((panel) => panel.setAttribute("role", "tabpanel"));
+
+  document.querySelector('a[href="#contentManager"]')?.addEventListener("click", () => {
+    activateAdminTab("content");
+  });
+}
 
 function detailLink(type, item) {
   return typeof contentDetailUrl === "function"
@@ -387,6 +421,7 @@ function renderPrayerReviewList() {
   if (!prayerReviewList) return;
 
   const visibleRequests = prayerRequests.filter((item) => {
+    if (item.reviewHidden) return false;
     const linkedContentId = item.contentId || `prayer-request-${item.id}`;
     const linkedContent = content?.prayers?.find((entry) => entry.id === linkedContentId);
     return !(item.status === "approved" && linkedContent?.status === "actived");
@@ -481,6 +516,7 @@ function editPrayerRequest(id) {
   imagePreview.src = fallbackImage;
   imagePreview.classList.add("show");
   contentMessage.textContent = "Đã đưa lời cầu nguyện vào khung chỉnh sửa. Kiểm tra rồi bấm Lưu nội dung để hiển thị.";
+  activateAdminTab("content");
   document.querySelector("#contentManager").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -523,6 +559,7 @@ function editItem(type, id) {
     imagePreview.classList.add("show");
   }
 
+  activateAdminTab("content");
   itemTitle.focus();
 }
 
@@ -792,8 +829,11 @@ prayerReviewList?.addEventListener("click", async (event) => {
     if (button.dataset.action === "delete-prayer") {
       const confirmed = confirm("Xóa lời cầu nguyện này?");
       if (!confirmed) return;
-      await deletePrayerRequest(id);
-      contentMessage.textContent = "Đã xóa lời cầu nguyện.";
+      const deleteResult = await deletePrayerRequest(id);
+      contentMessage.textContent =
+        deleteResult === "hidden"
+          ? "Đã ẩn lời cầu nguyện khỏi màn hình duyệt. Nội dung đã hiển thị vẫn được giữ lại."
+          : "Đã xóa lời cầu nguyện.";
     }
     prayerRequests = await getPrayerRequests();
     content = await getContent();
@@ -828,6 +868,7 @@ function setEditorEnabled(enabled) {
 }
 
 async function setupLogin() {
+  setupAdminTabs();
   await renderAuthStatus(document.querySelector("#adminAuthStatus"));
   const user = await getCurrentUser();
 

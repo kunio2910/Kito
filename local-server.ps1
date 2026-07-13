@@ -93,7 +93,7 @@ try {
 
     if (-not $filePath -or -not (Test-Path -LiteralPath $filePath -PathType Leaf)) {
       $bytes = [System.Text.Encoding]::UTF8.GetBytes("404 Not Found")
-      $header = "HTTP/1.1 404 Not Found`r`nContent-Type: text/plain; charset=utf-8`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n`r`n"
+      $header = "HTTP/1.1 404 Not Found`r`nContent-Type: text/plain; charset=utf-8`r`nCache-Control: no-store, no-cache, must-revalidate`r`nPragma: no-cache`r`nExpires: 0`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n`r`n"
       $headerBytes = [System.Text.Encoding]::ASCII.GetBytes($header)
       $stream.Write($headerBytes, 0, $headerBytes.Length)
       $stream.Write($bytes, 0, $bytes.Length)
@@ -105,7 +105,7 @@ try {
     $contentType = if ($mimeTypes.ContainsKey($extension)) { $mimeTypes[$extension] } else { "application/octet-stream" }
 
     $bytes = [System.IO.File]::ReadAllBytes($filePath)
-    $header = "HTTP/1.1 200 OK`r`nContent-Type: $contentType`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n`r`n"
+    $header = "HTTP/1.1 200 OK`r`nContent-Type: $contentType`r`nCache-Control: no-store, no-cache, must-revalidate`r`nPragma: no-cache`r`nExpires: 0`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n`r`n"
     $headerBytes = [System.Text.Encoding]::ASCII.GetBytes($header)
     $stream.Write($headerBytes, 0, $headerBytes.Length)
     $stream.Write($bytes, 0, $bytes.Length)

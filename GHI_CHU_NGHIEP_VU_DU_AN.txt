@@ -1,0 +1,598 @@
+﻿# **GHI CHU NGHIEP VU VA CHUC NANG DU AN BAI GIANG TREN NUI**
+------------------------------------------------------------
+Cap nhat: 13/07/2026
+
+------------------------------------------------------------
+## **1. MUC DICH DU AN**
+
+Website "Bai Giang Tren Nui" la website chia se noi dung Cong Giao, phuc vu viec hoc hoi, cau nguyen va chia se Tin Mung.
+
+Website co 2 nhom nguoi dung chinh:
+- Nguoi xem website: doc bai viet, xem cac thanh, nha tho, su kien, giao ly, loi cau nguyen, gui loi cau nguyen, danh gia bai viet va gui y kien dong gop.
+- Quan tri vien: dang nhap trang quan ly de them, sua, xoa, an/hien noi dung, duyet loi cau nguyen, xem danh gia, xem y kien dong gop va thong ke truy cap.
+
+------------------------------------------------------------
+## **2. CAC TRANG CHINH CUA WEBSITE**
+
+### **2.1. Trang chu**
+
+**File lien quan:**
+- index.html
+- main.js
+- styles.css
+- data.js
+
+**Chuc nang:**
+- Hien thi header gom logo va menu dieu huong.
+- Hien thi banner chinh "Duc Kito la anh sang the gian".
+- Hien thi cac nut nhanh phia duoi banner:
+  - Cau nguyen: chuyen den man hinh gui loi cau nguyen.
+  - Loi Chua, Cong doan, Bac ai: hien popup thong bao "Noi dung nay dang hoan thanh, vui long doi !".
+- Hien thi muc "Loi Chua moi ngay".
+- Hien thi muc "Gioi thieu nha tho".
+- Hien thi muc "Bai Viet & Suy Niem".
+- Hien thi muc "Su Kien Sap Toi".
+- Hien thi muc "Cau Nguyen".
+- Hien thi muc "Cac thanh tieu bieu".
+- Cac card tren trang chu co the click truc tiep de vao trang chi tiet.
+- Muc Cau Nguyen tren trang chu co hieu ung cac item tu dong di chuyen cham tu phai sang trai.
+- Website co nut doi giao dien sang/toi o goc duoi ben phai.
+- Footer nam o cuoi trang.
+
+So luong item tren trang chu:
+- Cac thanh tieu bieu: toi da 5 item.
+- Gioi thieu nha tho: toi da 3 item.
+- Bai Viet & Suy Niem: toi da 3 item.
+- Su Kien Sap Toi: toi da 3 item.
+- Cau Nguyen: toi da 3 item.
+
+**Quy tac random:**
+- Random thu tu card theo ngay cho cac muc:
+  - Cac thanh tieu bieu
+  - Gioi thieu nha tho
+  - Bai Viet & Suy Niem
+  - Cau Nguyen
+- Muc Su Kien Sap Toi khong random theo ngay.
+- Random chi thay doi thu tu card, khong random anh rieng cua tung bai.
+
+### **2.2. Trang xem tat ca theo danh muc**
+
+**File lien quan:**
+- category.html
+- category.js
+- styles.css
+- data.js
+
+**Danh muc duoc ho tro:**
+- Cac Thanh
+- Nha Tho
+- Bai Viet
+- Su Kien
+- Cau Nguyen
+- Giao Ly
+
+**Chuc nang:**
+- Hien thi tat ca bai viet trong mot danh muc.
+- Co o tim kiem.
+- Co chuc nang sap xep.
+- Co phan trang.
+- Toi da 9 item moi trang.
+- Co cac so trang o phia duoi danh sach.
+- Click vao item hoac nut "Chi tiet"/"Doc them" se vao trang chi tiet.
+- Trang Cau Nguyen co them nut "Gui loi cau nguyen" nam ben phai khung sap xep, cung hang voi tim kiem va sap xep.
+
+**Sap xep trong trang xem tat ca:**
+- Mac dinh.
+- Chu cai A-Z.
+- Chu cai Z-A.
+- Thoi gian moi nhat.
+- Thoi gian cu nhat.
+
+### **2.3. Trang chi tiet noi dung**
+
+**File lien quan:**
+- detail.html
+- detail.js
+- styles.css
+- data.js
+
+**Chuc nang:**
+- Hien thi anh dai dien cua noi dung.
+- Hien thi tieu de.
+- Hien thi thong tin phu.
+- Hien thi ngay/thoi gian.
+- Hien thi mo ta ngan trong khung noi bat.
+- Hien thi noi dung HTML day du.
+- Ho tro noi dung co chu, hinh anh, lien ket, tieu de phu, danh sach va trich dan.
+- Hien thi dong "Nguon: link url" neu bai viet co truong nguon.
+- Hien thi noi dung lien quan cung danh muc.
+- Co chuc nang danh gia bai viet:
+  - Danh gia noi dung.
+  - Danh gia trinh bay.
+  - Moi muc co 5 ngoi sao.
+  - Click sao thi sao sang mau vang tuong ung.
+  - Bam Gui thi luu diem danh gia va reset lai sao.
+- Co hop thu ghi nhan y kien dong gop:
+  - Nguoi xem nhap noi dung y kien.
+  - Bam Gui thi luu y kien vao Firestore.
+  - Trang quan ly hien thi y kien kem ngay gio.
+- Co lien ket quay lai:
+  - Neu dang o trang xem tat ca thi quay ve trang chu.
+  - Neu dang o trang chi tiet va truoc do den tu trang xem tat ca thi quay lai trang xem tat ca.
+  - Neu dang o trang chi tiet va truoc do den tu trang chu thi quay lai trang chu.
+- Neu khong tim thay noi dung thi hien man hinh "Noi dung nay khong con ton tai".
+
+**Quy tac hien thi chi tiet:**
+- Chi hien noi dung co trang thai actived.
+- Khong hien noi dung unactived tren website cong khai.
+- URL chi tiet dung slug dep kem id o cuoi de tranh loi trung tieu de.
+
+### **2.4. Trang gui loi cau nguyen**
+
+**File lien quan:**
+- prayer-request.html
+- prayer-request.js
+- styles.css
+- data.js
+
+**Chuc nang:**
+- Hien thi form "Gui loi cau nguyen".
+- Co doan huong dan:
+  "Ban hay viet loi cau nguyen, tam tinh de gui toi Chua va nhung nguoi than thuong !
+  Loi cau nguyen cua ban se duoc hien thi trong trang web"
+- Cac truong bat buoc:
+  - Ho ten
+  - Tieu de
+  - Loi cau nguyen
+- Co cong tac "An danh":
+  - Khi bat thi ho ten thanh "Anonymous".
+  - Khi tat thi nguoi dung nhap lai ho ten.
+- Nut Gui canh giua va co chieu rong nho.
+- Sau khi bam Gui thi hien thong bao:
+  "Loi cau nguyen cua ban se duoc gui den ban quan tri de duyet truoc khi hien thi tren website."
+- Loi cau nguyen sau khi gui se vao trang quan ly o muc "Duyet loi cau nguyen".
+
+------------------------------------------------------------
+## **3. TRANG QUAN LY**
+
+**File lien quan:**
+- admin.html
+- admin.js
+- auth.js
+- data.js
+- styles.css
+
+### **3.1. Dang nhap quan tri**
+
+**Chuc nang:**
+- Co man hinh dang nhap quan tri.
+- Tai khoan mac dinh ban dau:
+  - user: admin
+  - password: admin
+- Chi tai khoan co quyen admin moi duoc them, sua, xoa noi dung.
+- Cac tai khoan khong co quyen admin se bi gioi han thao tac.
+
+### **3.2. Cac tab trong trang quan ly**
+
+Trang quan ly duoc tach thanh cac tab:
+- Noi dung
+- Thong ke truy cap
+- Y kien dong gop
+- Duyet loi cau nguyen
+
+**Muc dich:**
+- Giao dien de nhin hon.
+- Tranh de tat ca du lieu chen vao mot man hinh qua roi.
+
+### **3.3. Quan ly noi dung**
+
+Danh muc noi dung co the quan ly:
+- Cac thanh
+- Nha tho
+- Bai Viet
+- Su Kien
+- Cau Nguyen
+- Giao Ly
+- Loi Chua moi ngay
+- Banner chinh
+
+Cac truong trong form tao/sua noi dung:
+- ID
+- Danh muc
+- Tieu de
+- Mo ta ngan
+- Noi dung HTML day du
+- Thong tin phu
+- Ngay su kien
+- Ngay tao
+- Trang thai
+- Link anh
+- Nguon
+
+**Chuc nang:**
+- Them noi dung moi.
+- Sua noi dung da co.
+- Xoa noi dung.
+- Xem truoc anh bang link URL.
+- Nhap noi dung dang HTML.
+- Nhap link nguon de hien "Nguon: link url" o trang chi tiet.
+- Tim kiem bai viet trong trang quan ly.
+- Sap xep bai viet trong trang quan ly.
+- Sap xep theo thoi gian dua vao truong "Ngay tao".
+- Keo tha de sap xep thu tu hien thi.
+- Reset luot danh gia ve 0.
+- Xem thong tin danh gia ngay duoi cac nut Sua/Xoa.
+
+**Trang thai noi dung:**
+- actived: noi dung duoc hien thi tren website.
+- unactived: noi dung bi an khoi website cong khai.
+- Mac dinh khi tao moi la actived.
+
+### **3.4. Quan ly tai khoan**
+
+**File lien quan:**
+- accounts.html
+- accounts.js
+- auth.js
+- data.js
+
+**Chuc nang:**
+- Quan ly tai khoan nguoi dung.
+- Tao user moi.
+- Phan quyen user moi.
+- Chi admin moi co quyen them, sua, xoa.
+
+### **3.5. Duyet loi cau nguyen**
+
+**Chuc nang:**
+- Hien thi cac loi cau nguyen nguoi xem gui len.
+- Moi loi cau nguyen co:
+  - Tieu de
+  - Ho ten / Anonymous
+  - Noi dung
+  - Thoi gian gui
+  - Trang thai cho duyet / da duyet
+- Co thanh cuon de xem danh sach dai.
+- Co nut Sua.
+- Co nut Duyet hien thi.
+- Co nut Xoa.
+
+**Quy tac khi bam Sua:**
+- Tieu de loi cau nguyen dien vao o "Mo ta ngan".
+- Ho ten dien vao o "Thong tin phu".
+- Ngay gio dien vao o "Ngay su kien".
+- Noi dung loi cau nguyen dien vao o "Noi dung HTML day du".
+- Giao dien sua dung chung form voi quan ly noi dung.
+
+**Quy tac khi bam Duyet:**
+- Luu loi cau nguyen thanh mot item trong danh muc Cau Nguyen.
+- Trang thai bai noi dung la actived.
+- Bai se hien tren website o muc Cau Nguyen.
+- Luu lien ket giua loi cau nguyen goc va bai noi dung da tao.
+
+**Quy tac khi bam Xoa trong man hinh Duyet loi cau nguyen:**
+- Neu loi cau nguyen con cho duyet: xoa khoi danh sach duyet.
+- Neu loi cau nguyen da duyet hoac da co bai noi dung lien ket: chi an khoi man hinh duyet, khong xoa bai trong danh muc Cau Nguyen.
+
+### **3.6. Y kien dong gop**
+
+**Chuc nang:**
+- Nguoi xem co the gui y kien dong gop o cuoi trang chi tiet.
+- Trang quan ly hien thi y kien dong gop.
+- Moi y kien co:
+  - Noi dung gop y
+  - Bai viet lien quan
+  - Ngay gio gui
+- Admin co the xoa y kien dong gop.
+
+### **3.7. Thong ke truy cap**
+
+**Chuc nang:**
+- Ghi nhan luot truy cap website.
+- Ghi nhan luot xem trang.
+- Ghi nhan luot xem danh muc.
+- Ghi nhan luot xem noi dung chi tiet.
+- Hien thi thong ke trong tab "Thong ke truy cap".
+- Co tim kiem thong ke.
+- Co sap xep thong ke.
+- Co nut reset/xoa thong ke truy cap.
+
+------------------------------------------------------------
+## **4. FIREBASE VA LUU TRU DU LIEU**
+
+**File lien quan:**
+- firebase-config.js
+- data.js
+
+**Firebase duoc dung de luu:**
+- Noi dung bai viet trong collection contents.
+- Tai khoan/phan quyen.
+- Danh gia bai viet.
+- Y kien dong gop.
+- Loi cau nguyen cho duyet.
+- Thong ke truy cap.
+
+**Ghi chu ve anh:**
+- Du an hien dung link URL anh thay vi upload file len Firebase Storage.
+- Link anh duoc luu trong Firestore.
+- Viec nay giup tranh yeu cau nang cap goi Firebase Storage neu khong muon tra phi.
+
+------------------------------------------------------------
+## **5. CAU TRUC DU LIEU NOI DUNG**
+
+**Mot bai noi dung thuong co cac truong:**
+- id: ma noi dung.
+- type: danh muc.
+- title: tieu de.
+- description: mo ta ngan.
+- bodyHtml: noi dung HTML day du.
+- meta: thong tin phu.
+- date: ngay/thoi gian hien thi.
+- createdDate: ngay tao dung cho sap xep moi/cu.
+- image: link anh.
+- source: link nguon neu co.
+- status: actived hoac unactived.
+- ratingCount, ratingTotal: thong ke danh gia cu.
+- contentRatingCount, contentRatingTotal: danh gia noi dung.
+- layoutRatingCount, layoutRatingTotal: danh gia trinh bay.
+
+------------------------------------------------------------
+## **6. SEO VA URL**
+
+**File lien quan:**
+- vercel.json
+- api/sitemap.js
+- robots.txt
+- googlee5213bf195fccdf7.html
+- data.js
+- category.js
+- detail.js
+
+**Chuc nang SEO:**
+- Co favicon.
+- Co Google site verification.
+- Co robots.txt.
+- Co sitemap dong tai /sitemap.xml.
+- Sitemap dong lay du lieu tu Firebase de tao URL cac bai viet.
+- Co title va meta description cho trang danh muc.
+- Co title, description, canonical, Open Graph cho trang chi tiet.
+- URL than thien:
+  - Trang chu: /
+  - Cac Thanh: /cac-thanh
+  - Nha Tho: /nha-tho
+  - Bai Viet: /bai-viet
+  - Su Kien: /su-kien
+  - Cau Nguyen: /cau-nguyen
+  - Giao Ly: /giao-ly
+  - Gui loi cau nguyen: /gui-loi-cau-nguyen
+  - Chi tiet: /ten-danh-muc/ten-bai-viet--id
+
+**Ly do URL chi tiet co them id:**
+- Neu co 2 bai cung tieu de, website van mo dung bai.
+- Tranh loi click vao bai moi nhung lai hien bai cu cung tieu de.
+
+------------------------------------------------------------
+## **7. VERCEL VA DEPLOY**
+
+**File lien quan:**
+- vercel.json
+- api/sitemap.js
+
+**Chuc nang:**
+- Vercel dung de public website.
+- vercel.json cau hinh rewrite URL dep ve cac file HTML tuong ung.
+- /sitemap.xml duoc rewrite ve api/sitemap.js.
+- Co ho tro domain rieng baigiangtrennui.com va www.baigiangtrennui.com.
+
+------------------------------------------------------------
+## **8. GITHUB**
+
+**Muc dich:**
+- Luu code du an.
+- Day code len GitHub de Vercel tu deploy.
+- Co the upload file/folder len GitHub.
+
+**Luu y:**
+- Sau khi sua code, can day len GitHub thi Vercel moi cap nhat website public.
+- Neu chi sua local thi chi thay doi tren may tinh ca nhan.
+
+------------------------------------------------------------
+## **9. GIAO DIEN VA RESPONSIVE**
+
+**File lien quan:**
+- styles.css
+
+**Chuc nang:**
+- Giao dien phong cach Cong Giao, mau vang nau chu dao.
+- Header co logo, menu, nut dang nhap.
+- Menu co duong ke nho mau vang giua cac muc.
+- Co giao dien sang/toi.
+- Che do toi ap dung cho tat ca trang.
+- Trang chi tiet o che do toi duoc tang do tuong phan de de doc.
+- Website ho tro man hinh dien thoai.
+- Card va anh co lazy loading de load nhanh hon.
+- Anh trong card uu tien hien thi day khung, han che bi meo hoac vo layout.
+- Mo ta dai se bi rut gon bang dau "...".
+
+------------------------------------------------------------
+## **10. CAC FILE CHINH VA VAI TRO**
+
+- index.html: trang chu.
+- main.js: logic trang chu.
+- category.html: trang xem tat ca theo danh muc.
+- category.js: logic tim kiem, sap xep, phan trang danh muc.
+- detail.html: trang chi tiet bai viet.
+- detail.js: logic hien thi noi dung chi tiet, SEO, danh gia, y kien dong gop.
+- prayer-request.html: trang gui loi cau nguyen.
+- prayer-request.js: logic gui loi cau nguyen.
+- admin.html: trang quan ly.
+- admin.js: logic trang quan ly noi dung, thong ke, y kien, duyet loi cau nguyen.
+- accounts.html: trang quan ly tai khoan.
+- accounts.js: logic quan ly tai khoan.
+- auth.js: logic dang nhap va phan quyen.
+- data.js: cau hinh danh muc, du lieu mau, Firebase, ham doc/ghi du lieu dung chung.
+- firebase-config.js: cau hinh Firebase.
+- styles.css: toan bo giao dien.
+- vercel.json: cau hinh deploy va URL rewrite tren Vercel.
+- api/sitemap.js: sitemap dong.
+- robots.txt: huong dan bot tim kiem.
+- favicon.png: icon website.
+- local-server.ps1: server local de test URL dep truoc khi deploy.
+
+------------------------------------------------------------
+## **11. LUONG NGHIEP VU TIEU BIEU**
+
+### **11.1. Them bai viet moi**
+
+1. Admin dang nhap trang quan ly.
+2. Chon tab Noi dung.
+3. Chon danh muc.
+4. Nhap tieu de, mo ta ngan, noi dung HTML, thong tin phu, ngay, ngay tao, link anh, nguon.
+5. Chon trang thai actived.
+6. Bam Luu.
+7. Bai viet hien tren website neu trang thai la actived.
+
+### **11.2. An bai viet**
+
+1. Admin mo bai trong trang quan ly.
+2. Doi trang thai thanh unactived.
+3. Luu lai.
+4. Bai viet khong con hien tren website cong khai.
+
+### **11.3. Duyet loi cau nguyen cua nguoi xem**
+
+1. Nguoi xem vao /gui-loi-cau-nguyen.
+2. Nhap ho ten, tieu de, noi dung.
+3. Bam Gui.
+4. Loi cau nguyen vao trang quan ly, tab Duyet loi cau nguyen.
+5. Admin bam Duyet hien thi.
+6. He thong tao mot bai trong danh muc Cau Nguyen.
+7. Bai Cau Nguyen hien tren website.
+
+### **11.4. Danh gia bai viet**
+
+1. Nguoi xem vao trang chi tiet.
+2. Chon sao cho "Danh gia noi dung".
+3. Chon sao cho "Danh gia trinh bay".
+4. Bam Gui.
+5. Diem danh gia duoc luu vao Firestore.
+6. Trang quan ly hien thi thong tin danh gia.
+7. Admin co the reset luot danh gia ve 0.
+
+### **11.5. Gui y kien dong gop**
+
+1. Nguoi xem vao trang chi tiet.
+2. Nhap y kien dong gop o cuoi trang.
+3. Bam Gui.
+4. Y kien hien trong trang quan ly, tab Y kien dong gop.
+5. Admin co the xoa y kien.
+
+------------------------------------------------------------
+## **12. LUU Y QUAN TRONG KHI VAN HANH**
+
+- Neu sua code local ma khong thay doi tren trinh duyet, hay bam Ctrl + F5.
+- Neu test URL dep tren local, nen dung local-server.ps1 thay vi mo file truc tiep.
+- Sau khi sua code, can upload/push len GitHub de Vercel tu deploy lai.
+- Neu doi cau truc URL, can cap nhat sitemap va kiem tra Google Search Console.
+- Neu them bai moi ma muon SEO tot, nen nhap:
+  - Tieu de ro rang.
+  - Mo ta ngan co tu khoa.
+  - Noi dung HTML day du.
+  - Anh dai dien phu hop.
+  - Ngay tao.
+  - Nguon neu co.
+- Neu co 2 bai cung tieu de, URL van phan biet bang id o cuoi.
+
+------------------------------------------------------------
+## **13. CAC CHUC NANG DA DUOC TOI UU**
+
+- URL dep cho SEO.
+- Sitemap dong tu Firebase.
+- Favicon rieng.
+- Google site verification.
+- Vercel Analytics.
+- Lazy loading hinh anh.
+- Random thu tu card theo ngay.
+- Giao dien sang/toi.
+- Responsive cho dien thoai.
+- Tim kiem va sap xep trong trang xem tat ca.
+- Tim kiem va sap xep trong trang quan ly.
+- Phan trang danh muc.
+- Duyet loi cau nguyen truoc khi hien thi.
+- Xoa loi cau nguyen da duyet chi an khoi man hinh duyet, khong xoa noi dung da xuat ban.
+
+------------------------------------------------------------
+## **14. NHAT KY CAP NHAT**
+
+### **14.1. Cap nhat anh mac dinh khi tao noi dung**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them file Default.jpg vao thu muc goc cua website.
+- Doi anh mac dinh toan he thong sang /Default.jpg.
+- Khi admin tao moi bai viet/noi dung ma khong nhap duong dan hinh anh, he thong se tu dong luu anh mac dinh nay.
+- Anh mac dinh cung duoc dung khi card, trang chi tiet hoac meta image khong co anh rieng.
+
+**File lien quan:**
+- Default.jpg
+- data.js
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- index.html
+- prayer-request.html
+
+### **14.2. Can chinh khoang cach tieu de section trang chu**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them khoang cach 5px phia tren va ben trai cho cac tieu de o cot phai trang chu.
+- Ap dung cho cac muc Loi Chua Moi Ngay, Gioi Thieu Nha Tho, Bai Viet & Suy Niem, Su Kien Sap Toi va Cau Nguyen.
+- Muc dich la tranh tieu de bi dinh vao duong ke, dac biet khi dung giao dien toi.
+
+**File lien quan:**
+- styles.css
+
+### **14.3. Can chinh nut Xem tat ca va bo goc cac khung trang chu**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them khoang cach ben phai cho chu "Xem tat ca" o cac section cot phai trang chu de khong cham vao duong ke.
+- Tang bo goc cac khung/card tu 6px len 8px de giao dien mem va muot hon.
+- Bo goc them cho cac section/daily panel o cot phai.
+
+**File lien quan:**
+- styles.css
+- index.html
+
+### **14.4. Dinh dang lai file ghi chu nghiep vu**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Doi cac tieu de cap lon sang dang ## **Tieu de**.
+- Doi cac tieu de cap nho sang dang ### **Tieu de**.
+- Them duong gach dut giua cac muc lon de de quan sat.
+- In dam cac nhan thong tin quan trong nhu File lien quan, Chuc nang va Ngay cap nhat.
+
+**File lien quan:**
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.5. Tang tuong phan chu Loi Chua Moi Ngay o che do toi**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Doi mau chu trong khung Loi Chua Moi Ngay sang trang khi website o che do toi.
+- Them bong chu nhe de noi dung de doc hon tren nen anh toi.
+- Doi version CSS tren trang chu de trinh duyet tai lai giao dien moi.
+
+**File lien quan:**
+- styles.css
+- index.html
+
+

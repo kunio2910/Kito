@@ -138,9 +138,11 @@ function renderMissing() {
 
 function renderDetail() {
   const currentList = allowedTypes.includes(type) ? content[type].filter((entry) => entry.status !== "unactived") : [];
+  const baseSlug = slug ? slug.replace(/--[^/]+$/, "") : "";
   const item = currentList.find((entry) => {
+    if (id) return entry.id === id;
     const entrySlug = typeof contentSlug === "function" ? contentSlug(entry) : entry.slug;
-    return (id && entry.id === id) || (slug && entrySlug === slug);
+    return (slug && entrySlug === slug) || (baseSlug && entrySlug === baseSlug);
   });
   if (!item) {
     renderMissing();
