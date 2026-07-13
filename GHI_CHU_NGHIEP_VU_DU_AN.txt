@@ -595,4 +595,31 @@ Cac truong trong form tao/sua noi dung:
 - styles.css
 - index.html
 
+### **14.7. Tang toc do chay card Cau Nguyen**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Tang toc do di chuyen cua cac card trong muc Cau Nguyen tren trang chu them khoang 30%.
+- Rut thoi gian animation marquee tu 65s xuong 50s de cac card di chuyen nhanh hon nhung van deu.
+- Rut thoi gian animation tren man hinh nho tu 72s xuong 55s de toc do dong nhat hon tren dien thoai.
+- Doi version CSS tren trang chu de trinh duyet tai lai giao dien moi.
+
+**File lien quan:**
+- styles.css
+- index.html
+
+### **14.6. Them khoang cach duoi cho the Cau Nguyen trang chu**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them khoang cach duoi cho khu vuc chay card Cau Nguyen tren trang chu.
+- Giup cac the loi cau nguyen khong bi cham vao duong ke/dai phia duoi khi o che do toi.
+- Doi version CSS tren trang chu de trinh duyet tai lai giao dien moi.
+
+**File lien quan:**
+- styles.css
+- index.html
+
 

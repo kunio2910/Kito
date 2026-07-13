@@ -528,12 +528,13 @@ main {
 }
 
 .prayer-grid.is-ready {
-  animation: prayer-marquee 65s linear infinite;
+  animation: prayer-marquee 50s linear infinite;
 }
 
 .prayer-marquee {
   width: 100%;
   overflow: hidden;
+  padding-bottom: 14px;
   contain: layout paint;
   transform: translateZ(0);
 }
@@ -542,6 +543,7 @@ main {
   overflow: hidden;
   content-visibility: visible;
   contain-intrinsic-size: auto;
+  padding-bottom: 10px;
 }
 
 #prayers .section-heading {
@@ -2524,11 +2526,11 @@ textarea:disabled {
   }
 
   .prayer-grid {
-    animation-duration: 72s;
+    animation-duration: 55s;
   }
 
   .prayer-grid.is-ready {
-    animation-duration: 72s;
+    animation-duration: 55s;
   }
 
   .hero {
