@@ -606,28 +606,28 @@ main {
 
 .language-toggle {
   position: fixed;
-  right: 74px;
-  bottom: 28px;
+  right: 65px;
+  bottom: 27px;
   z-index: 1001;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  min-height: 34px;
-  padding: 0 11px;
+  gap: 2px;
+  min-height: 27px;
+  padding: 0 9px;
   border: 1px solid #e7c88e;
   border-radius: 999px;
   color: var(--gold-dark);
   background: var(--white);
   box-shadow: 0 14px 34px rgba(66, 43, 28, 0.18);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
 }
 
 .language-toggle button {
-  min-width: 20px;
+  min-width: 16px;
   padding: 0;
   border: 0;
   color: inherit;
@@ -667,8 +667,8 @@ body {
 }
 @media (max-width: 680px) {
   .language-toggle {
-    right: 68px;
-    bottom: 28px;
+    right: 62px;
+    bottom: 27px;
   }
 }
 
@@ -679,15 +679,15 @@ body {
   z-index: 1001;
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 37px;
+  height: 37px;
   border: 1px solid #e7c88e;
   border-radius: 50%;
   color: var(--gold-dark);
   background: var(--white);
   box-shadow: 0 14px 34px rgba(66, 43, 28, 0.2);
   cursor: pointer;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
@@ -2881,6 +2881,8 @@ textarea:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+
 
 
 

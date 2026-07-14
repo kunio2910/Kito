@@ -996,3 +996,25 @@ Cac truong trong form tao/sua noi dung:
 - accounts.html
 - admin.html
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.28. Giam kich thuoc nut sang toi va VI/EN khong anh huong layout**
+
+**Ngay cap nhat:** 14/07/2026
+
+**Chuc nang:**
+- Sau khi lay lai source cu, chi chinh truc tiep cac thuoc tinh trong selector .theme-toggle, .language-toggle va .language-toggle button.
+- Giam nut sang/toi xuong 80%: width/height 46px thanh 37px, font icon 22px thanh 18px, giu line-height 1.
+- Giam nut VI/EN xuong 80%: min-height 34px thanh 27px, padding 11px thanh 9px, font 12px thanh 10px, min-width nut con 20px thanh 16px.
+- Can lai vi tri VI/EN sat ben trai nut sang/toi: desktop right 65px, mobile right 62px.
+- Khong them block override layout va khong chinh cac thanh phan card/trang chu khac.
+- Doi version styles.css sang 20260714-toggle-size-safe de trinh duyet tai lai CSS moi.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
