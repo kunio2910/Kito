@@ -671,7 +671,7 @@ function isFirebaseConfigured() {
 
 function requireFirebase() {
   if (!isFirebaseConfigured()) {
-    throw new Error("Báº¡n chÆ°a cáº¥u hÃ¬nh Firebase. HÃ£y dÃ¡n firebaseConfig vÃ o file firebase-config.js.");
+    throw new Error("Bạn chưa cấu hình Firebase. Hãy dán firebaseConfig vào file firebase-config.js.");
   }
 
   if (!firebase.apps.length) {
@@ -758,7 +758,11 @@ async function getContent() {
   snapshot.forEach((doc) => {
     const rawItem = { id: doc.id, ...doc.data() };
     const enrichedItem = rawItem.type === "saints" ? enrichSaintBiography(rawItem) : rawItem;
-    const item = { ...enrichedItem, slug: contentSlug(enrichedItem) };
+    const normalizedItem = normalizeContentItem(enrichedItem);
+    const item = {
+      ...normalizedItem,
+      slug: slugifyText(normalizedItem.title || normalizedItem.ref || normalizedItem.meta || normalizedItem.id),
+    };
     if (CONTENT_TYPES.includes(item.type)) {
       content[item.type].push(item);
     }
@@ -778,7 +782,13 @@ async function getContent() {
   if (!content.catechism.length) content.catechism = structuredClone(defaultContent.catechism);
 
   CONTENT_TYPES.forEach((type) => {
-    content[type] = content[type].map((item) => ({ ...item, slug: contentSlug(item) }));
+    content[type] = content[type].map((item) => {
+      const normalizedItem = normalizeContentItem(item);
+      return {
+        ...normalizedItem,
+        slug: slugifyText(normalizedItem.title || normalizedItem.ref || normalizedItem.meta || normalizedItem.id),
+      };
+    });
   });
 
   return content;
@@ -789,7 +799,9 @@ async function saveContentItem(type, item) {
   const id = item.id || `${type}-${Date.now()}`;
   const ref = db.collection("contents").doc(id);
   const exists = (await ref.get()).exists;
-  const preparedItem = type === "saints" ? enrichSaintBiography({ ...item, id, type }) : item;
+  const preparedItem = normalizeContentItem(
+    type === "saints" ? enrichSaintBiography({ ...item, id, type }) : item
+  );
   const payload = {
     ...preparedItem,
     id,
@@ -863,7 +875,7 @@ async function deleteContentItem(id) {
 async function submitContentRating(id, ratings) {
   const contentRating = Math.max(1, Math.min(5, Number(ratings?.content || 0)));
   const layoutRating = Math.max(1, Math.min(5, Number(ratings?.layout || 0)));
-  if (!contentRating || !layoutRating) throw new Error("Vui lÃ²ng chá»n Ä‘á»§ Ä‘Ã¡nh giÃ¡ ná»™i dung vÃ  trÃ¬nh bÃ y.");
+  if (!contentRating || !layoutRating) throw new Error("Vui lòng chọn đủ đánh giá nội dung và trình bày.");
 
   const { db } = requireFirebase();
   await db.collection("contents").doc(id).set(
@@ -880,7 +892,7 @@ async function submitContentRating(id, ratings) {
 
 async function submitContentFeedback(item, message) {
   const feedbackMessage = String(message || "").trim();
-  if (!feedbackMessage) throw new Error("Vui lÃ²ng nháº­p Ã½ kiáº¿n Ä‘Ã³ng gÃ³p.");
+  if (!feedbackMessage) throw new Error("Vui lòng nhập ý kiến đóng góp.");
 
   const { db } = requireFirebase();
   await db.collection("feedbacks").add({
@@ -904,7 +916,7 @@ async function getContentFeedbacks(limit = 100) {
 
   const feedbacks = [];
   snapshot.forEach((doc) => {
-    feedbacks.push({ id: doc.id, ...doc.data() });
+    feedbacks.push(normalizeContentItem({ id: doc.id, ...doc.data() }));
   });
   return feedbacks;
 }
@@ -916,14 +928,14 @@ async function deleteContentFeedback(id) {
 
 async function submitPrayerRequest(payload) {
   const prayerTitle = String(payload?.prayerTitle || "").trim();
-  if (!prayerTitle) throw new Error("Vui lÃ²ng nháº­p tiÃªu Ä‘á».");
+  if (!prayerTitle) throw new Error("Vui lòng nhập tiêu đề.");
 
   const prayerText = String(payload?.prayerText || "").trim();
-  if (!prayerText) throw new Error("Vui lÃ²ng nháº­p lá»i cáº§u nguyá»‡n.");
+  if (!prayerText) throw new Error("Vui lòng nhập lời cầu nguyện.");
 
   const anonymous = Boolean(payload?.anonymous);
   const displayName = anonymous ? "Anonymous" : String(payload?.displayName || "").trim();
-  if (!anonymous && !displayName) throw new Error("Vui lÃ²ng nháº­p há» tÃªn hoáº·c chá»n áº©n danh.");
+  if (!anonymous && !displayName) throw new Error("Vui lòng nhập họ tên hoặc chọn ẩn danh.");
 
   const { db } = requireFirebase();
   await db.collection("prayerRequests").add({
@@ -943,7 +955,7 @@ async function getPrayerRequests(limit = 100) {
   const snapshot = await db.collection("prayerRequests").orderBy("createdAt", "desc").limit(limit).get();
   const requests = [];
   snapshot.forEach((doc) => {
-    requests.push({ id: doc.id, ...doc.data() });
+    requests.push(normalizeContentItem({ id: doc.id, ...doc.data() }));
   });
   return requests;
 }
@@ -965,10 +977,10 @@ async function savePrayerRequest(id, payload) {
 async function approvePrayerRequest(id, payload) {
   const { db } = requireFirebase();
   const displayName = payload.anonymous ? "Anonymous" : payload.displayName || "Anonymous";
-  const prayerTitle = String(payload.prayerTitle || "").trim() || `Lá»i cáº§u nguyá»‡n cá»§a ${displayName}`;
+  const prayerTitle = repairMojibakeText(String(payload.prayerTitle || "").trim() || `Lời cầu nguyện của ${displayName}`);
 
-  const prayerText = String(payload.prayerText || "").trim();
-  if (!prayerText) throw new Error("Lá»i cáº§u nguyá»‡n khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng.");
+  const prayerText = repairMojibakeText(String(payload.prayerText || "").trim());
+  if (!prayerText) throw new Error("Lời cầu nguyện không được để trống.");
 
   const contentId = `prayer-request-${id}`;
   const batch = db.batch();
@@ -1122,7 +1134,7 @@ async function getVisitStats(limit = 200) {
   const { db } = requireFirebase();
   const snapshot = await db.collection("analytics").orderBy("count", "desc").limit(limit).get();
   const stats = [];
-  snapshot.forEach((doc) => stats.push({ id: doc.id, ...doc.data() }));
+  snapshot.forEach((doc) => stats.push(normalizeContentItem({ id: doc.id, ...doc.data() })));
   return stats;
 }
 
@@ -1223,9 +1235,9 @@ function repairMojibakeText(value) {
     0x0178: 0x9f,
   };
 
-  try {
+  const decodeWindows1252Text = (input) => {
     const bytes = [];
-    for (const char of text) {
+    for (const char of input) {
       const code = char.charCodeAt(0);
       if (windows1252[code]) {
         bytes.push(windows1252[code]);
@@ -1236,9 +1248,23 @@ function repairMojibakeText(value) {
       }
     }
     const fixed = new TextDecoder("utf-8", { fatal: false }).decode(new Uint8Array(bytes));
-    return fixed && !fixed.includes("�") ? fixed : text;
+    return fixed && !fixed.includes("�") ? fixed : input;
+  };
+
+  const repairMixedText = (input) =>
+    input.replace(/[^\s<>"']*(?:[ÃÄÆÂâð]|áº|á»)[^\s<>"']*/g, (chunk) => {
+      try {
+        return decodeWindows1252Text(chunk);
+      } catch (error) {
+        return chunk;
+      }
+    });
+
+  try {
+    const fixed = decodeWindows1252Text(text);
+    return fixed !== text ? fixed : repairMixedText(text);
   } catch (error) {
-    return text
+    return repairMixedText(text)
       .replace(/â†/g, "←")
       .replace(/â€œ/g, "“")
       .replace(/â€/g, "”")
@@ -1248,6 +1274,87 @@ function repairMojibakeText(value) {
       .replace(/Truyá»n GiÃ¡o KitÃ´/g, "Truyền Giáo Kitô");
   }
 }
+
+const MOJIBAKE_TEXT_FIELDS = [
+  "title",
+  "description",
+  "meta",
+  "date",
+  "quote",
+  "ref",
+  "bodyHtml",
+  "contentTitle",
+  "displayName",
+  "prayerTitle",
+  "prayerText",
+  "message",
+  "label",
+  "name",
+];
+
+function normalizeContentItem(item = {}) {
+  const normalized = { ...item };
+  MOJIBAKE_TEXT_FIELDS.forEach((field) => {
+    if (typeof normalized[field] === "string") {
+      normalized[field] = repairMojibakeText(normalized[field]);
+    }
+  });
+  return normalized;
+}
+
+function repairVisibleMojibake(root = document.body) {
+  if (!root) return;
+  const textWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (textWalker.nextNode()) textNodes.push(textWalker.currentNode);
+  textNodes.forEach((node) => {
+    const fixed = repairMojibakeText(node.nodeValue);
+    if (fixed !== node.nodeValue) node.nodeValue = fixed;
+  });
+
+  root.querySelectorAll?.("*").forEach((element) => {
+    ["alt", "title", "placeholder", "aria-label", "value"].forEach((attribute) => {
+      if (!element.hasAttribute(attribute)) return;
+      const current = element.getAttribute(attribute);
+      const fixed = repairMojibakeText(current);
+      if (fixed !== current) element.setAttribute(attribute, fixed);
+    });
+
+    if (element !== document.activeElement && typeof element.value === "string") {
+      const fixedValue = repairMojibakeText(element.value);
+      if (fixedValue !== element.value) element.value = fixedValue;
+    }
+  });
+}
+
+function setupMojibakeRepair() {
+  repairVisibleMojibake();
+  document.addEventListener("kito:content-rendered", () => repairVisibleMojibake());
+
+  let repairQueued = false;
+  const queueRepair = () => {
+    if (repairQueued) return;
+    repairQueued = true;
+    window.requestAnimationFrame(() => {
+      repairQueued = false;
+      repairVisibleMojibake();
+    });
+  };
+
+  const observer = new MutationObserver((mutations) => {
+    if (mutations.some((mutation) => mutation.addedNodes.length || mutation.type === "characterData")) {
+      queueRepair();
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupMojibakeRepair);
+} else {
+  setupMojibakeRepair();
+}
+
 function cleanNavigationTitle(title) {
   const value = repairMojibakeText(title)
     .replace(/\s+-\s+Truyền Giáo Kitô\s*$/i, "")

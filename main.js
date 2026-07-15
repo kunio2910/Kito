@@ -227,7 +227,7 @@ function renderLoadError(error) {
   document.querySelector("#saintsList").innerHTML = `
     <article class="content-card">
       <div>
-        <h3>ChÆ°a káº¿t ná»‘i Firebase</h3>
+        <h3>Chưa kết nối Firebase</h3>
         <p>${error.message}</p>
       </div>
     </article>

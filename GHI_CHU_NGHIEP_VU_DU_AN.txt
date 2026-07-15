@@ -688,6 +688,38 @@ Cac truong trong form tao/sua noi dung:
 - admin.html
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
+-------------------------------------------------------------------------------
+
+### **14.29. Sua loi ma hoa tieng Viet tren toan bo man hinh**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Bo sung co che tu dong nhan dien va sua loi mojibake tieng Viet, vi du `ThÃ¡nh`, `Láº¡y`, `Cáº§u nguyá»‡n`, truoc khi hien thi ra website.
+- Ho tro sua ca truong hop bi loi mot phan trong cung mot dong, vi du `Thánh PhaolÃ´` se hien thi thanh `Thánh Phaolô`.
+- Chuan hoa du lieu lay tu Firebase/default data cho cac truong tieu de, mo ta, thong tin phu, ngay, cau trich, noi dung HTML, y kien dong gop va loi cau nguyen.
+- Them bo sua truc tiep tren DOM cho text, alt anh, title, placeholder, aria-label va value cua form neu du lieu cu da bi luu sai ma hoa.
+- Theo doi noi dung duoc render dong bang MutationObserver va su kien `kito:content-rendered`, giup trang chu, trang xem tat ca, trang chi tiet va trang quan ly deu duoc sua chu khi noi dung thay doi.
+- Chuan hoa du lieu ngay khi luu noi dung moi/sua noi dung, giup cac bai cu bi loi ma hoa duoc ghi lai sach hon khi admin cap nhat.
+- Sua cac thong bao loi/alert con bi ma hoa sai: loi chua cau hinh Firebase, loi chua chon du danh gia, thong bao chua ket noi Firebase tren trang chu.
+- Doi version `data.js` va `main.js` sang `20260715-mojibake-fix2` de trinh duyet tai lai file moi, tranh dung cache cu.
+
+**Luu y van hanh:**
+- Neu du lieu trong Firestore tung bi luu sai ma hoa, website se tu sua khi hien thi.
+- Neu muon sua vinh vien trong database, co the lam them chuc nang/migration rieng de doc tung document, sua chu va ghi lai vao Firestore.
+- Sau khi deploy, nen bam Ctrl+F5 hoac xoa cache trinh duyet neu van thay chu cu.
+
+**File lien quan:**
+- data.js
+- main.js
+- index.html
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
 ### **14.12. Giam opacity nen vang dong o giao dien toi xuong 20%**
 
 **Ngay cap nhat:** 13/07/2026

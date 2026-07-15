@@ -1,4 +1,4 @@
-const SESSION_KEY = "kito-session-v1";
+﻿const SESSION_KEY = "kito-session-v1";
 
 const defaultUsers = [
   {
