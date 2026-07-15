@@ -12,6 +12,188 @@ Website co 2 nhom nguoi dung chinh:
 - Quan tri vien: dang nhap trang quan ly de them, sua, xoa, an/hien noi dung, duyet loi cau nguyen, xem danh gia, xem y kien dong gop va thong ke truy cap.
 
 ------------------------------------------------------------
+## **1A. QUY CHUAN GIAO DIEN HIEN TAI CAN GIU NGUYEN**
+
+Phan nay ghi lai font chu, size chu va khoang cach hien tai trong `styles.css`. Khi chinh sua chuc nang moi, uu tien giu nguyen cac thong so nay de tranh loi giao dien, tru khi nguoi dung yeu cau doi truc tiep.
+
+### **1A.1. Font chu**
+
+**Font toan website:**
+- Bien CSS: `--font-main`.
+- Gia tri: `Tahoma, "Segoe UI", Arial, sans-serif`.
+- Dung cho `body` va phan lon noi dung.
+
+**Font tieu de:**
+- Bien CSS: `--font-heading`.
+- Gia tri: `"Segoe UI", Tahoma, Arial, sans-serif`.
+- Dung cho hero title, section heading, tieu de trang, tieu de card quan trong.
+
+**Font cau trich/cau nguyen:**
+- Dung trong `.daily-card blockquote`, `.daily-card small`, `.prayer-card blockquote`.
+- Gia tri: `Cambria, "Palatino Linotype", "Times New Roman", serif`.
+- Thuong di kem `font-style: italic` cho cau trich.
+
+### **1A.2. Size chu chinh**
+
+**Nen tang:**
+- `body`: `14px`.
+- Link/nut nho: `11px - 12px`.
+- Mo ta card: `12px`.
+
+**Header:**
+- Logo/brand text: `10px`, in dam, uppercase.
+- Icon logo: `28px`.
+- Menu header `.main-nav`: `15px`, font-weight `700`.
+- Khung tim kiem header: input `12px`, icon `24px`.
+
+**Trang chu:**
+- Hero title: `clamp(36px, 4.2vw, 58px)`.
+- Hero paragraph: `13px`.
+- Tieu de section `.section-heading h2`: `18px`, uppercase, font-weight `800`.
+- Link `Xem tat ca` va link card: `12px`, font-weight `700`.
+- Quick link title: `13px`.
+- Quick link icon: `26px`.
+
+**Card noi dung:**
+- Tieu de card: `14px`, line-height `1.35`.
+- Mo ta card: `12px`, line-height `1.5`.
+- Event date number: `26px`.
+- Event text nho: `11px - 12px`.
+
+**Loi Chua moi ngay:**
+- Quote: `13.2px`, line-height `1.6`, italic.
+- Ref: `12px`.
+
+**Cau Nguyen:**
+- Tieu de card cau nguyen: `15px`, line-height `1.3`.
+- Label phu: `11px`, uppercase.
+- Trich doan: `12px`, line-height `1.45`, italic.
+
+### **1A.3. Khoang cach va le header**
+
+**Header chung `.site-header`:**
+- `min-height: 62px`.
+- `padding: 0 18px 0 30px`.
+- `gap: 14px`.
+- Nen trang chu desktop: header nam trong cot trai, rong `52.4%`.
+
+**Logo/brand:**
+- `min-width: 118px`.
+- `gap: 8px`.
+
+**Menu header:**
+- `gap: 12px`.
+- Vach ngan giua cac muc: rong `1px`, cao `14px`, `margin-right: 12px`.
+
+**Header actions:**
+- `gap: 10px`.
+- `margin-left: auto`.
+
+**Khung tim kiem header:**
+- `width: 230px`.
+- `min-height: 34px`.
+- `padding: 0 12px`.
+- `gap: 6px`.
+- `border-radius: 999px`.
+
+### **1A.4. Khoang cach va le trang chu**
+
+**Bo cuc trang chu:**
+- `.home-dashboard`: 2 cot desktop.
+- Cot trai: `52.4%`.
+- Cot phai: `47.6%`.
+- `.right-column`: `gap: 22px`, `padding: 24px 30px 28px`.
+- `.top-panels`: `gap: 22px`, 2 cot, dang stretch de `Loi Chua moi ngay` bang chieu cao `Gioi thieu nha tho`.
+
+**Banner hero:**
+- `min-height: 460px`.
+- Noi dung hero: `width: min(760px, calc(100% - 32px))`, `padding-top: 22px`.
+- Hero title margin duoi: `14px`.
+
+**Quick links:**
+- `grid-template-columns: repeat(4, 1fr)`.
+- `padding: 24px 30px`.
+- Moi item: `min-height: 78px`, `padding: 6px 14px`, `column-gap: 10px`.
+- Icon tron: `50px x 50px`.
+
+**Section heading:**
+- `.section-heading`: `gap: 16px`, `margin: 0 0 16px`.
+- Trong cot phai: `padding: 5px 5px 0`.
+- Duong gach duoi tieu de: `width: 52px`, `height: 2px`, `bottom: -8px`.
+
+**Grid va card trang chu:**
+- Khoang cach grid chung: `gap: 16px`.
+- `card-row`: `padding: 0 30px 24px`.
+- `article-grid`, `event-list`: `padding: 6px 8px 8px`.
+- Dark mode cho article/event: `padding: 8px 10px 10px`.
+
+### **1A.5. Kich thuoc card va anh**
+
+**Card chung:**
+- Border: `1px solid var(--line)`.
+- Border radius: `8px`.
+- Shadow: `var(--shadow)`.
+- Noi dung card: `padding: 10px`.
+
+**Anh card:**
+- Cac thanh tieu bieu: `height: 115px`, `object-fit: contain`.
+- Nha tho: `height: 104px`, `object-fit: contain`.
+- Bai viet: `height: 115px`, `object-fit: contain`.
+
+**Daily card:**
+- `min-height: 210px`.
+- Grid: `24px 1fr 24px`.
+- `gap: 8px`.
+- `padding: 18px`.
+
+**Event card:**
+- `gap: 14px`.
+- `padding: 14px`.
+- Cot ngay su kien giu kich thuoc co dinh de khung khong bien dang.
+
+**Prayer card:**
+- `min-height: 158px`.
+- Noi dung trong card: `padding: 14px`, `gap: 9px`, can giua.
+
+### **1A.6. Trang chi tiet va trang xem tat ca**
+
+**Shell chung:**
+- `.detail-shell`, `.category-shell`: `width: min(100% - 40px, 1320px)`, `max-width: 1320px`.
+- `margin: 0 auto`.
+- `padding: 28px 20px 46px`.
+
+**Trang chi tiet:**
+- `.detail-article`: grid 2 cot `minmax(240px, 360px)` va `minmax(0, 1fr)`.
+- `column-gap: clamp(24px, 4vw, 54px)`.
+- Border radius: `8px`.
+
+### **1A.7. Responsive/mobile**
+
+**Duoi 1180px:**
+- `.home-dashboard` va `.top-panels` chuyen ve 1 cot.
+- Cot trai bo border phai.
+
+**Duoi 1100px:**
+- Header trang chu co the wrap, `min-height: 82px`.
+- Menu chuyen xuong hang duoi, scroll ngang.
+
+**Duoi 680px:**
+- Header chung: `min-height: 56px`, `padding: 0 12px`.
+- Header trang chu: `min-height: 86px`, `padding: 6px 12px 4px`.
+- Brand text: `8px`; brand mark: `24px`.
+- Header actions: `gap: 6px`.
+- Icon button: `34px x 34px`, font `23px`.
+- Card/grid chuyen ve 1 cot khi can.
+
+### **1A.8. Quy tac khi chinh sua giao dien**
+
+- Khong doi font, size chu, padding, margin, gap hoac border radius neu yeu cau chi la sua chuc nang.
+- Neu can them CSS moi, uu tien selector hep theo khu vuc, vi du `.header-search`, `#prayers .prayer-card`, `.top-panels`.
+- Tranh override rong len `.card`, `body`, `.section-block`, `.site-header` neu khong bat buoc.
+- Sau khi doi CSS/JS, cap nhat version query string trong HTML de trinh duyet tai lai file moi.
+- Sau moi lan chinh sua/toi uu, cap nhat lai file ghi chu nay.
+
+------------------------------------------------------------
 ## **2. CAC TRANG CHINH CUA WEBSITE**
 
 ### **2.1. Trang chu**
@@ -794,6 +976,33 @@ Cac truong trong form tao/sua noi dung:
 - Tang kich thuoc icon tim kiem trong khung tu 17px len 24px.
 - Tang nhe chieu cao/padding cua khung de icon lon hon nhung van giu bo cuc header hien tai.
 - Doi version CSS sang `20260715-header-search-size`.
+
+**Cap nhat bo sung 14.32 lan 2:**
+- Trong giao dien toi, doi mau chu tieu de va mo ta cua ket qua tim kiem sang mau nau dam de tang tuong phan tren nen sang.
+- Chinh nen item ket qua tim kiem sang mau kem sang hon de de doc hon.
+- Doi version CSS sang `20260715-search-dark-contrast`.
+
+-------------------------------------------------------------------------------
+
+### **14.33. Dong bo chieu cao Loi Chua moi ngay va Gioi thieu nha tho**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Chinh rieng cum `.top-panels` tren trang chu de hai khoi `Loi Chua moi ngay` va `Gioi thieu nha tho` co chieu cao bang nhau.
+- Cho `.daily-card` va `.church-grid` tu keo gian trong phan noi dung con lai duoi tieu de.
+- Giu nguyen format chu, card va layout cac muc khac.
+- Doi version CSS sang `20260715-top-panel-height`.
+
+**File lien quan:**
+- styles.css
+- index.html
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
 
 ### **14.12. Giam opacity nen vang dong o giao dien toi xuong 20%**
 

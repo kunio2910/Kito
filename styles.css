@@ -287,7 +287,18 @@ main {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: 22px;
-  align-items: start;
+  align-items: stretch;
+}
+
+.top-panels > .daily-panel,
+.top-panels > .section-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-panels .daily-card,
+.top-panels .church-grid {
+  flex: 1;
 }
 
 @media (min-width: 1181px) {
@@ -1403,6 +1414,18 @@ textarea {
 #searchResults span {
   color: var(--muted);
   font-size: 14px;
+}
+
+:root[data-theme="dark"] #searchResults a {
+  background: #fff8ec;
+}
+
+:root[data-theme="dark"] #searchResults strong {
+  color: #4a2d14;
+}
+
+:root[data-theme="dark"] #searchResults span {
+  color: #6f4a2b;
 }
 
 .admin-page {
