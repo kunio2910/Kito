@@ -47,6 +47,19 @@ const exportBackupButton = document.querySelector("#exportBackup");
 const importBackupButton = document.querySelector("#importBackup");
 const backupFileInput = document.querySelector("#backupFile");
 const backupMessage = document.querySelector("#backupMessage");
+const faithDiscoveryForm = document.querySelector("#faithDiscoveryForm");
+const faithSetList = document.querySelector("#faithSetList");
+const newFaithSetButton = document.querySelector("#newFaithSetButton");
+const deleteFaithSetButton = document.querySelector("#deleteFaithSetButton");
+const faithSetId = document.querySelector("#faithSetId");
+const faithSetTitle = document.querySelector("#faithSetTitle");
+const faithInfographicUrl = document.querySelector("#faithInfographicUrl");
+const faithCloudinaryUploadButton = document.querySelector("#faithCloudinaryUploadButton");
+const faithImagePreview = document.querySelector("#faithImagePreview");
+const faithQuestionsFile = document.querySelector("#faithQuestionsFile");
+const faithQuestionsJson = document.querySelector("#faithQuestionsJson");
+const formatFaithQuestionsButton = document.querySelector("#formatFaithQuestions");
+const faithDiscoveryMessage = document.querySelector("#faithDiscoveryMessage");
 const adminTabButtons = document.querySelectorAll("[data-admin-tab]");
 const adminTabPanels = document.querySelectorAll("[data-admin-panel]");
 const loginPanel = document.querySelector("#loginPanel");
@@ -55,6 +68,8 @@ const loginForm = document.querySelector("#loginForm");
 const loginMessage = document.querySelector("#loginMessage");
 const contentMessage = document.querySelector("#contentMessage");
 let draggedItem = null;
+let faithDiscoverySets = [];
+let activeFaithAdminSetId = "";
 
 function activateAdminTab(tabName) {
   if (!adminTabButtons.length || !adminTabPanels.length) return;
@@ -299,6 +314,152 @@ function readJsonFile(file) {
     reader.addEventListener("error", () => reject(new Error("Không thể đọc file backup.")));
     reader.readAsText(file, "utf-8");
   });
+}
+
+function normalizeAdminFaithQuestion(question, index) {
+  if (!question || typeof question !== "object") {
+    throw new Error(`Câu ${index + 1} không đúng định dạng object.`);
+  }
+
+  const options = Array.isArray(question.options)
+    ? question.options.map((option) => String(option || "").trim()).filter(Boolean)
+    : [];
+  const answer = Number(question.answer);
+  const questionText = String(question.question || "").trim();
+  const topic = String(question.topic || "").trim();
+
+  if (!questionText) throw new Error(`Câu ${index + 1} chưa có nội dung question.`);
+  if (options.length < 2) throw new Error(`Câu ${index + 1} cần ít nhất 2 đáp án trong options.`);
+  if (Number.isNaN(answer) || answer < 0 || answer >= options.length) {
+    throw new Error(`Câu ${index + 1} có answer không hợp lệ. answer bắt đầu từ 0.`);
+  }
+
+  return {
+    topic: topic || `Câu ${index + 1}`,
+    question: questionText,
+    options,
+    answer,
+    explanation: String(question.explanation || "").trim(),
+  };
+}
+
+function parseFaithQuestionsPayload(value, options = {}) {
+  const rawText = typeof value === "string" ? value.trim() : value;
+  if (options.allowEmpty && (!rawText || rawText === "[]")) return [];
+
+  const parsed = typeof rawText === "string" ? JSON.parse(rawText) : rawText;
+  const questions = Array.isArray(parsed) ? parsed : parsed?.questions;
+  if (!Array.isArray(questions) || !questions.length) {
+    throw new Error("Bộ câu hỏi phải là mảng JSON hoặc object có thuộc tính questions.");
+  }
+  return questions.map(normalizeAdminFaithQuestion);
+}
+
+function stringifyFaithQuestions(questions) {
+  return JSON.stringify(questions || [], null, 2);
+}
+
+function uniqueFaithSetId() {
+  return `faith-set-${Date.now()}`;
+}
+
+function normalizeAdminFaithSet(set, index) {
+  const questions = Array.isArray(set?.questions)
+    ? set.questions.map(normalizeAdminFaithQuestion).filter(Boolean)
+    : [];
+
+  return {
+    id: String(set?.id || uniqueFaithSetId()).trim(),
+    title: String(set?.title || `Bộ ${index + 1}`).trim(),
+    infographicUrl: String(set?.infographicUrl || "").trim(),
+    questions,
+  };
+}
+
+function settingsToAdminFaithSets(settings) {
+  const sets = Array.isArray(settings?.sets)
+    ? settings.sets.map(normalizeAdminFaithSet).filter((set) => set.questions.length)
+    : [];
+
+  if (sets.length) return sets;
+
+  if (Array.isArray(settings?.questions) && settings.questions.length) {
+    return [
+      {
+        id: "legacy-faith-set",
+        title: String(settings?.title || "Khám Phá Đức Tin").trim() || "Khám Phá Đức Tin",
+        infographicUrl: String(settings?.infographicUrl || "").trim(),
+        questions: settings.questions.map((question, index) => normalizeAdminFaithQuestion(question, index)),
+      },
+    ];
+  }
+
+  return [];
+}
+
+function renderFaithSetList() {
+  if (!faithSetList) return;
+
+  if (!faithDiscoverySets.length) {
+    faithSetList.innerHTML = `<p class="admin-empty-note">Chưa có bộ câu hỏi nào. Bấm Tạo bộ mới để bắt đầu.</p>`;
+    return;
+  }
+
+  faithSetList.innerHTML = faithDiscoverySets
+    .map(
+      (set) => `
+        <button class="${set.id === activeFaithAdminSetId ? "active" : ""}" type="button" data-id="${escapeHtml(set.id)}">
+          <strong>${escapeHtml(set.title)}</strong>
+          <small>${set.questions.length} câu hỏi</small>
+        </button>
+      `
+    )
+    .join("");
+}
+
+function fillFaithSetForm(set) {
+  if (!faithDiscoveryForm) return;
+  const selectedSet = set || null;
+  activeFaithAdminSetId = selectedSet?.id || "";
+  faithSetId.value = selectedSet?.id || "";
+  faithSetTitle.value = selectedSet?.title || "";
+  faithInfographicUrl.value = selectedSet?.infographicUrl || "";
+  faithQuestionsJson.value = stringifyFaithQuestions(selectedSet?.questions || []);
+  updateFaithImagePreview();
+  renderFaithSetList();
+}
+
+function selectedFaithSet() {
+  return faithDiscoverySets.find((set) => set.id === activeFaithAdminSetId) || null;
+}
+
+function updateFaithImagePreview() {
+  if (!faithImagePreview || !faithInfographicUrl) return;
+  const imageUrl = faithInfographicUrl.value.trim();
+  if (imageUrl) {
+    faithImagePreview.src = imageUrl;
+    faithImagePreview.classList.add("show");
+  } else {
+    faithImagePreview.removeAttribute("src");
+    faithImagePreview.classList.remove("show");
+  }
+}
+
+async function loadFaithDiscoveryAdmin() {
+  if (!faithDiscoveryForm) return;
+  try {
+    const settings = typeof getFaithDiscoverySettings === "function" ? await getFaithDiscoverySettings() : null;
+    faithDiscoverySets = settingsToAdminFaithSets(settings);
+    const activeSet = faithDiscoverySets.find((set) => set.id === settings?.activeSetId) || faithDiscoverySets[0] || null;
+    fillFaithSetForm(activeSet);
+    if (faithDiscoveryMessage) {
+      faithDiscoveryMessage.textContent = faithDiscoverySets.length
+        ? `Đã tải ${faithDiscoverySets.length} bộ câu hỏi.`
+        : "Chưa có bộ câu hỏi nào. Vui lòng tạo bộ mới để hiển thị trên website.";
+    }
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+  }
 }
 
 function itemTimeValue(item) {
@@ -568,6 +729,58 @@ function setupCloudinaryUpload() {
         if (result?.event === "success") {
           applyUploadedImageUrl(result.info?.secure_url);
           contentMessage.textContent = "Đã upload Cloudinary và tự điền URL ảnh.";
+        }
+      }
+    );
+
+    widget.open();
+  });
+}
+
+function setupFaithCloudinaryUpload() {
+  if (!faithCloudinaryUploadButton) return;
+
+  faithCloudinaryUploadButton.addEventListener("click", () => {
+    if (!canManageContent) {
+      alert("Chỉ tài khoản admin mới có quyền upload ảnh.");
+      return;
+    }
+
+    const config = getCloudinaryConfig();
+    if (!config.cloudName || !config.uploadPreset) {
+      if (faithDiscoveryMessage) {
+        faithDiscoveryMessage.textContent = "Chưa cấu hình Cloudinary. Hãy điền cloudName và uploadPreset trong cloudinary-config.js.";
+      }
+      return;
+    }
+
+    if (!window.cloudinary?.createUploadWidget) {
+      if (faithDiscoveryMessage) {
+        faithDiscoveryMessage.textContent = "Không thể tải Cloudinary Upload Widget. Vui lòng kiểm tra kết nối mạng.";
+      }
+      return;
+    }
+
+    const widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: config.cloudName,
+        uploadPreset: config.uploadPreset,
+        folder: config.folder || undefined,
+        sources: ["local", "url", "camera"],
+        multiple: false,
+        resourceType: "image",
+        clientAllowedFormats: ["jpg", "jpeg", "png", "webp", "gif"],
+      },
+      (error, result) => {
+        if (error) {
+          if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message || "Upload Cloudinary thất bại.";
+          return;
+        }
+
+        if (result?.event === "success") {
+          faithInfographicUrl.value = result.info?.secure_url || "";
+          updateFaithImagePreview();
+          if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đã upload Cloudinary và tự điền URL infographic.";
         }
       }
     );
@@ -945,6 +1158,7 @@ importBackupButton?.addEventListener("click", async () => {
     renderFeedbackList();
     renderPrayerReviewList();
     renderVisitStats(visitStatsItems);
+    await loadFaithDiscoveryAdmin();
     if (backupFileInput) backupFileInput.value = "";
     if (backupMessage) backupMessage.textContent = `Đã nhập backup thành công: ${restoredCount.toLocaleString("vi-VN")} document.`;
   } catch (error) {
@@ -952,6 +1166,128 @@ importBackupButton?.addEventListener("click", async () => {
     alert(error.message);
   } finally {
     importBackupButton.disabled = false;
+  }
+});
+
+faithInfographicUrl?.addEventListener("input", updateFaithImagePreview);
+
+faithSetList?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-id]");
+  if (!button) return;
+  const set = faithDiscoverySets.find((item) => item.id === button.dataset.id);
+  fillFaithSetForm(set);
+  if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = set ? `Đang chỉnh sửa: ${set.title}` : "";
+});
+
+newFaithSetButton?.addEventListener("click", () => {
+  activeFaithAdminSetId = "";
+  faithSetId.value = "";
+  faithSetTitle.value = "";
+  faithInfographicUrl.value = "";
+  faithQuestionsJson.value = "";
+  updateFaithImagePreview();
+  renderFaithSetList();
+  if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đang tạo bộ câu hỏi mới.";
+});
+
+deleteFaithSetButton?.addEventListener("click", async () => {
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền xóa bộ câu hỏi.");
+    return;
+  }
+
+  const set = selectedFaithSet();
+  if (!set) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Chưa chọn bộ câu hỏi để xóa.";
+    return;
+  }
+
+  if (!confirm(`Bạn có chắc muốn xóa bộ "${set.title}"?`)) return;
+
+  try {
+    faithDiscoverySets = faithDiscoverySets.filter((item) => item.id !== set.id);
+    const nextSet = faithDiscoverySets[0] || null;
+    await saveFaithDiscoverySettings({
+      sets: faithDiscoverySets,
+      activeSetId: nextSet?.id || "",
+    });
+    fillFaithSetForm(nextSet);
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đã xóa bộ câu hỏi.";
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+    alert(error.message);
+  }
+});
+
+faithQuestionsFile?.addEventListener("change", async () => {
+  const file = faithQuestionsFile.files?.[0];
+  if (!file) return;
+
+  try {
+    const payload = await readJsonFile(file);
+    const questions = parseFaithQuestionsPayload(payload);
+    faithQuestionsJson.value = stringifyFaithQuestions(questions);
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = `Đã đọc ${questions.length} câu hỏi từ file JSON.`;
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+    alert(error.message);
+  } finally {
+    faithQuestionsFile.value = "";
+  }
+});
+
+formatFaithQuestionsButton?.addEventListener("click", () => {
+  try {
+    const questions = parseFaithQuestionsPayload(faithQuestionsJson.value);
+    faithQuestionsJson.value = stringifyFaithQuestions(questions);
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = `Đã định dạng ${questions.length} câu hỏi.`;
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+  }
+});
+
+faithDiscoveryForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền lưu Khám Phá Đức Tin.");
+    return;
+  }
+
+  const submitButton = faithDiscoveryForm.querySelector("button[type='submit']");
+  submitButton.disabled = true;
+  if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đang lưu Khám Phá Đức Tin...";
+
+  try {
+    const questions = parseFaithQuestionsPayload(faithQuestionsJson.value);
+    const id = faithSetId.value.trim() || uniqueFaithSetId();
+    const title = faithSetTitle.value.trim() || `Bộ ${faithDiscoverySets.length + 1}`;
+    const nextSet = {
+      id,
+      title,
+      infographicUrl: faithInfographicUrl.value.trim(),
+      questions,
+    };
+
+    const existingIndex = faithDiscoverySets.findIndex((set) => set.id === id);
+    if (existingIndex >= 0) {
+      faithDiscoverySets[existingIndex] = nextSet;
+    } else {
+      faithDiscoverySets.push(nextSet);
+    }
+
+    await saveFaithDiscoverySettings({
+      sets: faithDiscoverySets,
+      activeSetId: id,
+    });
+    fillFaithSetForm(nextSet);
+    if (faithDiscoveryMessage) {
+      faithDiscoveryMessage.textContent = `Đã lưu bộ "${title}" gồm ${questions.length} câu hỏi.`;
+    }
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+    alert(error.message);
+  } finally {
+    submitButton.disabled = false;
   }
 });
 
@@ -1036,11 +1372,18 @@ function setEditorEnabled(enabled) {
   form.querySelectorAll("input, select, textarea, button").forEach((control) => {
     control.disabled = !enabled;
   });
+  faithDiscoveryForm?.querySelectorAll("input, textarea, button").forEach((control) => {
+    control.disabled = !enabled;
+  });
+  document.querySelectorAll(".faith-set-manager button").forEach((control) => {
+    control.disabled = !enabled;
+  });
 }
 
 async function setupLogin() {
   setupAdminTabs();
   setupCloudinaryUpload();
+  setupFaithCloudinaryUpload();
   await renderAuthStatus(document.querySelector("#adminAuthStatus"));
   const user = await getCurrentUser();
 
@@ -1094,6 +1437,7 @@ async function setupLogin() {
     renderAdminList();
     renderFeedbackList();
     renderPrayerReviewList();
+    await loadFaithDiscoveryAdmin();
   } catch (error) {
     document.querySelector("#adminList").innerHTML = `
       <article class="admin-item">

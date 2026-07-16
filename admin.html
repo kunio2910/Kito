@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260715-cloudinary-upload" />
+    <link rel="stylesheet" href="styles.css?v=20260716-source-audit" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -49,6 +49,7 @@
         <button class="admin-tab-button" type="button" data-admin-tab="visits">Thống kê truy cập</button>
         <button class="admin-tab-button" type="button" data-admin-tab="feedback">Ý kiến đóng góp</button>
         <button class="admin-tab-button" type="button" data-admin-tab="prayers">Duyệt lời cầu nguyện</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="faith">Khám Phá Đức Tin</button>
         <button class="admin-tab-button" type="button" data-admin-tab="backup">Backup dữ liệu</button>
       </nav>
 
@@ -195,6 +196,54 @@
         <div class="prayer-review-list" id="prayerReviewList"></div>
       </section>
 
+      <section class="faith-admin-panel admin-tab-panel" data-admin-panel="faith" hidden>
+        <div class="section-heading">
+          <h2>Khám Phá Đức Tin</h2>
+        </div>
+        <div class="faith-set-manager">
+          <div class="faith-set-list" id="faithSetList"></div>
+          <button class="ghost-button" type="button" id="newFaithSetButton">Tạo bộ mới</button>
+        </div>
+        <form class="editor-panel faith-admin-form" id="faithDiscoveryForm">
+          <input type="hidden" id="faithSetId" />
+          <label>
+            <span>Tên bộ câu hỏi</span>
+            <input id="faithSetTitle" type="text" placeholder="Ví dụ: Cuộc đời Đức Mẹ Maria" />
+          </label>
+          <label>
+            <span>URL hình infographic</span>
+            <div class="image-url-tools">
+              <input id="faithInfographicUrl" type="url" placeholder="https://..." />
+              <button class="ghost-button" type="button" id="faithCloudinaryUploadButton">Upload Cloudinary</button>
+            </div>
+          </label>
+          <img class="image-preview" id="faithImagePreview" alt="Xem trước infographic" />
+          <label>
+            <span>Upload bộ câu hỏi JSON</span>
+            <input id="faithQuestionsFile" type="file" accept="application/json,.json" />
+          </label>
+          <label>
+            <span>Bộ câu hỏi JSON</span>
+            <textarea id="faithQuestionsJson" rows="16" placeholder='[
+  {
+    "topic": "Chủ đề mẫu",
+    "question": "Nội dung câu hỏi?",
+    "options": ["Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"],
+    "answer": 1,
+    "explanation": "Giải thích ngắn sau khi trả lời đúng."
+  }
+]'></textarea>
+          </label>
+          <p class="backup-warning">Trường answer bắt đầu từ 0. Ví dụ đáp án B thì nhập 1, đáp án C thì nhập 2.</p>
+          <div class="form-actions">
+            <button class="primary-button" type="submit">Lưu bộ câu hỏi</button>
+            <button class="ghost-button" type="button" id="formatFaithQuestions">Định dạng JSON</button>
+            <button class="danger-button" type="button" id="deleteFaithSetButton">Xóa bộ này</button>
+          </div>
+          <p class="form-message" id="faithDiscoveryMessage"></p>
+        </form>
+      </section>
+
       <section class="backup-panel admin-tab-panel" data-admin-panel="backup" hidden>
         <div class="section-heading">
           <h2>Backup dữ liệu</h2>
@@ -230,9 +279,9 @@
     <script src="firebase-config.js"></script>
     <script src="cloudinary-config.js"></script>
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
-    <script src="data.js?v=20260715-no-sample-seed"></script>
+    <script src="data.js?v=20260716-faith-no-sample"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260715-cloudinary-upload"></script>
+    <script src="admin.js?v=20260716-faith-no-sample"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

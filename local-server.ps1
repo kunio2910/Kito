@@ -40,6 +40,10 @@ function Get-SafePath {
     $decodedPath = "prayer-request.html"
   }
 
+  if ($decodedPath -eq "kham-pha-duc-tin") {
+    $decodedPath = "faith-discovery.html"
+  }
+
   $segments = $decodedPath.Split("/")
   $firstSegment = $segments[0]
   if ($rewriteTypes.ContainsKey($firstSegment)) {

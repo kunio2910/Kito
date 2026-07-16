@@ -717,7 +717,33 @@ async function resetVisitStats() {
   clearLocalVisitCooldowns();
 }
 
-const BACKUP_COLLECTIONS = ["contents", "users", "feedbacks", "prayerRequests", "analytics"];
+async function getFaithDiscoverySettings() {
+  const { db } = requireFirebase();
+  const snapshot = await db.collection("siteSettings").doc("faithDiscovery").get();
+  if (!snapshot.exists) return null;
+  return normalizeContentItem({ id: snapshot.id, ...snapshot.data() });
+}
+
+async function saveFaithDiscoverySettings(settings = {}) {
+  const { db } = requireFirebase();
+  const questions = Array.isArray(settings.questions) ? settings.questions : [];
+  const sets = Array.isArray(settings.sets) ? settings.sets : [];
+  const infographicUrl = String(settings.infographicUrl || "").trim();
+
+  await db.collection("siteSettings").doc("faithDiscovery").set(
+    {
+      infographicUrl,
+      questions,
+      sets,
+      activeSetId: settings.activeSetId || "",
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAtText: new Date().toISOString(),
+    },
+    { merge: true }
+  );
+}
+
+const BACKUP_COLLECTIONS = ["contents", "users", "feedbacks", "prayerRequests", "analytics", "siteSettings"];
 
 function serializeBackupValue(value) {
   if (value?.toDate && typeof value.toDate === "function") {
@@ -1020,6 +1046,7 @@ function getNavigationTitleFromUrl(url) {
     if (path.endsWith("/admin.html")) return "trang quản lý";
     if (path.endsWith("/accounts.html")) return "trang tài khoản";
     if (path.endsWith("/gui-loi-cau-nguyen") || path.endsWith("/prayer-request.html")) return "Gửi lời cầu nguyện";
+    if (path.endsWith("/kham-pha-duc-tin") || path.endsWith("/faith-discovery.html")) return "Khám Phá Đức Tin";
     const firstSegment = path.split("/").filter(Boolean)[0];
     if (CONTENT_PATH_TYPES[firstSegment] && path.split("/").filter(Boolean).length === 1) {
       return navigationPageTitles[CONTENT_PATH_TYPES[firstSegment]] || "trang danh mục";

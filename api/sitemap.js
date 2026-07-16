@@ -20,6 +20,7 @@ const CATEGORY_PATHS = [
   ["/cau-nguyen", { changefreq: "weekly", priority: "0.8" }],
   ["/giao-ly", { changefreq: "weekly", priority: "0.8" }],
   ["/gui-loi-cau-nguyen", { changefreq: "monthly", priority: "0.7" }],
+  ["/kham-pha-duc-tin", { changefreq: "monthly", priority: "0.7" }],
 ];
 
 const FALLBACK_CONTENT_URLS = [

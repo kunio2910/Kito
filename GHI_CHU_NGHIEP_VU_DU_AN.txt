@@ -1455,3 +1455,224 @@ Cac truong trong form tao/sua noi dung:
 - styles.css
 - cloudinary-config.js
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.35. Them man hinh Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Them man hinh moi "Kham Pha Duc Tin" tai duong dan /kham-pha-duc-tin.
+- Man hinh gom 14 cau hoi trac nghiem theo bo cau hoi "Cuoc doi Chua Jesu".
+- Khi nguoi xem tra loi dung tung cau, he thong mo tung manh cua infographic "Cuoc doi cua Chua Jesu".
+- Khi mo du 14 manh, nguoi xem co the bam Choi lai de reset tro choi.
+- Thay quick-link "Loi Chua" duoi banner trang chu thanh "Kham Pha Duc Tin".
+- Them anh infographic vao thu muc assets de dung truc tiep trong website.
+- Them sitemap va rewrite Vercel cho duong dan dep /kham-pha-duc-tin.
+- Them nhan dien tieu de dieu huong "Kham Pha Duc Tin" trong data.js.
+- CSS cua man hinh moi dung tien to .faith-* de tranh anh huong giao dien va chuc nang hien tai.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- index.html
+- data.js
+- vercel.json
+- api/sitemap.js
+- assets/infographic-chua-jesu.png
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.36. Sua loi test local duong dan Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Bo sung rewrite local cho duong dan /kham-pha-duc-tin.
+- Khi test tren may bang local-server.ps1 hoac local-server.py, duong dan /kham-pha-duc-tin se tro ve faith-discovery.html thay vi bao 404 Not Found.
+- Luu y khi local server dang chay, can tat va chay lai server de nap cau hinh route moi.
+
+**File lien quan:**
+- local-server.ps1
+- local-server.py
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.37. Quan ly va toi uu man hinh Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Doi bo cuc man hinh Kham Pha Duc Tin: cau hoi nam ben trai, infographic nam ben phai tren desktop.
+- Lop che infographic duoc tinh vi tri bang JavaScript de phu kin 100% hinh, tranh chua khoang trong.
+- Tang do toi cua lop che de cac manh chua mo ro rang hon.
+- Them tab "Kham Pha Duc Tin" trong trang quan ly.
+- Admin co the nhap URL hinh infographic, upload anh infographic qua Cloudinary, xem truoc anh.
+- Admin co the upload file JSON bo cau hoi hoac sua truc tiep JSON trong textarea.
+- He thong kiem tra cau truc cau hoi truoc khi luu: topic, question, options, answer, explanation.
+- Neu admin chi luu URL anh infographic va de trong bo cau hoi, man hinh van dung bo cau hoi mac dinh.
+- Cau hinh Kham Pha Duc Tin duoc luu vao Firestore collection siteSettings, document faithDiscovery.
+- Man hinh Kham Pha Duc Tin uu tien doc cau hinh tu Firestore; neu chua co du lieu thi dung bo cau hoi va anh mac dinh.
+- Backup JSON duoc bo sung collection siteSettings de xuat/nhap cau hinh Kham Pha Duc Tin.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- admin.html
+- admin.js
+- data.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **15.6. Chuyen Puzzle Jesu.docx sang JSON**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Chuyen file `Puzzle Jesu.docx` thanh file `Puzzle Jesu.json`.
+- File JSON gom 14 cau hoi ve cuoc doi Chua Giesu, dung cau truc cho man hinh **Kham Pha Duc Tin**.
+- Moi cau hoi co day du `topic`, `question`, `options`, `answer`, `explanation`.
+- Da kiem tra file JSON hop le bang JSON parser truoc khi su dung.
+
+**File lien quan:**
+- Puzzle Jesu.json
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.39. Xoa bo mau Chua Jesu trong Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Xoa bo cau hoi mau ve Chua Jesu khoi faith-discovery.js.
+- Xoa anh infographic mau assets/infographic-chua-jesu.png khoi project.
+- Trang Kham Pha Duc Tin khong con tu dong hien bo mau khi Firestore chua co du lieu.
+- Neu chua co bo cau hoi nao, trang se hien thong bao can them bo cau hoi trong trang quan ly.
+- Xoa cac tham chieu SEO/preload/anh mac dinh lien quan den infographic Chua Jesu.
+- Doi placeholder trong trang quan ly sang vi du trung tinh, khong con noi dung mau Chua Jesu.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- admin.html
+- admin.js
+- assets/infographic-chua-jesu.png
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+## **15. DINH DANG JSON CHO KHAM PHA DUC TIN**
+
+### **15.1. Cau truc file JSON bo cau hoi**
+
+File JSON upload vao tab **Kham Pha Duc Tin** phai la mot mang JSON. Moi phan tu trong mang la mot cau hoi.
+
+**Mau chuan:**
+
+```json
+[
+  {
+    "topic": "Truyen Tin",
+    "question": "Trong bien co Truyen Tin, thien than nao da bao tin cho Duc Maria?",
+    "options": [
+      "Thien than Micae",
+      "Thien than Raphael",
+      "Thien than Gabriel",
+      "Thien than Uriel"
+    ],
+    "answer": 2,
+    "explanation": "Thien than Gabriel duoc Thien Chua sai den bao tin cho Duc Maria."
+  }
+]
+```
+
+### **15.2. Y nghia tung truong**
+
+- **topic:** Ten chu de hoac moc su kien cua cau hoi. Vi du: Truyen Tin, Tham vieng ba Isave, Duc Me Hon Xac Len Troi.
+- **question:** Noi dung cau hoi hien cho nguoi xem.
+- **options:** Danh sach cac dap an trac nghiem. Nen co 4 dap an de giao dien dep va de hieu.
+- **answer:** Vi tri dap an dung trong mang options, bat dau tu so 0.
+- **explanation:** Noi dung giai thich hien ra sau khi nguoi xem tra loi dung.
+
+### **15.3. Quy uoc dap an**
+
+- **A = 0**
+- **B = 1**
+- **C = 2**
+- **D = 3**
+
+Vi du neu dap an dung la **C**, truong answer phai la:
+
+```json
+"answer": 2
+```
+
+### **15.4. Luu y khi chuyen tu Google Doc sang JSON**
+
+- Moi cau hoi trong Google Doc nen co: tieu de cau, noi dung cau hoi, cac dap an A/B/C/D, dap an dung va giai thich.
+- Khong dat dau phay sau phan tu cuoi cung trong mang JSON.
+- Noi dung co dau tieng Viet duoc chap nhan.
+- Nut **Dinh dang JSON** trong trang quan ly dung de kiem tra cau truc va can chinh lai JSON cho de doc.
+- Sau khi bam **Dinh dang JSON**, van can bam **Luu bo cau hoi** de ghi du lieu vao Firestore.
+
+---
+
+### **15.5. Ra soat source va dinh dang ngay 16/07/2026**
+
+**Noi dung da kiem tra:**
+- Kiem tra cac file HTML deu co `lang="vi"`, `meta charset="UTF-8"` va viewport.
+- Kiem tra cac link local trong HTML khong tro den file thieu.
+- Kiem tra `vercel.json` doc duoc bang JSON parser.
+- Kiem tra `Puzzle Maria.json` hop le va co du 12 cau hoi.
+- Kiem tra khong con tham chieu den anh/cau hoi mau `infographic-chua-jesu`, `default-jesus`, `Cuoc doi Chua Jesu`.
+- Kiem tra cac version CSS/JS chinh da duoc doi de tranh cache trinh duyet.
+
+**Chinh sua da thuc hien:**
+- Khoi phuc file `Puzzle Maria.json` trong thu muc project vi file da bi thieu.
+- Doi cau goi y trong Kham Pha Duc Tin sang noi dung trung tinh, phu hop moi bo cau hoi.
+- Khai bao them bien CSS `--font-body: var(--font-main)` de tranh dung bien font chua khai bao.
+- Doi version `faith-discovery.js` sang `20260716-source-audit` de trinh duyet tai lai cau goi y moi.
+
+**File lien quan:**
+- Puzzle Maria.json
+- faith-discovery.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.38. Ho tro nhieu bo cau hoi Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Mo rong Kham Pha Duc Tin de luu nhieu bo cau hoi va nhieu hinh infographic tuong ung.
+- Trang quan ly co danh sach cac bo cau hoi da luu, nut Tao bo moi, nut Xoa bo nay.
+- Moi bo cau hoi gom: id, title, infographicUrl va questions.
+- Khi luu bo cau hoi, du lieu duoc ghi vao siteSettings/faithDiscovery trong mang sets.
+- Man hinh Kham Pha Duc Tin tu dong hien cac nut chuyen bo neu co tu 2 bo tro len.
+- Khi nguoi xem bam chuyen bo, he thong doi dung infographic, doi bo cau hoi va reset lai cac manh che.
+- Du lieu cu dang infographicUrl + questions van duoc doc lai va chuyen thanh mot bo mac dinh de tranh mat noi dung.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- admin.html
+- admin.js
+- data.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt

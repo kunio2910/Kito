@@ -1,5 +1,6 @@
 ﻿:root {
   --font-main: Tahoma, "Segoe UI", Arial, sans-serif;
+  --font-body: var(--font-main);
   --font-heading: "Segoe UI", Tahoma, Arial, sans-serif;
   --ink: #3c2a18;
   --muted: #746456;
@@ -1644,6 +1645,63 @@ textarea {
   background: #342617;
 }
 
+.faith-admin-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.faith-set-manager {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.faith-set-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.faith-set-list button {
+  display: grid;
+  gap: 3px;
+  min-height: 48px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--brown);
+  cursor: pointer;
+  text-align: left;
+}
+
+.faith-set-list button.active {
+  border-color: var(--gold);
+  background: var(--cream);
+  color: var(--accent);
+}
+
+.faith-set-list small,
+.admin-empty-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.faith-admin-form textarea {
+  min-height: 360px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.faith-admin-form .image-preview.show {
+  width: min(100%, 520px);
+  max-height: 280px;
+  object-fit: contain;
+  background: var(--cream);
+}
+
 .detail-shell,
 .category-shell {
   width: min(100% - 40px, 1320px);
@@ -2711,10 +2769,322 @@ textarea:disabled {
   opacity: 0.58;
 }
 
+.faith-shell {
+  width: min(1320px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 30px 0 52px;
+}
+
+.faith-intro {
+  margin: 0 0 22px;
+}
+
+.faith-intro h1 {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  color: var(--brown);
+}
+
+.faith-intro p:last-child {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.faith-set-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.faith-set-switcher[hidden] {
+  display: none;
+}
+
+.faith-set-switcher button {
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--brown);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.faith-set-switcher button:hover,
+.faith-set-switcher button.active {
+  border-color: var(--gold);
+  background: var(--cream);
+  color: var(--accent);
+}
+
+.faith-game {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.82fr) minmax(0, 1.18fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.faith-visual-card,
+.faith-question-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.faith-visual-card {
+  padding: 16px;
+}
+
+.faith-progress {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--brown);
+  font-weight: 800;
+}
+
+.faith-progress-track {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+}
+
+.faith-progress-track span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), #e4a844);
+  transition: width 0.3s ease;
+}
+
+.faith-infographic-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7efe3;
+}
+
+.faith-infographic-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.faith-mask-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.faith-mask-tile {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(22, 14, 9, 0.985), rgba(86, 48, 15, 0.97)),
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 34%);
+  color: #fff8ec;
+  font-family: var(--font-heading);
+  font-size: clamp(24px, 3vw, 46px);
+  font-weight: 900;
+  transition: opacity 0.34s ease, transform 0.34s ease;
+}
+
+.faith-mask-tile span {
+  display: grid;
+  width: 54px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 248, 236, 0.65);
+}
+
+.faith-mask-tile.is-open {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.faith-question-card {
+  position: sticky;
+  top: 82px;
+  padding: 22px;
+}
+
+.faith-question-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.faith-question-head span,
+.faith-question-head strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.faith-question-card h2 {
+  margin: 0 0 18px;
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 2.7vw, 34px);
+  line-height: 1.2;
+  color: var(--brown);
+}
+
+.faith-options {
+  display: grid;
+  gap: 10px;
+}
+
+.faith-option {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 54px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.faith-option span {
+  display: grid;
+  width: 34px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.faith-option:hover:not(:disabled) {
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.faith-option.is-correct {
+  border-color: #3f9b58;
+  background: #edf8ef;
+  color: #174d27;
+}
+
+.faith-option.is-wrong {
+  border-color: #cc5c48;
+  background: #fff1ec;
+  color: #7c2417;
+}
+
+.faith-feedback {
+  min-height: 46px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.faith-feedback.is-correct {
+  color: #2d773f;
+}
+
+.faith-feedback.is-wrong {
+  color: #b1422e;
+}
+
+.faith-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+:root[data-theme="dark"] .faith-intro h1,
+:root[data-theme="dark"] .faith-question-card h2,
+:root[data-theme="dark"] .faith-progress {
+  color: #f8ead5;
+}
+
+:root[data-theme="dark"] .faith-intro p:last-child,
+:root[data-theme="dark"] .faith-feedback {
+  color: #decbb3;
+}
+
+:root[data-theme="dark"] .faith-set-switcher button {
+  border-color: #68451d;
+  background: #24180f;
+  color: #f8ead5;
+}
+
+:root[data-theme="dark"] .faith-set-switcher button:hover,
+:root[data-theme="dark"] .faith-set-switcher button.active {
+  border-color: #ffc46b;
+  background: #342617;
+  color: #ffc46b;
+}
+
+:root[data-theme="dark"] .faith-visual-card,
+:root[data-theme="dark"] .faith-question-card {
+  background: #24180f;
+  border-color: #68451d;
+}
+
+:root[data-theme="dark"] .faith-option {
+  background: #2f2117;
+  border-color: #68451d;
+  color: #fff7ec;
+}
+
+:root[data-theme="dark"] .faith-option.is-correct {
+  background: #183b22;
+  border-color: #5abc72;
+  color: #f2fff5;
+}
+
+:root[data-theme="dark"] .faith-option.is-wrong {
+  background: #461f17;
+  border-color: #d66d58;
+  color: #fff4ef;
+}
+
 @media (max-width: 1180px) {
   .home-dashboard,
   .top-panels {
     grid-template-columns: 1fr;
+  }
+
+  .faith-game {
+    grid-template-columns: 1fr;
+  }
+
+  .faith-question-card {
+    position: static;
   }
 
   .left-column {
@@ -2872,6 +3242,58 @@ textarea:disabled {
   .category-action-button {
     width: 100%;
   }
+
+  .faith-shell {
+    width: calc(100% - 24px);
+    padding: 18px 0 36px;
+  }
+
+  .faith-intro h1 {
+    font-size: 38px;
+  }
+
+  .faith-intro p:last-child {
+    font-size: 14px;
+  }
+
+  .faith-visual-card,
+  .faith-question-card {
+    padding: 12px;
+  }
+
+  .faith-mask-grid {
+    gap: 1px;
+  }
+
+  .faith-mask-tile span {
+    width: 34px;
+    font-size: 18px;
+  }
+
+  .faith-option {
+    grid-template-columns: 32px minmax(0, 1fr);
+    min-height: 50px;
+    padding: 9px 10px;
+    font-size: 14px;
+  }
+
+  .faith-option span {
+    width: 30px;
+  }
+
+  .faith-actions {
+    justify-content: center;
+  }
+
+  .faith-set-manager {
+    grid-template-columns: 1fr;
+  }
+
+  .faith-set-list button,
+  .faith-set-manager > button {
+    width: 100%;
+  }
+
   .visit-summary,
   .visit-tools,
   .visit-item {

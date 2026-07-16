@@ -1,0 +1,170 @@
+[
+  {
+    "topic": "Giáng Sinh",
+    "question": "Chúa Giêsu được sinh ra tại đâu?",
+    "options": [
+      "Giê-ru-sa-lem",
+      "Bê-lem",
+      "Na-da-rét",
+      "Ca-phác-na-um"
+    ],
+    "answer": 1,
+    "explanation": "Chúa Giêsu được Đức Maria sinh ra tại Bê-lem và đặt nằm trong máng cỏ. Sự ra đời của Người mở ra Tin Mừng cứu độ cho toàn thể nhân loại."
+  },
+  {
+    "topic": "Chúa được hiến dâng",
+    "question": "Đức Maria và Thánh Giuse đã đưa Chúa Giêsu đến đâu để dâng Người cho Thiên Chúa?",
+    "options": [
+      "Đền thờ Giê-ru-sa-lem",
+      "Thành Bê-lem",
+      "Sông Giođan",
+      "Núi Ôliu"
+    ],
+    "answer": 0,
+    "explanation": "Đức Maria và Thánh Giuse đã đưa Hài Nhi Giêsu lên Đền thờ Giê-ru-sa-lem để tiến dâng Người cho Thiên Chúa theo Luật Môsê. Tại đây, ông Simêon đã nhận ra Người là Đấng Cứu Độ."
+  },
+  {
+    "topic": "Chúa lớn lên",
+    "question": "Chúa Giêsu đã sống và lớn lên chủ yếu tại đâu?",
+    "options": [
+      "Bê-lem",
+      "Rôma",
+      "Na-da-rét",
+      "Giê-ru-sa-lem"
+    ],
+    "answer": 2,
+    "explanation": "Chúa Giêsu lớn lên tại Na-da-rét trong gia đình Thánh Gia. Người sống vâng phục Đức Maria và Thánh Giuse, ngày càng lớn lên trong sự khôn ngoan và ân nghĩa trước mặt Thiên Chúa và mọi người."
+  },
+  {
+    "topic": "Chúa bắt đầu rao giảng",
+    "question": "Ai đã làm phép rửa cho Chúa Giêsu trước khi Người bắt đầu sứ vụ công khai?",
+    "options": [
+      "Thánh Phêrô",
+      "Thánh Gioan Tẩy Giả",
+      "Thánh Giuse",
+      "Thánh Anrê"
+    ],
+    "answer": 1,
+    "explanation": "Chúa Giêsu đã đến sông Giođan và lãnh nhận phép rửa từ Thánh Gioan Tẩy Giả. Sau đó, Người bắt đầu công khai rao giảng Tin Mừng về Nước Thiên Chúa."
+  },
+  {
+    "topic": "Tuyển chọn Mười Hai Tông Đồ",
+    "question": "Chúa Giêsu tuyển chọn Mười Hai Tông Đồ chủ yếu để làm gì?",
+    "options": [
+      "Xây dựng các thành phố",
+      "Trở thành những người giàu có",
+      "Ở với Người và được sai đi rao giảng",
+      "Trở thành những người cai trị"
+    ],
+    "answer": 2,
+    "explanation": "Chúa Giêsu tuyển chọn Mười Hai Tông Đồ để họ ở với Người, học hỏi giáo huấn của Người và sau đó được sai đi loan báo Tin Mừng cho mọi người."
+  },
+  {
+    "topic": "Chúa làm nhiều phép lạ",
+    "question": "Những phép lạ của Chúa Giêsu cho thấy điều gì?",
+    "options": [
+      "Quyền năng và lòng thương xót của Thiên Chúa",
+      "Chúa muốn trở nên nổi tiếng",
+      "Chúa muốn trở thành vua trần thế",
+      "Chúa muốn mọi người sợ hãi"
+    ],
+    "answer": 0,
+    "explanation": "Qua việc chữa lành bệnh nhân, cho người mù được thấy và làm cho người chết sống lại, Chúa Giêsu bày tỏ quyền năng cùng tình yêu thương của Thiên Chúa dành cho con người."
+  },
+  {
+    "topic": "Giảng Bài Giảng Trên Núi",
+    "question": "Trong Bài Giảng Trên Núi, Chúa Giêsu đặc biệt dạy con người điều gì?",
+    "options": [
+      "Tìm kiếm tiền bạc và quyền lực",
+      "Yêu thương, tha thứ và sống theo thánh ý Thiên Chúa",
+      "Chỉ quan tâm đến bản thân",
+      "Tránh xa tất cả mọi người"
+    ],
+    "answer": 1,
+    "explanation": "Qua Bài Giảng Trên Núi và các Mối Phúc Thật, Chúa Giêsu mời gọi con người sống khiêm nhường, yêu thương, có lòng thương xót và trở nên những người kiến tạo hòa bình."
+  },
+  {
+    "topic": "Chúa vào Giê-ru-sa-lem",
+    "question": "Người dân đã làm gì khi Chúa Giêsu tiến vào thành Giê-ru-sa-lem?",
+    "options": [
+      "Đóng cửa thành",
+      "Bỏ chạy khỏi thành",
+      "Trải áo, cầm cành lá và tung hô Người",
+      "Yêu cầu Người rời đi"
+    ],
+    "answer": 2,
+    "explanation": "Dân chúng vui mừng đón Chúa Giêsu vào Giê-ru-sa-lem, trải áo và cành lá trên đường, đồng thời tung hô Người là Đấng nhân danh Chúa mà đến."
+  },
+  {
+    "topic": "Bữa Tiệc Ly",
+    "question": "Trong Bữa Tiệc Ly, Chúa Giêsu đã truyền dạy các môn đệ điều gì?",
+    "options": [
+      "Hãy yêu thương nhau như Thầy đã yêu thương anh em",
+      "Hãy tìm kiếm quyền lực",
+      "Hãy rời khỏi Giê-ru-sa-lem ngay lập tức",
+      "Hãy xây dựng một cung điện"
+    ],
+    "answer": 0,
+    "explanation": "Trong Bữa Tiệc Ly, Chúa Giêsu để lại điều răn yêu thương cho các môn đệ. Người mời gọi chúng ta yêu thương nhau bằng chính tình yêu hy sinh và phục vụ mà Người đã dành cho nhân loại."
+  },
+  {
+    "topic": "Chúa bị bắt và xét xử",
+    "question": "Chúa Giêsu đã bị đưa đến trước mặt ai để chịu xét xử và kết án đóng đinh?",
+    "options": [
+      "Vua Đavít",
+      "Ông Môsê",
+      "Tổng trấn Philatô",
+      "Thánh Phêrô"
+    ],
+    "answer": 2,
+    "explanation": "Sau khi bị bắt, Chúa Giêsu đã bị đưa đến trước Tổng trấn Philatô. Dù không tìm thấy tội đáng chết nơi Người, Philatô cuối cùng vẫn trao Người để chịu đóng đinh."
+  },
+  {
+    "topic": "Chúa chịu đóng đinh",
+    "question": "Vì sao Chúa Giêsu chấp nhận chịu đau khổ và chết trên thập giá?",
+    "options": [
+      "Vì Người thất bại",
+      "Vì tình yêu và để cứu chuộc nhân loại",
+      "Vì Người muốn chứng minh sức mạnh",
+      "Vì các môn đệ yêu cầu"
+    ],
+    "answer": 1,
+    "explanation": "Chúa Giêsu tự nguyện hiến dâng mạng sống vì yêu thương nhân loại. Qua cuộc khổ nạn và cái chết trên thập giá, Người thực hiện công trình cứu độ và mở đường cho con người trở về với Thiên Chúa."
+  },
+  {
+    "topic": "Chúa chết và được mai táng",
+    "question": "Sau khi Chúa Giêsu chết trên thập giá, thi hài của Người được đặt ở đâu?",
+    "options": [
+      "Trong một ngôi mộ mới",
+      "Trong Đền thờ",
+      "Trong một ngôi nhà",
+      "Trên một ngọn núi"
+    ],
+    "answer": 0,
+    "explanation": "Sau khi Chúa Giêsu chịu chết, thi hài Người được hạ xuống khỏi thập giá, được mai táng và đặt trong một ngôi mộ mới. Một tảng đá lớn được lăn đến cửa mộ."
+  },
+  {
+    "topic": "Chúa Phục Sinh",
+    "question": "Điều gì xảy ra vào ngày thứ ba sau khi Chúa Giêsu chịu chết?",
+    "options": [
+      "Chúa được đưa đến một nơi khác",
+      "Chúa sống lại vinh hiển",
+      "Các môn đệ rời bỏ Người",
+      "Ngôi mộ được xây dựng lại"
+    ],
+    "answer": 1,
+    "explanation": "Vào ngày thứ ba, Chúa Giêsu đã chiến thắng sự chết và sống lại vinh hiển. Sự Phục Sinh là nền tảng của niềm tin Kitô giáo và đem đến cho nhân loại niềm hy vọng về sự sống đời đời."
+  },
+  {
+    "topic": "Chúa lên trời",
+    "question": "Sau khi Phục Sinh và hiện ra với các môn đệ, Chúa Giêsu đã làm gì?",
+    "options": [
+      "Trở về Bê-lem",
+      "Tiếp tục sống tại Na-da-rét",
+      "Lên trời và ngự bên hữu Chúa Cha",
+      "Trở thành vua tại Giê-ru-sa-lem"
+    ],
+    "answer": 2,
+    "explanation": "Sau khi Phục Sinh và hiện ra với các môn đệ, Chúa Giêsu được đưa lên trời. Trước khi lên trời, Người trao cho các môn đệ sứ mạng tiếp tục loan báo Tin Mừng cho muôn dân."
+  }
+]

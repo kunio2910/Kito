@@ -32,6 +32,9 @@ class LocalRouteHandler(SimpleHTTPRequestHandler):
         if clean_path == "gui-loi-cau-nguyen":
             return str(ROOT / "prayer-request.html")
 
+        if clean_path == "kham-pha-duc-tin":
+            return str(ROOT / "faith-discovery.html")
+
         return super().translate_path(path)
 
 
