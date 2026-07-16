@@ -1567,6 +1567,89 @@ Cac truong trong form tao/sua noi dung:
 
 ---
 
+## **16. TONG KET CONG VIEC NGAY 16/07/2026**
+
+### **16.1. Trang thai chung**
+
+- Website hien dang la web tinh ket hop Firebase/Firestore de quan ly noi dung.
+- Can giu nguyen format/layout hien tai khi sua code, tranh doi class chung neu khong can thiet.
+- Cac chinh sua giao dien nen uu tien dung class rieng theo tung man hinh de khong anh huong trang chu, trang danh muc, trang chi tiet va trang quan ly.
+- Sau moi lan toi uu/chinh sua chuc nang, can cap nhat them vao file `GHI_CHU_NGHIEP_VU_DU_AN.txt`.
+
+### **16.2. Cac viec da lam hom nay**
+
+- Chuyen `Puzzle Jesu.docx` thanh file `Puzzle Jesu.json`.
+- File `Puzzle Jesu.json` co 14 cau hoi ve cuoc doi Chua Giesu, dung cau truc JSON cho man hinh **Kham Pha Duc Tin**.
+- Kiem tra JSON hop le, doc duoc bang parser va co du 14 cau hoi.
+- Thiet ke lai man hinh **Kham Pha Duc Tin** theo phong cach minh hoa vang kem:
+  - Banner dau trang.
+  - Nut quay lai dang tron.
+  - Bang diem.
+  - Cau hoi nam ben trai.
+  - Infographic nam ben phai.
+  - Lop che infographic dam hon, phu kin tung manh.
+  - Icon khoa duoc ve bang CSS de tranh loi font emoji.
+- Cap nhat `faith-discovery.js` de hien:
+  - Tieu de bo cau hoi.
+  - Diem hien tai.
+  - Nhan `Cau hoi x/y`.
+  - Trang thai mo khoa infographic.
+- Cap nhat `faith-discovery.html`:
+  - Them `body class="faith-page"`.
+  - Doi version CSS/JS sang `20260716-faith-redesign`.
+  - Giu class `back-link` cho nut quay lai de logic quay lai cua website van hoat dong.
+- Cap nhat `styles.css`:
+  - Them CSS rieng cho `body.faith-page`.
+  - Them responsive mobile rieng cho man hinh **Kham Pha Duc Tin**.
+  - Them dark mode rieng cho nut dap an, nut chon bo cau hoi, khung infographic va khung diem.
+- Da kiem tra nhanh:
+  - So dau `{` va `}` trong CSS khop nhau.
+  - HTML va JS deu co cac ID moi: `faithScore`, `faithQuestionBadge`.
+  - Link CSS/JS trong `faith-discovery.html` da doi version de tranh cache.
+
+### **16.3. File quan trong da tao/sua hom nay**
+
+- `Puzzle Jesu.json`
+- `faith-discovery.html`
+- `faith-discovery.js`
+- `styles.css`
+- `GHI_CHU_NGHIEP_VU_DU_AN.txt`
+
+### **16.4. Luu y khi tiep tuc tren may tinh khac**
+
+- Can keo/copy day du cac file moi nhat tu GitHub hoac thu muc project truoc khi sua tiep.
+- Neu test local va truy cap `/kham-pha-duc-tin`, can dam bao server local co rewrite route nay ve `faith-discovery.html`.
+- Neu trinh duyet khong hien giao dien moi, can hard reload hoac xoa cache vi CSS/JS co version moi.
+- Neu them bo cau hoi moi cho **Kham Pha Duc Tin**, JSON phai dung cau truc:
+  - `topic`
+  - `question`
+  - `options`
+  - `answer`
+  - `explanation`
+- Truong `answer` la so bat dau tu 0:
+  - A = 0
+  - B = 1
+  - C = 2
+  - D = 3
+- Khong nen xoa cac class `faith-*` trong trang **Kham Pha Duc Tin** vi CSS moi dang phu thuoc vao cac class nay.
+- Neu sua giao dien **Kham Pha Duc Tin**, nen tiep tuc them CSS duoi nhom `body.faith-page` de khong lam loi cac trang khac.
+
+### **16.5. Viec nen kiem tra truoc khi deploy**
+
+- Mo `/kham-pha-duc-tin` tren local.
+- Chon tung bo cau hoi neu co nhieu bo.
+- Tra loi dung/sai de kiem tra:
+  - Dap an dung doi mau xanh.
+  - Dap an sai hien thong bao.
+  - Diem tang khi tra loi dung.
+  - Manh infographic duoc mo.
+  - Nut `Cau tiep theo` hoat dong.
+- Kiem tra giao dien tren dien thoai.
+- Kiem tra dark mode.
+- Sau khi deploy len Vercel, hard reload trang va kiem tra lai duong dan `/kham-pha-duc-tin`.
+
+---
+
 ### **14.39. Xoa bo mau Chua Jesu trong Kham Pha Duc Tin**
 
 **Ngay cap nhat:** 16/07/2026
