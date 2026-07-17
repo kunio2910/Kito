@@ -6335,3 +6335,45 @@ body.faith-page.faith-completion-open {
 :root[data-theme="dark"] body.faith-page .faith-completion-card p {
   color: #f1d29c;
 }
+
+/* 14.85. Panel heading chon chu de va an diem trong man tra loi */
+body.faith-page.faith-choosing-set .faith-picker-head {
+  width: min(100%, 980px);
+  padding: clamp(18px, 2.4vw, 30px) clamp(20px, 3vw, 44px);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 219, 134, 0.22), transparent 42%),
+    rgba(255, 251, 241, 0.82);
+  border: 1px solid rgba(202, 143, 54, 0.34);
+  border-radius: 18px;
+  box-shadow: 0 16px 36px rgba(118, 74, 24, 0.1);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head .faith-picker-subtitle {
+  max-width: none;
+  white-space: nowrap;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-visual-card .faith-score-card {
+  display: none !important;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-head {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(202, 143, 54, 0.18), transparent 42%),
+    rgba(46, 30, 19, 0.82);
+  border-color: rgba(218, 154, 55, 0.42);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 980px) {
+  body.faith-page.faith-choosing-set .faith-picker-head .faith-picker-subtitle {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-head {
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+}

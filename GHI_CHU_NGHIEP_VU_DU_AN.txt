@@ -1567,6 +1567,143 @@ Cac truong trong form tao/sua noi dung:
 
 ---
 
+## **TONG KET PHIEN LAM VIEC NGAY 17/07/2026**
+
+---
+
+### **1. Kham Pha Duc Tin - man hinh chon chu de**
+
+**Da lam:**
+- Kiem tra anh banner chu de Maria ty le gan 16:9.
+- Chinh anh chu de trong khung chon chu de:
+  - Co luc dung `object-fit: contain` de hien tron anh.
+  - Sau do doi theo yeu cau sang `object-fit: cover` de anh fit day khung 16:9.
+- Xoa fallback anh mau `assets/faith-picker-maria.jpg`.
+- Neu du lieu cu trong Firestore con luu `/assets/faith-picker-maria.jpg` hoac `assets/faith-picker-maria.jpg`, code se bo qua va xem nhu chua co anh.
+- Lam dep man hinh chon chu de:
+  - Them subtitle: `Chon mot hanh trinh, tra loi cau hoi va mo khoa tung manh hinh.`
+  - Gom tim kiem va sap xep vao toolbar.
+  - Them icon tim kiem ben trai o input.
+  - Them hover card, bong do, bo goc mem.
+  - Them nen gradient kem/vang nhe.
+  - Ho tro che do toi.
+- Them panel chu nhat bo goc quanh cum tieu de.
+- Ep subtitle nam tren mot hang o desktop, cho phep xuong dong tren man hinh nho.
+
+**File da sua:**
+- `faith-discovery.html`
+- `faith-discovery.js`
+- `styles.css`
+- `GHI_CHU_NGHIEP_VU_DU_AN.txt`
+
+---
+
+### **2. Kham Pha Duc Tin - man hinh tra loi cau hoi**
+
+**Da lam:**
+- Them popup hoan thanh:
+  - Khi nguoi choi tra loi dung het tat ca cau hoi va mo het hinh, popup cau hoi cuoi dong sau 3 giay.
+  - Sau do doi them 3 giay va hien popup: `Ban da hoan thanh kham pha !`
+  - Popup co nut `Quay Lai`.
+  - Bam `Quay Lai` se quay ve man hinh chon chu de.
+- Reset timer va popup hoan thanh khi nguoi dung quay lai chon chu de hoac bat dau lai.
+- An khung tinh diem trong man hinh tra loi cau hoi.
+
+**File da sua:**
+- `faith-discovery.html`
+- `faith-discovery.js`
+- `styles.css`
+
+---
+
+### **3. Kham Pha Duc Tin - du lieu va backup**
+
+**Da kiem tra:**
+- File JSON backup da bao gom du lieu `Kham Pha Duc Tin`.
+- Du lieu duoc luu trong Firestore tai:
+  - Collection: `siteSettings`
+  - Document: `faithDiscovery`
+- Backup JSON co luu:
+  - Danh sach bo chu de.
+  - Tieu de bo cau hoi.
+  - URL anh khung chon chu de.
+  - URL banner.
+  - URL infographic.
+  - Danh sach cau hoi.
+  - Vung che `masks`.
+  - `activeSetId`.
+- Luu y: backup JSON chi luu URL anh, khong luu truc tiep file anh.
+
+**File lien quan:**
+- `data.js`
+- `admin.js`
+
+---
+
+### **4. Google Drive - Puzzle Giuse**
+
+**Da lam:**
+- Ket noi Google Drive connector.
+- Tim thay Google Doc ten `Puzzle Giuse`.
+- Doc noi dung 12 cau hoi tu Google Doc.
+- Chuyen thanh file JSON dung dinh dang cua `Kham Pha Duc Tin`.
+- Tao file moi:
+  - `Puzzle Giuse.json`
+
+**Dinh dang JSON:**
+- Moi cau hoi gom:
+  - `topic`
+  - `question`
+  - `options`
+  - `answer`
+  - `explanation`
+- Truong `answer` bat dau tu 0:
+  - A = 0
+  - B = 1
+  - C = 2
+  - D = 3
+
+**Kiem tra:**
+- File `Puzzle Giuse.json` doc duoc bang `ConvertFrom-Json`.
+- Tong so cau hoi: 12.
+- So loi dinh dang: 0.
+
+---
+
+### **5. Cache version da cap nhat trong phien**
+
+**Cac version da dung trong qua trinh chinh sua:**
+- `20260717-faith-picker-contain`
+- `20260717-faith-picker-cover`
+- `20260717-faith-picker-no-sample`
+- `20260717-faith-picker-polish`
+- `20260717-faith-complete-modal`
+- `20260717-faith-heading-panel-no-score`
+
+**Version moi nhat can chu y:**
+- `faith-discovery.html` dang dung:
+  - `styles.css?v=20260717-faith-heading-panel-no-score`
+  - `faith-discovery.js?v=20260717-faith-heading-panel-no-score`
+
+---
+
+### **6. Kiem tra ky thuat trong phien**
+
+**Da kiem tra nhieu lan:**
+- `styles.css` can bang ngoac `{}`.
+- `faith-discovery.js` can bang ngoac `{}`.
+- `admin.js` can bang ngoac `{}` sau khi sua phan anh mau.
+- `Puzzle Giuse.json` hop le va doc duoc.
+
+**Luu y khi test:**
+- Sau khi chinh CSS/JS, can nhan `Ctrl + F5` tren trinh duyet de xoa cache.
+- Neu deploy len GitHub/Vercel, can upload day du:
+  - File HTML/JS/CSS da sua.
+  - File JSON moi neu muon luu trong repo.
+  - Khong can upload `assets/faith-picker-maria.jpg` vi da xoa fallback anh mau.
+
+---
+
 ### **14.80. Hien tron anh chu de 16:9 trong man hinh chon chu de Kham Pha Duc Tin**
 
 **Ngay cap nhat:** 17/07/2026
@@ -1683,6 +1820,56 @@ Cac truong trong form tao/sua noi dung:
 - Da kiem tra `faith-discovery.js` can ngoac tron: `(` = 577 va `)` = 577.
 - Da kiem tra `styles.css` can ngoac: `{` = 969 va `}` = 969.
 - Da xac nhan `faith-discovery.html` da dung cache version `20260717-faith-complete-modal`.
+
+---
+
+### **14.85. Panel tieu de chon chu de va an diem Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them panel chu nhat bo goc xung quanh cum tieu de man hinh chon chu de.
+- Panel dung nen kem/trang trong suot nhe, vien vang nhat va bong do mem.
+- Dong mo ta `Chon mot hanh trinh, tra loi cau hoi va mo khoa tung manh hinh.` duoc ep nam tren mot hang o man hinh desktop.
+- Tren man hinh nho, dong mo ta duoc phep xuong dong de khong tran khung.
+- An khung tinh diem trong man hinh tra loi cau hoi.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-heading-panel-no-score`.
+
+**File lien quan:**
+- faith-discovery.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `styles.css` can ngoac: `{` = 977 va `}` = 977.
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 181 va `}` = 181.
+- Da xac nhan `faith-discovery.html` da dung cache version `20260717-faith-heading-panel-no-score`.
+
+---
+
+### **14.86. Chuyen Google Doc Puzzle Giuse sang JSON**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Tim file Google Doc `Puzzle Giuse` tren Google Drive.
+- Chuyen noi dung thanh file JSON dung dinh dang cau hoi cua man hinh `Kham Pha Duc Tin`.
+- File tao moi: `Puzzle Giuse.json`.
+- Dinh dang moi cau hoi gom:
+  - `topic`
+  - `question`
+  - `options`
+  - `answer` bat dau tu 0
+  - `explanation`
+
+**File lien quan:**
+- Puzzle Giuse.json
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra JSON doc duoc bang `ConvertFrom-Json`.
+- So cau hoi: 12.
+- So cau loi dinh dang: 0.
 
 **Kiem tra:**
 - Da kiem tra CSS can ngoac: `{` = 935 va `}` = 935.
