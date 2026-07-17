@@ -63,6 +63,12 @@ const faithBannerPreview = document.querySelector("#faithBannerPreview");
 const faithInfographicUrl = document.querySelector("#faithInfographicUrl");
 const faithCloudinaryUploadButton = document.querySelector("#faithCloudinaryUploadButton");
 const faithImagePreview = document.querySelector("#faithImagePreview");
+const faithMaskEditor = document.querySelector("#faithMaskEditor");
+const faithMaskEditorImage = document.querySelector("#faithMaskEditorImage");
+const faithMaskEditorLayer = document.querySelector("#faithMaskEditorLayer");
+const faithMaskCount = document.querySelector("#faithMaskCount");
+const generateFaithMasksButton = document.querySelector("#generateFaithMasksButton");
+const clearFaithMasksButton = document.querySelector("#clearFaithMasksButton");
 const faithQuestionsFile = document.querySelector("#faithQuestionsFile");
 const faithQuestionsJson = document.querySelector("#faithQuestionsJson");
 const formatFaithQuestionsButton = document.querySelector("#formatFaithQuestions");
@@ -77,6 +83,14 @@ const contentMessage = document.querySelector("#contentMessage");
 let draggedItem = null;
 let faithDiscoverySets = [];
 let activeFaithAdminSetId = "";
+let faithAdminMasks = [];
+let activeFaithMaskDrag = null;
+const legacyFaithPickerSampleImages = ["/assets/faith-picker-maria.jpg", "assets/faith-picker-maria.jpg"];
+
+function cleanFaithPickerImageUrl(value) {
+  const imageUrl = String(value || "").trim();
+  return legacyFaithPickerSampleImages.includes(imageUrl) ? "" : imageUrl;
+}
 
 function activateAdminTab(tabName) {
   if (!adminTabButtons.length || !adminTabPanels.length) return;
@@ -366,6 +380,72 @@ function stringifyFaithQuestions(questions) {
   return JSON.stringify(questions || [], null, 2);
 }
 
+function normalizeFaithMask(mask) {
+  if (!mask || typeof mask !== "object") return null;
+  const x = Number(mask.x);
+  const y = Number(mask.y);
+  const w = Number(mask.w);
+  const h = Number(mask.h);
+  if ([x, y, w, h].some((value) => Number.isNaN(value))) return null;
+  return {
+    x: Math.max(0, Math.min(100, x)),
+    y: Math.max(0, Math.min(100, y)),
+    w: Math.max(1, Math.min(100, w)),
+    h: Math.max(1, Math.min(100, h)),
+  };
+}
+
+function normalizeFaithMasks(masks) {
+  return Array.isArray(masks) ? masks.map(normalizeFaithMask).filter(Boolean) : [];
+}
+
+function getFaithAdminGridSize(total) {
+  if (total === 12) return { columns: 3, rows: 4 };
+  if (total === 20) return { columns: 4, rows: 5 };
+  const columns = Math.ceil(Math.sqrt(total || 1));
+  return { columns, rows: Math.ceil((total || 1) / columns) };
+}
+
+function generateFaithDefaultMasks(total) {
+  const count = Math.max(1, Number(total || 1));
+  const { columns, rows } = getFaithAdminGridSize(count);
+  const masks = [];
+  const width = 100 / columns;
+  const height = 100 / rows;
+  for (let index = 0; index < count; index += 1) {
+    const row = Math.floor(index / columns);
+    const col = index % columns;
+    masks.push({
+      x: Number((col * width).toFixed(3)),
+      y: Number((row * height).toFixed(3)),
+      w: Number(width.toFixed(3)),
+      h: Number(height.toFixed(3)),
+    });
+  }
+  return masks;
+}
+
+function faithMaskCountValue(fallbackCount = 0) {
+  const customCount = Number(faithMaskCount?.value || 0);
+  const count = customCount > 0 ? customCount : fallbackCount;
+  if (!count || Number.isNaN(count)) {
+    throw new Error("Vui lòng nhập số hình che hoặc nhập bộ câu hỏi JSON trước khi tạo vùng che.");
+  }
+  if (count < 1 || count > 80) {
+    throw new Error("Số hình che phải từ 1 đến 80.");
+  }
+  return Math.round(count);
+}
+
+function clampFaithMask(mask) {
+  const next = normalizeFaithMask(mask) || { x: 0, y: 0, w: 20, h: 20 };
+  next.w = Math.max(3, Math.min(100, next.w));
+  next.h = Math.max(3, Math.min(100, next.h));
+  next.x = Math.max(0, Math.min(100 - next.w, next.x));
+  next.y = Math.max(0, Math.min(100 - next.h, next.y));
+  return next;
+}
+
 function uniqueFaithSetId() {
   return `faith-set-${Date.now()}`;
 }
@@ -379,9 +459,10 @@ function normalizeAdminFaithSet(set, index) {
     id: String(set?.id || uniqueFaithSetId()).trim(),
     title: String(set?.title || `Bộ ${index + 1}`).trim(),
     
-    pickerImageUrl: String(set?.pickerImageUrl || "").trim(),
+    pickerImageUrl: cleanFaithPickerImageUrl(set?.pickerImageUrl),
     bannerImageUrl: String(set?.bannerImageUrl || "").trim(),
     infographicUrl: String(set?.infographicUrl || "").trim(),
+    masks: normalizeFaithMasks(set?.masks),
     questions,
   };
 }
@@ -399,9 +480,10 @@ function settingsToAdminFaithSets(settings) {
         id: "legacy-faith-set",
         title: String(settings?.title || "Khám Phá Đức Tin").trim() || "Khám Phá Đức Tin",
         
-        pickerImageUrl: String(settings?.pickerImageUrl || "").trim(),
+        pickerImageUrl: cleanFaithPickerImageUrl(settings?.pickerImageUrl),
         bannerImageUrl: String(settings?.bannerImageUrl || "").trim(),
         infographicUrl: String(settings?.infographicUrl || "").trim(),
+        masks: normalizeFaithMasks(settings?.masks),
         questions: settings.questions.map((question, index) => normalizeAdminFaithQuestion(question, index)),
       },
     ];
@@ -440,11 +522,16 @@ function fillFaithSetForm(set) {
   faithPickerImageUrl.value = selectedSet?.pickerImageUrl || "";
   faithBannerImageUrl.value = selectedSet?.bannerImageUrl || "";
   faithInfographicUrl.value = selectedSet?.infographicUrl || "";
+  faithAdminMasks = normalizeFaithMasks(selectedSet?.masks);
+  if (faithMaskCount) {
+    faithMaskCount.value = faithAdminMasks.length || selectedSet?.questions?.length || "";
+  }
   faithQuestionsJson.value = stringifyFaithQuestions(selectedSet?.questions || []);
   
   updateFaithPickerPreview();
   updateFaithBannerPreview();
   updateFaithImagePreview();
+  renderFaithMaskEditor();
   renderFaithSetList();
 }
 
@@ -484,6 +571,105 @@ function updateFaithImagePreview() {
     faithImagePreview.removeAttribute("src");
     faithImagePreview.classList.remove("show");
   }
+  renderFaithMaskEditor();
+}
+
+function updateFaithMaskFromPointer(event) {
+  if (!activeFaithMaskDrag || !faithMaskEditorLayer) return;
+  event.preventDefault();
+  const rect = faithMaskEditorLayer.getBoundingClientRect();
+  const dx = ((event.clientX - activeFaithMaskDrag.startX) / rect.width) * 100;
+  const dy = ((event.clientY - activeFaithMaskDrag.startY) / rect.height) * 100;
+  const original = activeFaithMaskDrag.original;
+  const next =
+    activeFaithMaskDrag.mode === "resize"
+      ? {
+          ...original,
+          w: original.w + dx,
+          h: original.h + dy,
+        }
+      : {
+          ...original,
+          x: original.x + dx,
+          y: original.y + dy,
+        };
+  faithAdminMasks[activeFaithMaskDrag.index] = clampFaithMask(next);
+  renderFaithMaskEditor();
+}
+
+function stopFaithMaskDrag() {
+  activeFaithMaskDrag = null;
+  window.removeEventListener("pointermove", updateFaithMaskFromPointer);
+  window.removeEventListener("pointerup", stopFaithMaskDrag);
+}
+
+function startFaithMaskDrag(event, index, mode) {
+  if (!faithAdminMasks[index]) return;
+  event.preventDefault();
+  event.stopPropagation();
+  activeFaithMaskDrag = {
+    index,
+    mode,
+    startX: event.clientX,
+    startY: event.clientY,
+    original: { ...faithAdminMasks[index] },
+  };
+  window.addEventListener("pointermove", updateFaithMaskFromPointer);
+  window.addEventListener("pointerup", stopFaithMaskDrag);
+}
+
+function renderFaithMaskEditor() {
+  if (!faithMaskEditor || !faithMaskEditorImage || !faithMaskEditorLayer || !faithInfographicUrl) return;
+  const imageUrl = faithInfographicUrl.value.trim();
+  if (!imageUrl) {
+    faithMaskEditor.classList.remove("show");
+    faithMaskEditorImage.removeAttribute("src");
+    faithMaskEditorLayer.innerHTML = "";
+    return;
+  }
+
+  faithMaskEditor.classList.add("show");
+  faithMaskEditorImage.src = imageUrl;
+  faithMaskEditorLayer.innerHTML = faithAdminMasks
+    .map((mask, index) => {
+      const safeMask = clampFaithMask(mask);
+      return `
+        <button
+          class="faith-mask-editor-tile"
+          type="button"
+          data-index="${index}"
+          style="left:${safeMask.x}%;top:${safeMask.y}%;width:${safeMask.w}%;height:${safeMask.h}%"
+          aria-label="Vùng che ${index + 1}"
+        >
+          <span>${index + 1}</span>
+          <em class="faith-mask-editor-delete" role="button" tabindex="0" aria-label="Xóa vùng che ${index + 1}">×</em>
+          <i aria-hidden="true"></i>
+        </button>
+      `;
+    })
+    .join("");
+
+  faithMaskEditorLayer.querySelectorAll(".faith-mask-editor-tile").forEach((tile) => {
+    const index = Number(tile.dataset.index);
+    tile.addEventListener("pointerdown", (event) => startFaithMaskDrag(event, index, "move"));
+    tile.querySelector("i")?.addEventListener("pointerdown", (event) => startFaithMaskDrag(event, index, "resize"));
+    const deleteButton = tile.querySelector(".faith-mask-editor-delete");
+    const deleteMask = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      faithAdminMasks.splice(index, 1);
+      renderFaithMaskEditor();
+      if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = `Đã xóa vùng che ${index + 1}. Bấm Lưu bộ câu hỏi để lưu thay đổi.`;
+    };
+    deleteButton?.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+    deleteButton?.addEventListener("click", deleteMask);
+    deleteButton?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") deleteMask(event);
+    });
+  });
 }
 
 async function loadFaithDiscoveryAdmin() {
@@ -1251,6 +1437,8 @@ newFaithSetButton?.addEventListener("click", () => {
   faithPickerImageUrl.value = "";
   faithBannerImageUrl.value = "";
   faithInfographicUrl.value = "";
+  faithAdminMasks = [];
+  if (faithMaskCount) faithMaskCount.value = "";
   faithQuestionsJson.value = "";
   
   updateFaithPickerPreview();
@@ -1297,6 +1485,7 @@ faithQuestionsFile?.addEventListener("change", async () => {
     const payload = await readJsonFile(file);
     const questions = parseFaithQuestionsPayload(payload);
     faithQuestionsJson.value = stringifyFaithQuestions(questions);
+    if (faithMaskCount && !faithMaskCount.value) faithMaskCount.value = String(questions.length);
     if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = `Đã đọc ${questions.length} câu hỏi từ file JSON.`;
   } catch (error) {
     if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
@@ -1314,6 +1503,32 @@ formatFaithQuestionsButton?.addEventListener("click", () => {
   } catch (error) {
     if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
   }
+});
+
+generateFaithMasksButton?.addEventListener("click", () => {
+  try {
+    let questionCount = 0;
+    try {
+      questionCount = parseFaithQuestionsPayload(faithQuestionsJson.value).length;
+    } catch (error) {
+      if (!faithMaskCount?.value) throw error;
+    }
+    const maskCount = faithMaskCountValue(questionCount);
+    if (faithMaskCount) faithMaskCount.value = String(maskCount);
+    faithAdminMasks = generateFaithDefaultMasks(maskCount);
+    renderFaithMaskEditor();
+    if (faithDiscoveryMessage) {
+      faithDiscoveryMessage.textContent = `Đã tạo ${faithAdminMasks.length} vùng che tự động. Hãy kéo chỉnh cho khớp ảnh.`;
+    }
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+  }
+});
+
+clearFaithMasksButton?.addEventListener("click", () => {
+  faithAdminMasks = [];
+  renderFaithMaskEditor();
+  if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đã xóa toàn bộ vùng che của bộ hiện tại.";
 });
 
 faithDiscoveryForm?.addEventListener("submit", async (event) => {
@@ -1337,6 +1552,7 @@ faithDiscoveryForm?.addEventListener("submit", async (event) => {
       pickerImageUrl: faithPickerImageUrl.value.trim(),
       bannerImageUrl: faithBannerImageUrl.value.trim(),
       infographicUrl: faithInfographicUrl.value.trim(),
+      masks: normalizeFaithMasks(faithAdminMasks),
       questions,
     };
 

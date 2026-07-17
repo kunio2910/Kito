@@ -1565,10 +1565,484 @@ Cac truong trong form tao/sua noi dung:
 - styles.css
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
+---
+
+### **14.80. Hien tron anh chu de 16:9 trong man hinh chon chu de Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Van de:**
+- Anh `maria_khamphaductin_chonchude_banner.png` co kich thuoc **1672 x 941 px**.
+- Ty le thuc te khoang **1.7768**, gan bang 16:9 (**1.7778**) nhung khong trung tuyet doi.
+- Truoc do khung chu de dung `object-fit: cover`, nen trinh duyet co the cat nhe mep tren/duoi hoac trai/phai de fill kin khung.
+
+**Chinh sua:**
+- Doi anh chu de trong man hinh chon chu de sang `object-fit: contain`.
+- Giu khung chu de ty le **16:9** nhu hien tai.
+- Them mau nen nhe cho vung anh de khi anh gan 16:9 nhung khong khop tuyet doi van hien tron anh, khong bi mat noi dung.
+- Ho tro rieng che do toi de mau nen cua khung anh khong bi lech theme.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-contain`.
+
+**File lien quan:**
+- styles.css
+- faith-discovery.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.82. Xoa anh mau khung chon chu de Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Van de:**
+- Truoc do man hinh chon chu de co fallback anh mau `/assets/faith-picker-maria.jpg` cho bo cau hoi 12 cau.
+- Neu bo cau hoi chua nhap anh rieng hoac du lieu cu tung luu anh mau, website co the van hien anh mau thay vi anh hien tai do admin nhap.
+
+**Chinh sua:**
+- Bo fallback tu dong lay `/assets/faith-picker-maria.jpg` trong `faith-discovery.js`.
+- Them ham loc anh mau cu trong `faith-discovery.js` va `admin.js`:
+  - Neu du lieu cu co `/assets/faith-picker-maria.jpg` hoac `assets/faith-picker-maria.jpg` thi xem nhu chua co anh.
+  - Khi admin nhap URL anh moi, website se uu tien dung anh moi do.
+- Xoa file local `assets/faith-picker-maria.jpg`.
+- Cap nhat cache version:
+  - `faith-discovery.html`: `20260717-faith-picker-no-sample`.
+  - `admin.html`: `admin.js?v=20260717-faith-picker-no-sample`.
+
+**File lien quan:**
+- faith-discovery.js
+- admin.js
+- faith-discovery.html
+- admin.html
+- assets/faith-picker-maria.jpg
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da xac nhan file `assets/faith-picker-maria.jpg` khong con ton tai.
+- Da xac nhan source chi con chuoi `faith-picker-maria.jpg` trong danh sach legacy de chan du lieu cu.
+- Da kiem tra `admin.js` can ngoac: `{` = 393 va `}` = 393.
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 169 va `}` = 169.
+- Da kiem tra `styles.css` can ngoac: `{` = 935 va `}` = 935.
+
+---
+
+### **14.83. Lam dep man hinh chon chu de Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them dong mo ta nhe duoi tieu de: `Chon mot hanh trinh, tra loi cau hoi va mo khoa tung manh hinh.`
+- Gom o tim kiem va sap xep vao mot toolbar nen trang/kem, bo goc va co bong do mem.
+- Them icon tim kiem ben trai o input tim kiem.
+- Lam card chu de song dong hon:
+  - Tang bo goc len mem hon.
+  - Them bong do.
+  - Hover nang card len nhe.
+  - Anh trong card phong nhe khi hover.
+- Giam khoang trong doc cua man hinh chon chu de:
+  - Giam padding tren/duoi cua shell.
+  - Giam `min-height` cua khung chon chu de de noi dung khong qua trong trai.
+- Them nen gradient kem/vang rat nhe cho khung chon chu de.
+- Ho tro rieng che do toi cho khung, toolbar va subtitle.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-polish`.
+
+**File lien quan:**
+- faith-discovery.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `styles.css` can ngoac: `{` = 958 va `}` = 958.
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 169 va `}` = 169.
+- Da xac nhan `faith-discovery.html` da dung cache version `20260717-faith-picker-polish`.
+
+---
+
+### **14.84. Popup hoan thanh sau khi mo het Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Khi nguoi choi tra loi dung het tat ca cau hoi va mo het tat ca manh hinh, website se danh dau trang thai hoan thanh.
+- Popup cau hoi cuoi van tu dong dong sau 3 giay nhu truoc.
+- Sau khi popup cau hoi cuoi dong xong, doi them 3 giay roi hien popup thong bao:
+  - `Ban da hoan thanh kham pha !`
+- Popup hoan thanh co nut `Quay Lai`.
+- Khi bam `Quay Lai`, website quay ve man hinh chon chu de va reset trang thai cau hoi da mo.
+- Neu nguoi dung bam nen ngoai popup hoan thanh hoac phim Esc, popup co the dong ma khong lam mat du lieu hien tai.
+- Khi bam quay lai chon chu de hoac bat dau lai, tat ca timer va popup hoan thanh duoc reset sach.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-complete-modal`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 181 va `}` = 181.
+- Da kiem tra `faith-discovery.js` can ngoac tron: `(` = 577 va `)` = 577.
+- Da kiem tra `styles.css` can ngoac: `{` = 969 va `}` = 969.
+- Da xac nhan `faith-discovery.html` da dung cache version `20260717-faith-complete-modal`.
+
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 935 va `}` = 935.
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 168 va `}` = 168.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-picker-contain`.
+
+---
+
+### **14.81. Anh chu de Kham Pha Duc Tin fit day khung 16:9**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Doi anh chu de trong man hinh chon chu de tu `object-fit: contain` sang `object-fit: cover`.
+- Giu khung chu de ty le **16:9** nhu hien tai.
+- Anh se phu day khung chu de, khong de khoang trong trong card.
+- Them `object-position: center center` de vung anh duoc canh giua khi trinh duyet can cat nhe mep anh.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-cover`.
+
+**Luu y thiet ke:**
+- Neu muon anh vua phu day khung vua it bi cat, nen xuat anh dung chuan **16:9 that su**.
+- Kich thuoc khuyen nghi:
+  - Nhe: **1280 x 720 px**.
+  - Dep hon: **1600 x 900 px**.
+  - Rat net: **1920 x 1080 px**.
+
+**File lien quan:**
+- styles.css
+- faith-discovery.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 859 va `}` = 859.
+- Da kiem tra JavaScript can ngoac: `{` = 139 va `}` = 139.
+- Da kiem tra `edgeGap = 0`, `tileGap = 0` trong `faith-discovery.js`.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-mask-align`.
+
+---
+
+### **14.72. Cong cu chinh vung che va khung diem Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them cong cu **Chinh vung che** trong trang quan ly, tab **Kham Pha Duc Tin**.
+- Moi bo cau hoi co the luu them thuoc tinh `masks`, la danh sach toa do vung che theo phan tram:
+  - `x`: vi tri trai.
+  - `y`: vi tri tren.
+  - `w`: chieu rong.
+  - `h`: chieu cao.
+- Nut **Tao vung che tu dong** tao nhanh so o che bang so cau hoi.
+- Admin co the keo tung o che de doi vi tri.
+- Admin co the keo goc duoi phai cua tung o che de doi kich thuoc.
+- Nut **Xoa vung che** xoa toan bo toa do vung che cua bo hien tai.
+- Khi luu bo cau hoi, `masks` duoc luu vao Firestore cung `sets`.
+- Man hinh choi **Kham Pha Duc Tin** uu tien dung `masks` neu so vung che bang so cau hoi.
+- Neu bo cau hoi cu chua co `masks`, website van tu chia luoi nhu truoc de khong loi du lieu cu.
+- Dua anh `Point.png` vao `assets/faith-score-box.png`.
+- Thay khung diem trong man hinh choi bang anh textbox moi.
+- Cap nhat cache version:
+  - `admin.html`: `20260717-faith-mask-editor`.
+  - `faith-discovery.html`: `20260717-faith-mask-editor`.
+
+**Huong dan su dung nhanh:**
+1. Vao trang quan ly > tab **Kham Pha Duc Tin**.
+2. Chon bo cau hoi can sua.
+3. Dam bao da co URL hinh infographic va JSON cau hoi.
+4. Bam **Tao vung che tu dong**.
+5. Keo tung o che cho khop tung the trong infographic.
+6. Keo goc duoi phai cua o che de chinh kich thuoc.
+7. Bam **Luu bo cau hoi**.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- assets/faith-score-box.png
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `admin.js` can ngoac: `{` = 381 va `}` = 381.
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 144 va `}` = 144.
+- Da kiem tra CSS can ngoac: `{` = 882 va `}` = 882.
+- Da kiem tra ton tai file `assets/faith-score-box.png`.
+
+---
+
+### **14.73. Xoa tung vung che trong trang quan ly**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them nut `x` tren moi o che trong cong cu **Chinh vung che** cua tab **Kham Pha Duc Tin**.
+- Khi bam nut `x`, chi xoa rieng vung che do khoi danh sach dang chinh.
+- Sau khi xoa, admin can bam **Luu bo cau hoi** de luu thay doi len Firestore.
+- Nut xoa chan thao tac keo de khong bi keo o che nham khi bam xoa.
+- Cap nhat cache version cua `admin.html` sang `20260717-faith-mask-delete`.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `admin.js` can ngoac: `{` = 392 va `}` = 392.
+- Da kiem tra CSS can ngoac: `{` = 901 va `}` = 901.
+- Da kiem tra `admin.html` da dung cache version `20260717-faith-mask-count`.
+
+---
+
+### **14.75. Man hinh chon chu de dung textbox 16:9**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Doi cac item trong man hinh chon chu de **Kham Pha Duc Tin** sang ti le **16:9**.
+- Dua anh `textbox.png` vao project tai `assets/faith-picker-textbox.png`.
+- Dung anh textbox lam nen/khung cho moi item chu de.
+- Neu item co anh chu de, anh van duoc hien thi trong cung khung 16:9 voi opacity nhe de giu cam giac co hinh minh hoa.
+- Giu lai tieu de va so cau hoi tren item, khong xoa text khi item co anh nhu logic cu.
+- Them file rollback `ROLLBACK_FAITH_PICKER_20260717.txt` de luu lai dinh dang picker truoc khi doi sang textbox 16:9.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-textbox`.
+
+**File rollback:**
+- `ROLLBACK_FAITH_PICKER_20260717.txt`
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- assets/faith-picker-textbox.png
+- ROLLBACK_FAITH_PICKER_20260717.txt
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 144 va `}` = 144.
+- Da kiem tra CSS can ngoac: `{` = 901 va `}` = 901.
+- Da kiem tra ton tai file `assets/faith-picker-textbox.png`.
+- Da kiem tra ton tai file rollback `ROLLBACK_FAITH_PICKER_20260717.txt`.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-picker-textbox`.
+
+---
+
+### **14.76. Rollback man hinh chon chu de ve anh va giu ti le 16:9**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Rollback giao dien man hinh chon chu de **Kham Pha Duc Tin** ve kieu hien thi anh nhu truoc.
+- Van giu khung item chu de theo ti le **16:9**.
+- Neu chu de co anh, card hien thi anh full khung va khong hien text de giong dinh dang cu.
+- Neu chu de chua co anh, card van hien text fallback nhu truoc.
+- Khong xoa asset `assets/faith-picker-textbox.png`, chi ghi de CSS de rollback de khi can van co the dung lai.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-rollback-16x9`.
+
+**Xu ly du lieu mau Chua Jesu:**
+- Da kiem tra source local va phat hien file mau `Puzzle Jesu.json`.
+- Da xoa file local `Puzzle Jesu.json`.
+- Viec xoa file local nay khong anh huong den du lieu da nhap tren Firestore/trang quan ly.
+- Cac ket qua con nhac den Chua Jesu chi nam trong file ghi chu nghiep vu cu, khong phai du lieu chay website.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- Puzzle Jesu.json
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 144 va `}` = 144.
+- Da kiem tra CSS can ngoac: `{` = 913 va `}` = 913.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-picker-rollback-16x9`.
+- Da kiem tra file `Puzzle Jesu.json` khong con ton tai trong source.
+
+---
+
+### **14.77. Tim kiem, sap xep va phan trang chu de Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them chuc nang **Tim kiem** trong man hinh chon chu de **Kham Pha Duc Tin**.
+- Them chuc nang **Sap xep** chu de:
+  - Mac dinh.
+  - A -> Z.
+  - Z -> A.
+  - Nhieu cau hoi nhat.
+  - It cau hoi nhat.
+- Gioi han hien thi **12 chu de moi trang**.
+- Neu vuot qua 12 chu de, hien so trang phia duoi danh sach giong man hinh xem tat ca.
+- Khi tim kiem hoac doi sap xep, trang tu dong quay ve trang 1.
+- Van giu giao dien card chu de ti le **16:9** da rollback o muc 14.76.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-search-page`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 168 va `}` = 168.
+- Da kiem tra CSS can ngoac: `{` = 922 va `}` = 922.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-picker-search-page`.
+
+---
+
+### **14.78. Chuyen Puzzle Hon nhan cong giao sang JSON va thu nho khung chu de**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Doc file Word `Puzzle Hon nhan cong giao.docx` tu thu muc Downloads.
+- Chuyen noi dung thanh file JSON dung format cho man hinh **Kham Pha Duc Tin**.
+- Tao file `Puzzle Hon nhan cong giao.json` trong project.
+- File JSON gom **12 cau hoi** ve Hon nhan Cong giao.
+- Thu nho khung chu de trong man hinh chon chu de **Kham Pha Duc Tin**.
+- Van giu khung chu de theo ti le **16:9**.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-small-json`.
+
+**File lien quan:**
+- Puzzle Hon nhan cong giao.json
+- faith-discovery.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra file JSON hop le bang `ConvertFrom-Json`.
+- So cau hoi: 12.
+- Cau dau: `Y dinh cua Thien Chua`.
+- Cau cuoi: `Huong den que troi`.
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 168 va `}` = 168.
+- Da kiem tra CSS can ngoac: `{` = 927 va `}` = 927.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-picker-small-json`.
+
+---
+
+### **14.79. Tang kich thuoc khung chu de them 50%**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Tang kich thuoc khung chu de trong man hinh chon chu de **Kham Pha Duc Tin** them 50% so voi cau hinh truoc.
+- Chieu rong toi da tang tu `220px` len `330px`.
+- Grid moi dung `minmax(270px, 330px)` tren desktop.
+- Van giu khung chu de theo ti le **16:9**.
+- Tren mobile, khung chu de hien 1 cot de de nhin va de bam.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-picker-150`.
+
+**File lien quan:**
+- faith-discovery.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `faith-discovery.js` can ngoac: `{` = 168 va `}` = 168.
+- Da kiem tra CSS can ngoac: `{` = 932 va `}` = 932.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-picker-150`.
+
+**Kiem tra:**
+- Da kiem tra `admin.js` can ngoac: `{` = 386 va `}` = 386.
+- Da kiem tra CSS can ngoac: `{` = 884 va `}` = 884.
+- Da kiem tra `admin.html` da dung cache version `20260717-faith-mask-delete`.
+
+---
+
+### **14.74. Nhap so luong hinh che trong trang quan ly**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them textbox **So hinh che** trong cong cu **Chinh vung che** cua tab **Kham Pha Duc Tin**.
+- Khi bam **Tao vung che tu dong**, he thong uu tien dung so trong textbox.
+- Neu textbox trong, he thong dung so cau hoi trong JSON lam so vung che.
+- Khi upload file JSON cau hoi, neu textbox dang trong thi tu dien bang so cau hoi doc duoc.
+- Khi chon bo cau hoi da co vung che, textbox hien so vung che hien tai.
+- Gioi han so hinh che tu 1 den 80 de tranh tao qua nhieu o lam trang quan ly bi nang.
+- Cap nhat cache version cua `admin.html` sang `20260717-faith-mask-count`.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
 **Kiem tra:**
 - Da kiem tra CSS can ngoac: `{` = 851 va `}` = 851.
 - Da kiem tra JavaScript can ngoac: `{` = 139 va `}` = 139.
 - Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-full-panel-34`.
+
+---
+
+### **14.69. Canh khoang ho cho cac o che infographic**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Chinh lai cong thuc ve cac o che trong man hinh tra loi **Kham Pha Duc Tin**.
+- Cac o che co khoang ho deu voi duong vien trai, phai, tren, duoi cua khung infographic.
+- Them khe nho giua cac o che de khong bi dinh sat nhau va khong cham duong ke ngoai.
+- Van giu ty le khung infographic **3:4** va cach chia:
+  - 12 manh: 3 cot x 4 hang.
+  - 20 manh: 4 cot x 5 hang.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-mask-gap`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 851 va `}` = 851.
+- Da kiem tra JavaScript can ngoac: `{` = 139 va `}` = 139.
+- Da kiem tra `tileGap = 0`, cac o che cham nhau, van giu `edgeGap = 1.2` cho vien ngoai.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-mask-touch`.
+
+---
+
+### **14.71. Canh deu luoi o che voi anh infographic**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Sua nguyen nhan cac o che nhin khong canh deu nhau trong man hinh **Kham Pha Duc Tin**.
+- Bo cach thu nho luoi bang phan tram trong JavaScript vi cach nay lam duong chia hang/cot lech nhe so voi anh infographic.
+- Dat `edgeGap = 0` va `tileGap = 0` de cac o che chia deu dung theo luoi 3x4 hoac 4x5.
+- Tao khoang cach voi vien ngoai bang CSS cho ca anh va lop che cung luc, giup o che khong cham vien nhung van canh dung voi anh.
+- Bo bo goc cua tung o che ben trong de cac duong chia thang, khong tao khe lech o diem giao nhau.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-mask-align`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 851 va `}` = 851.
+- Da kiem tra JavaScript can ngoac: `{` = 139 va `}` = 139.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-mask-gap`.
+
+---
+
+### **14.70. Bo khe trong giua cac o che infographic**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Chinh lai cac o che trong man hinh tra loi **Kham Pha Duc Tin** de cac o ben trong cham nhau.
+- Bo khoang trong giua cac o che, tranh lo anh infographic o cac khe doc/ngang.
+- Van giu khoang ho voi vien ngoai cua khung infographic de cac o che khong cham duong ke trai, phai, tren, duoi.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-mask-touch`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
 
 ---
 

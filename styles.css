@@ -5600,3 +5600,738 @@ body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap img {
     margin-bottom: 12px;
   }
 }
+
+/* 14.71. Canh deu luoi o che voi anh infographic */
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap img {
+  box-sizing: border-box;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
+  inset: 8px;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-mask-tile {
+  border: 0;
+  border-radius: 0;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-mask-tile::before {
+  inset: 0;
+  border-radius: 0;
+}
+
+@media (max-width: 680px) {
+  body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+    padding: 5px;
+  }
+
+  body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
+    inset: 5px;
+  }
+}
+
+/* 14.72. Cong cu chinh vung che va khung diem Kham Pha Duc Tin */
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+  padding: 0;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
+  inset: 0;
+}
+
+.faith-mask-admin {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px dashed rgba(184, 121, 40, 0.45);
+  border-radius: 8px;
+  background: rgba(255, 248, 232, 0.58);
+}
+
+.faith-mask-admin-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.faith-mask-admin-head h3 {
+  margin: 0 0 4px;
+  color: var(--brown);
+}
+
+.faith-mask-admin-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.faith-mask-admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.faith-mask-count-field {
+  display: grid;
+  min-width: 140px;
+  gap: 4px;
+  margin: 0;
+}
+
+.faith-mask-count-field span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.faith-mask-count-field input {
+  min-height: 40px;
+  padding: 0 12px;
+}
+
+.faith-mask-editor {
+  position: relative;
+  display: none;
+  width: min(100%, 720px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--cream);
+}
+
+.faith-mask-editor.show {
+  display: block;
+}
+
+.faith-mask-editor img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+.faith-mask-editor-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.faith-mask-editor-tile {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid rgba(255, 216, 122, 0.95);
+  background: rgba(38, 22, 13, 0.72);
+  color: #fff7dc;
+  cursor: move;
+  touch-action: none;
+  font-weight: 800;
+}
+
+.faith-mask-editor-tile span {
+  display: grid;
+  width: 28px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: #c78318;
+}
+
+.faith-mask-editor-delete {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: grid;
+  width: 24px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 50%;
+  background: rgba(166, 41, 24, 0.94);
+  color: #fff;
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+}
+
+.faith-mask-editor-delete:hover,
+.faith-mask-editor-delete:focus-visible {
+  background: #d23824;
+  outline: 2px solid rgba(255, 220, 138, 0.95);
+  outline-offset: 2px;
+}
+
+.faith-mask-editor-tile i {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  border-top: 2px solid rgba(255, 255, 255, 0.9);
+  border-left: 2px solid rgba(255, 255, 255, 0.9);
+  background: rgba(199, 131, 24, 0.9);
+  cursor: nwse-resize;
+}
+
+body.faith-page .faith-visual-card .faith-score-card {
+  min-width: 230px;
+  min-height: 76px;
+  padding: 12px 30px 12px 68px;
+  border: 0;
+  background: url("assets/faith-score-box.png") center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+
+body.faith-page .faith-visual-card .faith-score-card span {
+  display: none;
+}
+
+body.faith-page .faith-visual-card .faith-score-card strong {
+  color: #5b2b14;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-visual-card .faith-score-card {
+  background: url("assets/faith-score-box.png") center / 100% 100% no-repeat;
+}
+
+@media (max-width: 680px) {
+  .faith-mask-admin-head {
+    display: grid;
+  }
+
+  .faith-mask-admin-actions {
+    justify-content: stretch;
+  }
+
+  .faith-mask-admin-actions button {
+    width: 100%;
+  }
+
+  body.faith-page .faith-visual-card .faith-score-card {
+    min-width: 210px;
+    justify-self: center;
+  }
+}
+
+/* 14.75. Man hinh chon chu de dung textbox 16:9 */
+body.faith-page.faith-choosing-set .faith-picker-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(14px, 2vw, 24px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  padding: clamp(18px, 2vw, 28px) clamp(24px, 3vw, 42px) clamp(18px, 2vw, 28px) clamp(76px, 7vw, 112px);
+  border: 0;
+  border-radius: 16px;
+  background:
+    linear-gradient(90deg, rgba(255, 250, 236, 0.94), rgba(255, 250, 236, 0.82)),
+    url("assets/faith-picker-textbox.png") center / 100% 100% no-repeat;
+  color: #5a2d16;
+  box-shadow: 0 14px 28px rgba(107, 67, 22, 0.14);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item:hover,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px rgba(107, 67, 22, 0.2);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item-image {
+  position: absolute;
+  z-index: 0;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image::after {
+  display: none;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item > span,
+body.faith-page.faith-choosing-set .faith-picker-item > strong,
+body.faith-page.faith-choosing-set .faith-picker-item > small {
+  position: relative;
+  z-index: 2;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item strong,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image > strong {
+  color: #5a2d16;
+  text-shadow: none;
+  font-size: clamp(18px, 1.5vw, 26px);
+  line-height: 1.22;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item span,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image > span {
+  width: fit-content;
+  background: rgba(255, 241, 207, 0.92);
+  color: #9b5b12;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image > small,
+body.faith-page.faith-choosing-set .faith-picker-item small {
+  color: #8a5d2d;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item,
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  background:
+    linear-gradient(90deg, rgba(52, 35, 21, 0.92), rgba(52, 35, 21, 0.8)),
+    url("assets/faith-picker-textbox.png") center / 100% 100% no-repeat;
+  color: #ffe6b5;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item strong,
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item.has-image > strong {
+  color: #ffe6b5;
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-item,
+  body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+    padding-left: 72px;
+    border-radius: 12px;
+  }
+}
+
+/* 14.76. Rollback picker ve anh nhu cu nhung giu ti le 16:9 */
+body.faith-page.faith-choosing-set .faith-picker-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item:not(.has-image) {
+  display: grid;
+  gap: 7px;
+  align-content: center;
+  padding: 18px;
+  border: 1px solid rgba(183, 132, 62, 0.36);
+  border-radius: 14px;
+  background: rgba(255, 252, 242, 0.96);
+  color: #4b2a17;
+  box-shadow: 0 12px 24px rgba(107, 67, 22, 0.12);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  align-content: space-between;
+  padding: 0;
+  border: 1px solid rgba(183, 132, 62, 0.36);
+  border-radius: 14px;
+  background: #2d2016;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(107, 67, 22, 0.12);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image::after {
+  display: none;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item-image {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
+  opacity: 1;
+  pointer-events: none;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item:not(.has-image) {
+  background: #302116;
+  border-color: rgba(184, 121, 40, 0.58);
+  color: #fff4e3;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  background: #24170f;
+  border-color: rgba(218, 154, 55, 0.78);
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-item,
+  body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+    padding-left: 0;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-item:not(.has-image) {
+    padding: 16px;
+  }
+}
+
+/* 14.77. Tim kiem, sap xep va phan trang chu de Kham Pha Duc Tin */
+body.faith-page.faith-choosing-set .faith-picker-tools {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  width: min(100%, 720px);
+  margin: 18px auto 0;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-tools label {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-tools span {
+  color: #9b5b12;
+  font-weight: 800;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-tools input,
+body.faith-page.faith-choosing-set .faith-picker-tools select {
+  width: 260px;
+  max-width: 100%;
+  min-height: 42px;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-pagination {
+  margin-top: 22px;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-tools span {
+  color: #ffd98a;
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-tools {
+    display: grid;
+    justify-content: stretch;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-tools input,
+  body.faith-page.faith-choosing-set .faith-picker-tools select {
+    width: 100%;
+  }
+}
+
+/* 14.78. Thu nho khung chu de Kham Pha Duc Tin va giu ti le 16:9 */
+body.faith-page.faith-choosing-set .faith-picker-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+  justify-content: center;
+  gap: clamp(12px, 1.7vw, 20px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-item,
+  body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+    max-width: none;
+  }
+}
+
+/* 14.79. Tang kich thuoc khung chu de them 50% va giu ti le 16:9 */
+body.faith-page.faith-choosing-set .faith-picker-grid {
+  grid-template-columns: repeat(auto-fit, minmax(270px, 330px));
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  max-width: 330px;
+  aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-item,
+  body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+    max-width: none;
+  }
+}
+
+/* 14.81. Anh chu de fit day khung 16:9 */
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  background: #fff7e8;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item-image {
+  object-fit: cover;
+  object-position: center center;
+  background: #fff7e8;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item.has-image,
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item-image {
+  background: #24170f;
+}
+
+/* 14.83. Lam dep man hinh chon chu de Kham Pha Duc Tin */
+body.faith-page.faith-choosing-set .faith-shell {
+  padding-top: clamp(14px, 2vw, 24px);
+  padding-bottom: clamp(14px, 2vw, 24px);
+}
+
+body.faith-page.faith-choosing-set .faith-set-picker {
+  min-height: auto;
+  padding: clamp(24px, 3vw, 42px);
+  justify-content: flex-start;
+  background:
+    radial-gradient(circle at 12% 16%, rgba(247, 197, 108, 0.16), transparent 30%),
+    radial-gradient(circle at 88% 18%, rgba(255, 232, 181, 0.22), transparent 28%),
+    linear-gradient(135deg, rgba(255, 253, 246, 0.96), rgba(255, 246, 225, 0.78));
+  box-shadow: 0 20px 50px rgba(118, 74, 24, 0.12);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head {
+  margin-top: clamp(52px, 6vh, 72px);
+  text-align: center;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head h2 {
+  margin-bottom: 10px;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head .faith-picker-subtitle {
+  display: block;
+  max-width: 620px;
+  margin: 0 auto;
+  color: #8a5d2d;
+  font-size: clamp(15px, 1.25vw, 18px);
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-tools {
+  width: fit-content;
+  max-width: 100%;
+  margin: clamp(18px, 2.4vw, 28px) auto 0;
+  padding: 14px;
+  align-items: end;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(202, 143, 54, 0.24);
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(118, 74, 24, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-tools label {
+  min-width: min(260px, 100%);
+}
+
+body.faith-page.faith-choosing-set .faith-search-label {
+  position: relative;
+}
+
+body.faith-page.faith-choosing-set .faith-search-label::after {
+  content: "⌕";
+  position: absolute;
+  left: 13px;
+  bottom: 9px;
+  color: #b87928;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+body.faith-page.faith-choosing-set .faith-search-label input {
+  padding-left: 40px;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-grid {
+  margin-top: clamp(26px, 4vh, 42px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  border-radius: 16px;
+  box-shadow: 0 14px 26px rgba(118, 74, 24, 0.12);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  border: 1px solid rgba(202, 143, 54, 0.46);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item-image {
+  transition: transform 240ms ease, filter 240ms ease;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item:hover,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image:hover {
+  transform: translateY(-4px);
+  border-color: rgba(202, 143, 54, 0.86);
+  box-shadow: 0 22px 42px rgba(118, 74, 24, 0.22);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image:hover .faith-picker-item-image {
+  transform: scale(1.035);
+  filter: saturate(1.06) contrast(1.03);
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-set-picker {
+  background:
+    radial-gradient(circle at 12% 16%, rgba(202, 143, 54, 0.18), transparent 30%),
+    radial-gradient(circle at 88% 18%, rgba(255, 212, 125, 0.12), transparent 28%),
+    linear-gradient(135deg, rgba(35, 22, 14, 0.98), rgba(24, 16, 11, 0.96));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.34);
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-head .faith-picker-subtitle {
+  color: #f1d29c;
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-tools {
+  background: rgba(46, 30, 19, 0.86);
+  border-color: rgba(218, 154, 55, 0.36);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32);
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-set-picker {
+    padding: 76px 14px 22px;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-head {
+    margin-top: 0;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-tools {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+/* 14.84. Popup hoan thanh Kham Pha Duc Tin */
+body.faith-page .faith-completion-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  place-items: center;
+  padding: 18px;
+}
+
+body.faith-page .faith-completion-modal.show {
+  display: grid;
+}
+
+body.faith-page .faith-completion-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  padding: clamp(28px, 4vw, 46px);
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 219, 134, 0.34), transparent 36%),
+    linear-gradient(180deg, #fffaf0, #fff3da);
+  border: 1px solid rgba(202, 143, 54, 0.48);
+  border-radius: 22px;
+  box-shadow: 0 28px 70px rgba(71, 42, 18, 0.26);
+}
+
+body.faith-page .faith-completion-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: linear-gradient(180deg, #f4b83c, #c27a12);
+  box-shadow: 0 12px 26px rgba(194, 122, 18, 0.28);
+  font-size: 34px;
+  line-height: 1;
+}
+
+body.faith-page .faith-completion-card h2 {
+  margin: 0;
+  color: #4a2a19;
+  font-family: var(--font-heading);
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.15;
+}
+
+body.faith-page .faith-completion-card p {
+  max-width: 380px;
+  margin: 12px auto 24px;
+  color: #7a5533;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+body.faith-page .faith-completion-card .primary-button {
+  min-width: 150px;
+  justify-content: center;
+}
+
+body.faith-page.faith-completion-open {
+  overflow: hidden;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-completion-card {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(202, 143, 54, 0.28), transparent 36%),
+    linear-gradient(180deg, #2d2016, #21160f);
+  border-color: rgba(218, 154, 55, 0.72);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
+}
+
+:root[data-theme="dark"] body.faith-page .faith-completion-card h2 {
+  color: #ffe3ad;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-completion-card p {
+  color: #f1d29c;
+}

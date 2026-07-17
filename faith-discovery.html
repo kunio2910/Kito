@@ -23,7 +23,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260717-faith-full-panel-34" />
+    <link rel="stylesheet" href="styles.css?v=20260717-faith-complete-modal" />
   </head>
   <body class="faith-page faith-choosing-set">
     <header class="site-header">
@@ -58,8 +58,26 @@
         <a class="faith-picker-home" id="faithPickerHomeButton" href="/">← Quay lại Trang chủ</a>
         <div class="faith-picker-head">
           <h2>Chọn chủ đề muốn khám phá</h2>
+          <p class="faith-picker-subtitle">Chọn một hành trình, trả lời câu hỏi và mở khóa từng mảnh hình.</p>
+        </div>
+        <div class="faith-picker-tools" aria-label="Tìm kiếm và sắp xếp chủ đề">
+          <label class="faith-search-label">
+            <span>Tìm kiếm</span>
+            <input id="faithSetSearch" type="search" placeholder="Nhập tên chủ đề..." />
+          </label>
+          <label>
+            <span>Sắp xếp</span>
+            <select id="faithSetSort">
+              <option value="default">Mặc định</option>
+              <option value="title-asc">A → Z</option>
+              <option value="title-desc">Z → A</option>
+              <option value="questions-desc">Nhiều câu hỏi nhất</option>
+              <option value="questions-asc">Ít câu hỏi nhất</option>
+            </select>
+          </label>
         </div>
         <div class="faith-picker-grid" id="faithSetPickerGrid"></div>
+        <div class="pagination faith-picker-pagination" id="faithSetPagination" aria-label="Phân trang chủ đề"></div>
       </section>
       <section class="faith-game" aria-label="Khám phá Đức Tin" hidden>
         <aside class="faith-question-card">
@@ -131,6 +149,16 @@
       </section>
     </div>
 
+    <div class="faith-completion-modal" id="faithCompletionModal" aria-hidden="true">
+      <div class="faith-question-modal-backdrop" data-faith-completion-close></div>
+      <section class="faith-completion-card" role="dialog" aria-modal="true" aria-labelledby="faithCompletionTitle" tabindex="-1">
+        <div class="faith-completion-icon" aria-hidden="true">★</div>
+        <h2 id="faithCompletionTitle">Bạn đã hoàn thành khám phá !</h2>
+        <p>Hãy chọn chủ đề khác để tiếp tục hành trình học hỏi đức tin.</p>
+        <button class="primary-button" type="button" id="faithCompletionBackButton">Quay Lại</button>
+      </section>
+    </div>
+
     <footer class="site-footer" id="contact">
       <div>
         <strong>Truyền Giáo Kitô</strong>
@@ -143,7 +171,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="data.js?v=20260717-url-infographic-size"></script>
-    <script src="faith-discovery.js?v=20260717-faith-full-panel-34"></script>
+    <script src="faith-discovery.js?v=20260717-faith-complete-modal"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

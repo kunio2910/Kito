@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260717-url-infographic-size" />
+    <link rel="stylesheet" href="styles.css?v=20260717-faith-mask-count" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -234,6 +234,27 @@
             </div>
           </label>
           <img class="image-preview" id="faithImagePreview" alt="Xem trước infographic" />
+          <div class="faith-mask-admin">
+            <div class="faith-mask-admin-head">
+              <div>
+                <h3>Chỉnh vùng che</h3>
+                <p>Kéo từng ô để canh đúng vị trí thẻ trong infographic. Kéo góc dưới phải để đổi kích thước ô.</p>
+              </div>
+              <div class="faith-mask-admin-actions">
+                <label class="faith-mask-count-field">
+                  <span>Số hình che</span>
+                  <input id="faithMaskCount" type="number" min="1" max="80" step="1" placeholder="Theo số câu hỏi" />
+                </label>
+                <button class="ghost-button" type="button" id="generateFaithMasksButton">Tạo vùng che tự động</button>
+                <button class="ghost-button" type="button" id="clearFaithMasksButton">Xóa vùng che</button>
+              </div>
+            </div>
+            <div class="faith-mask-editor" id="faithMaskEditor">
+              <img id="faithMaskEditorImage" alt="Ảnh chỉnh vùng che" />
+              <div class="faith-mask-editor-layer" id="faithMaskEditorLayer"></div>
+            </div>
+            <p class="backup-warning">Nếu các ô che chưa khớp ảnh, hãy kéo chỉnh rồi bấm Lưu bộ câu hỏi.</p>
+          </div>
           <label>
             <span>Upload bộ câu hỏi JSON</span>
             <input id="faithQuestionsFile" type="file" accept="application/json,.json" />
@@ -297,7 +318,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260717-url-infographic-size"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260716-faith-picker-card-image"></script>
+    <script src="admin.js?v=20260717-faith-picker-no-sample"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

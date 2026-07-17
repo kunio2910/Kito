@@ -2,10 +2,22 @@ const letters = ["A", "B", "C", "D"];
 let faithSets = [];
 let activeFaithSetIndex = 0;
 let activeFaithQuestions = [];
+let activeFaithMasks = [];
 let faithCurrentIndex = 0;
 let openedPieces = new Set();
 let faithModalIndex = null;
 let faithModalCloseTimer = null;
+let faithCompletionTimer = null;
+let faithCompletionPending = false;
+let faithCompletionShown = false;
+let faithSetPickerPage = 1;
+const faithSetPageSize = 12;
+const legacyFaithPickerSampleImages = ["/assets/faith-picker-maria.jpg", "assets/faith-picker-maria.jpg"];
+
+function cleanFaithPickerImageUrl(value) {
+  const imageUrl = String(value || "").trim();
+  return legacyFaithPickerSampleImages.includes(imageUrl) ? "" : imageUrl;
+}
 
 function normalizeFaithQuestion(question) {
   if (!question || typeof question !== "object") return null;
@@ -34,6 +46,25 @@ function normalizeFaithQuestions(questions) {
   return questions.map(normalizeFaithQuestion).filter(Boolean);
 }
 
+function normalizeFaithMask(mask) {
+  if (!mask || typeof mask !== "object") return null;
+  const x = Number(mask.x);
+  const y = Number(mask.y);
+  const w = Number(mask.w);
+  const h = Number(mask.h);
+  if ([x, y, w, h].some((value) => Number.isNaN(value))) return null;
+  return {
+    x: Math.max(0, Math.min(100, x)),
+    y: Math.max(0, Math.min(100, y)),
+    w: Math.max(1, Math.min(100, w)),
+    h: Math.max(1, Math.min(100, h)),
+  };
+}
+
+function normalizeFaithMasks(masks) {
+  return Array.isArray(masks) ? masks.map(normalizeFaithMask).filter(Boolean) : [];
+}
+
 function escapeFaithHtml(value) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -51,10 +82,11 @@ function normalizeFaithSet(set, index) {
   return {
     id: String(set.id || `faith-set-${index + 1}`).trim(),
     title: String(set.title || `Bộ ${index + 1}`).trim(),
-    
-    pickerImageUrl: String(set.pickerImageUrl || "").trim(),
+
+    pickerImageUrl: cleanFaithPickerImageUrl(set.pickerImageUrl),
     bannerImageUrl: String(set.bannerImageUrl || "").trim(),
     infographicUrl: String(set.infographicUrl || "").trim(),
+    masks: normalizeFaithMasks(set.masks),
     questions,
   };
 }
@@ -72,10 +104,11 @@ function settingsToFaithSets(settings) {
       {
         id: "legacy-faith-set",
         title: String(settings?.title || "Khám Phá Đức Tin").trim() || "Khám Phá Đức Tin",
-        
-        pickerImageUrl: String(settings?.pickerImageUrl || "").trim(),
+
+        pickerImageUrl: cleanFaithPickerImageUrl(settings?.pickerImageUrl),
         bannerImageUrl: String(settings?.bannerImageUrl || "").trim(),
         infographicUrl: String(settings?.infographicUrl || "").trim(),
+        masks: normalizeFaithMasks(settings?.masks),
         questions: legacyQuestions,
       },
     ];
@@ -140,6 +173,57 @@ function setFaithHeroBanner(imageUrl) {
   hero.classList.add("has-banner-image");
 }
 
+function visibleFaithSets() {
+  const searchInput = document.getElementById("faithSetSearch");
+  const sortSelect = document.getElementById("faithSetSort");
+  const keyword = String(searchInput?.value || "").trim().toLowerCase();
+  const sortValue = sortSelect?.value || "default";
+  const collator = new Intl.Collator("vi", { sensitivity: "base", numeric: true });
+
+  const filtered = faithSets
+    .map((set, index) => ({ set, index }))
+    .filter(({ set }) => {
+      if (!keyword) return true;
+      return `${set.title || ""} ${set.questions?.length || 0}`.toLowerCase().includes(keyword);
+    });
+
+  if (sortValue === "title-asc") {
+    filtered.sort((a, b) => collator.compare(a.set.title || "", b.set.title || ""));
+  } else if (sortValue === "title-desc") {
+    filtered.sort((a, b) => collator.compare(b.set.title || "", a.set.title || ""));
+  } else if (sortValue === "questions-desc") {
+    filtered.sort((a, b) => (b.set.questions?.length || 0) - (a.set.questions?.length || 0));
+  } else if (sortValue === "questions-asc") {
+    filtered.sort((a, b) => (a.set.questions?.length || 0) - (b.set.questions?.length || 0));
+  }
+
+  return filtered;
+}
+
+function renderFaithSetPagination(totalItems) {
+  const pagination = document.getElementById("faithSetPagination");
+  if (!pagination) return;
+  const pageCount = Math.ceil(totalItems / faithSetPageSize);
+  if (pageCount <= 1) {
+    pagination.innerHTML = "";
+    pagination.hidden = true;
+    return;
+  }
+
+  pagination.hidden = false;
+  pagination.innerHTML = Array.from({ length: pageCount }, (_, index) => {
+    const page = index + 1;
+    return `<button class="${page === faithSetPickerPage ? "active" : ""}" type="button" data-page="${page}">${page}</button>`;
+  }).join("");
+
+  pagination.querySelectorAll("button[data-page]").forEach((button) => {
+    button.addEventListener("click", () => {
+      faithSetPickerPage = Number(button.dataset.page) || 1;
+      renderSetPicker();
+    });
+  });
+}
+
 function renderSetPicker() {
   const grid = document.getElementById("faithSetPickerGrid");
   if (!grid) return;
@@ -149,8 +233,20 @@ function renderSetPicker() {
     return;
   }
 
-  grid.innerHTML = faithSets
-    .map((set, index) => `
+  const visibleSets = visibleFaithSets();
+  const pageCount = Math.max(1, Math.ceil(visibleSets.length / faithSetPageSize));
+  faithSetPickerPage = Math.min(Math.max(1, faithSetPickerPage), pageCount);
+  const start = (faithSetPickerPage - 1) * faithSetPageSize;
+  const pageItems = visibleSets.slice(start, start + faithSetPageSize);
+
+  if (!pageItems.length) {
+    grid.innerHTML = `<p class="admin-empty-note">Không tìm thấy chủ đề phù hợp.</p>`;
+    renderFaithSetPagination(visibleSets.length);
+    return;
+  }
+
+  grid.innerHTML = pageItems
+    .map(({ set, index }) => `
       <button class="faith-picker-item" type="button" data-index="${index}">
         <span>${set.questions.length} câu hỏi</span>
         <strong>${escapeFaithHtml(set.title || `Bộ ${index + 1}`)}</strong>
@@ -160,7 +256,7 @@ function renderSetPicker() {
 
   grid.querySelectorAll("button[data-index]").forEach((button) => {
     const set = faithSets[Number(button.dataset.index)];
-    const pickerImageUrl = set?.pickerImageUrl || (set?.questions.length === 12 ? "/assets/faith-picker-maria.jpg" : "");
+    const pickerImageUrl = cleanFaithPickerImageUrl(set?.pickerImageUrl);
 
     if (pickerImageUrl) {
       const image = document.createElement("img");
@@ -178,6 +274,7 @@ function renderSetPicker() {
 
     button.addEventListener("click", () => startFaithSet(Number(button.dataset.index)));
   });
+  renderFaithSetPagination(visibleSets.length);
 }
 
 function showSetPicker() {
@@ -213,6 +310,7 @@ function applyFaithSet(index, options = {}) {
 
   activeFaithSetIndex = faithSets[index] ? index : 0;
   activeFaithQuestions = selectedSet.questions;
+  activeFaithMasks = normalizeFaithMasks(selectedSet.masks);
   const title = document.getElementById("faithPageTitle");
   const subtitle = document.getElementById("faithPageSubtitle");
   if (title) title.textContent = "Khám Phá Đức Tin";
@@ -326,18 +424,35 @@ function buildFaithMasks() {
 
   const total = activeFaithQuestions.length || 1;
   const { columns, rows } = getFaithMaskGridSize(total);
+  const edgeGap = 0;
+  const tileGap = 0;
+  const tileHeight = (100 - edgeGap * 2 - tileGap * (rows - 1)) / rows;
+  const hasManualMasks = activeFaithMasks.length === activeFaithQuestions.length;
 
   maskGrid.innerHTML = activeFaithQuestions
     .map((_, index) => {
-      const row = Math.floor(index / columns);
-      const col = index % columns;
-      const isLastRow = row === rows - 1;
-      const remainingInLastRow = total - row * columns;
-      const cellsInRow = isLastRow ? remainingInLastRow : columns;
-      const width = 100 / cellsInRow;
-      const height = 100 / rows;
-      const left = col * width;
-      const top = row * height;
+      let left;
+      let top;
+      let tileWidth;
+      let height;
+
+      if (hasManualMasks) {
+        const mask = activeFaithMasks[index];
+        left = mask.x;
+        top = mask.y;
+        tileWidth = mask.w;
+        height = mask.h;
+      } else {
+        const row = Math.floor(index / columns);
+        const col = index % columns;
+        const isLastRow = row === rows - 1;
+        const remainingInLastRow = total - row * columns;
+        const cellsInRow = isLastRow ? remainingInLastRow : columns;
+        tileWidth = (100 - edgeGap * 2 - tileGap * (cellsInRow - 1)) / cellsInRow;
+        height = tileHeight;
+        left = edgeGap + col * (tileWidth + tileGap);
+        top = edgeGap + row * (tileHeight + tileGap);
+      }
 
       return `
         <button
@@ -345,7 +460,7 @@ function buildFaithMasks() {
           type="button"
           data-index="${index}"
           aria-label="Mở câu hỏi ${index + 1}"
-          style="left:${left}%;top:${top}%;width:${width}%;height:${height}%"
+          style="left:${left}%;top:${top}%;width:${tileWidth}%;height:${height}%"
         >
           <span class="faith-lock-icon" aria-hidden="true"></span>
         </button>
@@ -488,6 +603,54 @@ function openFaithQuestionModal(index) {
   }, 0);
 }
 
+function clearFaithCompletionTimer() {
+  if (faithCompletionTimer) {
+    window.clearTimeout(faithCompletionTimer);
+    faithCompletionTimer = null;
+  }
+}
+
+function isFaithCompleted() {
+  return activeFaithQuestions.length > 0 && openedPieces.size >= activeFaithQuestions.length;
+}
+
+function showFaithCompletionModal() {
+  if (!isFaithCompleted() || faithCompletionShown) return;
+  faithCompletionShown = true;
+  faithCompletionPending = false;
+  clearFaithCompletionTimer();
+  const modal = document.getElementById("faithCompletionModal");
+  if (!modal) return;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("faith-completion-open");
+  window.setTimeout(() => {
+    modal.querySelector(".faith-completion-card")?.focus?.();
+  }, 0);
+}
+
+function scheduleFaithCompletionModal() {
+  if (!isFaithCompleted() || faithCompletionShown) return;
+  clearFaithCompletionTimer();
+  faithCompletionTimer = window.setTimeout(showFaithCompletionModal, 3000);
+}
+
+function closeFaithCompletionModal() {
+  clearFaithCompletionTimer();
+  const modal = document.getElementById("faithCompletionModal");
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("faith-completion-open");
+}
+
+function resetFaithCompletionState() {
+  faithCompletionPending = false;
+  faithCompletionShown = false;
+  clearFaithCompletionTimer();
+  closeFaithCompletionModal();
+}
+
 function closeFaithQuestionModal() {
   if (faithModalCloseTimer) {
     window.clearTimeout(faithModalCloseTimer);
@@ -499,6 +662,9 @@ function closeFaithQuestionModal() {
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("faith-modal-open");
   faithModalIndex = null;
+  if (faithCompletionPending && isFaithCompleted()) {
+    scheduleFaithCompletionModal();
+  }
 }
 
 function syncFaithAnsweredState() {
@@ -574,6 +740,7 @@ function chooseFaithAnswer(selectedIndex) {
   }
 
   if (openedPieces.size >= activeFaithQuestions.length) {
+    faithCompletionPending = true;
     if (nextButton) nextButton.disabled = true;
     if (restartButton) restartButton.hidden = false;
     if (feedback) {
@@ -581,6 +748,10 @@ function chooseFaithAnswer(selectedIndex) {
     }
     if (modalFeedback) {
       modalFeedback.textContent = "Bạn đã mở toàn bộ infographic. Hãy tin và theo Chúa!";
+    }
+    const modal = document.getElementById("faithQuestionModal");
+    if (!modal?.classList.contains("show")) {
+      scheduleFaithCompletionModal();
     }
     return;
   }
@@ -615,6 +786,7 @@ function goToNextFaithModalQuestion() {
 
 
 function returnToFaithSetPicker() {
+  resetFaithCompletionState();
   faithCurrentIndex = 0;
   openedPieces = new Set();
   document.querySelectorAll(".faith-mask-tile").forEach((tile) => tile.classList.remove("is-open"));
@@ -622,6 +794,7 @@ function returnToFaithSetPicker() {
   showSetPicker();
 }
 function restartFaithGame() {
+  resetFaithCompletionState();
   faithCurrentIndex = 0;
   openedPieces = new Set();
   document.querySelectorAll(".faith-mask-tile").forEach((tile) => tile.classList.remove("is-open"));
@@ -652,11 +825,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("faithBackToSetsButton")?.addEventListener("click", returnToFaithSetPicker);
   document.getElementById("faithBackToTopicsButton")?.addEventListener("click", returnToFaithSetPicker);
   document.getElementById("faithModalNextButton")?.addEventListener("click", goToNextFaithModalQuestion);
+  document.getElementById("faithCompletionBackButton")?.addEventListener("click", returnToFaithSetPicker);
+  document.querySelectorAll("[data-faith-completion-close]").forEach((element) => {
+    element.addEventListener("click", closeFaithCompletionModal);
+  });
+  document.getElementById("faithSetSearch")?.addEventListener("input", () => {
+    faithSetPickerPage = 1;
+    renderSetPicker();
+  });
+  document.getElementById("faithSetSort")?.addEventListener("change", () => {
+    faithSetPickerPage = 1;
+    renderSetPicker();
+  });
   document.querySelectorAll("[data-faith-modal-close]").forEach((element) => {
     element.addEventListener("click", closeFaithQuestionModal);
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeFaithQuestionModal();
+    if (event.key === "Escape") {
+      closeFaithQuestionModal();
+      closeFaithCompletionModal();
+    }
   });
   document.dispatchEvent(new CustomEvent("kito:content-rendered"));
 });
