@@ -5270,3 +5270,333 @@ body.faith-page.faith-choosing-set .faith-picker-item.has-image {
 body.faith-page.faith-choosing-set .faith-picker-item.has-image::after {
   display: none;
 }
+
+/* 14.62. Popup cau hoi khi bam vao o khoa infographic */
+body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
+  pointer-events: auto;
+}
+
+body.faith-page .faith-mask-tile {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+body.faith-page .faith-mask-tile:hover:not(.is-open) {
+  filter: brightness(1.08);
+}
+
+body.faith-page .faith-mask-tile:focus-visible {
+  outline: 3px solid #ffc46b;
+  outline-offset: -4px;
+}
+
+body.faith-page .faith-mask-tile.is-open {
+  pointer-events: none;
+}
+
+body.faith-page .faith-question-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+  place-items: center;
+  padding: 24px;
+}
+
+body.faith-page .faith-question-modal.show {
+  display: grid;
+}
+
+body.faith-page .faith-question-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 14, 9, 0.64);
+  backdrop-filter: blur(4px);
+}
+
+body.faith-page .faith-question-modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 720px);
+  max-height: min(92vh, 860px);
+  overflow: auto;
+  padding: 28px;
+  border: 2px solid rgba(213, 151, 54, 0.62);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 253, 244, 0.98), rgba(255, 247, 228, 0.98));
+  box-shadow: 0 24px 70px rgba(37, 23, 12, 0.38);
+}
+
+body.faith-page .faith-question-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(184, 121, 40, 0.5);
+  border-radius: 999px;
+  background: #fff8ed;
+  color: #7e4a16;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+body.faith-page .faith-question-modal-card .faith-question-badge {
+  display: flex;
+  margin: 0 auto 18px;
+}
+
+body.faith-page .faith-question-modal-card .faith-question-head {
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+body.faith-page .faith-question-modal-card .faith-question-head span {
+  display: none;
+}
+
+body.faith-page .faith-question-modal-card .faith-question-head strong {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+  color: #7d4615;
+  font-family: var(--font-heading);
+  font-size: 28px;
+  text-transform: none;
+}
+
+body.faith-page .faith-question-modal-card h2 {
+  margin: 0 0 20px;
+  color: #5d2f19;
+  font-family: var(--font-heading);
+  font-size: clamp(24px, 2.2vw, 36px);
+  line-height: 1.25;
+  text-align: center;
+}
+
+body.faith-page .faith-question-modal-card .faith-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+body.faith-page .faith-question-modal-card .faith-actions button {
+  width: 100%;
+  min-width: 0;
+}
+
+body.faith-page.faith-modal-open {
+  overflow: hidden;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-question-modal-card {
+  background: linear-gradient(180deg, #2d2016, #24180f);
+  border-color: #9f6b28;
+  color: #fff2db;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-question-modal-card h2,
+:root[data-theme="dark"] body.faith-page .faith-question-modal-card .faith-question-head strong {
+  color: #ffe3ad;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-question-modal-close {
+  background: #342416;
+  border-color: #9f6b28;
+  color: #ffd58a;
+}
+
+@media (max-width: 680px) {
+  body.faith-page .faith-question-modal {
+    padding: 12px;
+  }
+
+  body.faith-page .faith-question-modal-card {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+
+  body.faith-page .faith-question-modal-card .faith-question-badge {
+    padding-right: 52px;
+    font-size: 14px;
+  }
+
+  body.faith-page .faith-question-modal-card .faith-question-head strong {
+    font-size: 24px;
+  }
+
+  body.faith-page .faith-question-modal-card h2 {
+    font-size: 23px;
+  }
+
+  body.faith-page .faith-question-modal-card .faith-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 14.63. Chi dung popup cau hoi, an panel cau hoi ben trai */
+body.faith-page:not(.faith-choosing-set) .faith-game {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card {
+  display: none !important;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+  width: min(100%, 1180px);
+  margin: 0 auto;
+}
+
+body.faith-page .faith-question-modal-card .faith-actions {
+  grid-template-columns: minmax(140px, 220px);
+  justify-content: center;
+}
+
+/* 14.64. Nut quay lai chon chu de trong panel infographic */
+body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+  position: relative;
+}
+
+body.faith-page .faith-topic-back-button {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 3;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid rgba(184, 121, 40, 0.55);
+  border-radius: 999px;
+  background: rgba(255, 248, 232, 0.92);
+  color: #a46112;
+  box-shadow: 0 10px 22px rgba(107, 67, 22, 0.14);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+body.faith-page .faith-topic-back-button:hover {
+  color: #5d2f19;
+  border-color: rgba(184, 121, 40, 0.78);
+  background: #fff8ed;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-topic-back-button {
+  background: rgba(48, 33, 22, 0.88);
+  color: #ffd27c;
+  border-color: rgba(218, 154, 55, 0.72);
+}
+
+@media (max-width: 680px) {
+  body.faith-page .faith-topic-back-button {
+    position: static;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+}
+
+/* 14.65. Canh mask infographic theo ty le anh 3:4 */
+body.faith-page .faith-mask-grid {
+  overflow: hidden;
+}
+
+body.faith-page .faith-mask-tile {
+  box-sizing: border-box;
+  padding: 0;
+  border: 1px solid rgba(255, 236, 187, 0.44);
+}
+
+body.faith-page .faith-mask-tile::before {
+  inset: 6px;
+  border-radius: 10px;
+}
+
+body.faith-page .faith-mask-tile .faith-lock-icon {
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.28));
+}
+
+/* 14.66. Thu nho infographic trong Kham Pha Duc Tin */
+body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+  width: min(100%, 860px);
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+  width: min(100%, 760px);
+  margin: 0 auto;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap img {
+  width: auto;
+  max-width: 100%;
+  max-height: min(72vh, 820px);
+  margin: 0 auto;
+}
+
+@media (max-width: 680px) {
+  body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+    width: 100%;
+  }
+
+  body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap img {
+    width: 100%;
+    max-height: none;
+  }
+}
+
+/* 14.68. Full panel infographic 3:4 va tach nut quay lai chon chu de */
+body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  padding-top: 18px;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-topic-back-button {
+  position: static;
+  width: fit-content;
+  min-height: 42px;
+  margin: 0 0 14px;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-unlock-title {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  min-height: 0;
+  margin: 0 auto;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  min-height: 0;
+  object-fit: cover;
+}
+
+@media (max-width: 680px) {
+  body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+    width: 100%;
+    padding: 14px 10px;
+  }
+
+  body.faith-page:not(.faith-choosing-set) .faith-topic-back-button {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+}

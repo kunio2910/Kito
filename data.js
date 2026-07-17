@@ -220,7 +220,10 @@ if (document.readyState === "loading") {
 }
 
 function slugifyText(value) {
-  const repaired = typeof repairMojibakeText === "function" ? repairMojibakeText(value) : value;
+  let repaired = typeof repairMojibakeText === "function" ? repairMojibakeText(value) : value;
+  if (typeof repairMojibakeText === "function" && /(?:Ã|Ä|Æ|Â|â|áº|á»)/.test(String(repaired || ""))) {
+    repaired = repairMojibakeText(repaired);
+  }
   return String(repaired || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -232,15 +235,19 @@ function slugifyText(value) {
 }
 
 function contentSlug(item = {}) {
-  return item.slug || slugifyText(item.title || item.ref || item.meta || item.id) || String(item.id || "");
+  return slugifyText(item.title || item.ref || item.meta || item.slug || item.id) || String(item.id || "");
 }
 
 function contentRouteSlug(item = {}) {
   const baseSlug = contentSlug(item);
   const itemId = String(item.id || "").trim();
   if (!itemId) return baseSlug;
-  if (baseSlug.endsWith(`--${itemId}`)) return baseSlug;
-  return `${baseSlug}--${itemId}`;
+  const safeId = itemId.replace(/[\/\\?#]+/g, "-");
+  const idAsSlug = slugifyText(safeId);
+  const baseWithoutId = idAsSlug
+    ? baseSlug.replace(new RegExp(`-+${idAsSlug}$`), "").replace(/-+$/g, "")
+    : baseSlug;
+  return `${baseWithoutId || baseSlug}--${safeId}`;
 }
 
 function contentDetailUrl(type, item = {}) {
@@ -249,7 +256,7 @@ function contentDetailUrl(type, item = {}) {
   if (!path || !slug) {
     return `detail.html?type=${encodeURIComponent(type || "")}&id=${encodeURIComponent(item.id || "")}`;
   }
-  return `/${path}/${encodeURIComponent(slug)}`;
+  return `/${path}/${encodeURI(slug)}`;
 }
 
 function categoryUrl(type) {

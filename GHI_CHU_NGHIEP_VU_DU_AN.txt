@@ -1565,6 +1565,11 @@ Cac truong trong form tao/sua noi dung:
 - styles.css
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 851 va `}` = 851.
+- Da kiem tra JavaScript can ngoac: `{` = 139 va `}` = 139.
+- Da kiem tra `faith-discovery.html` da dung cache version `20260717-faith-full-panel-34`.
+
 ---
 
 ## **16. TONG KET CONG VIEC NGAY 16/07/2026**
@@ -2464,3 +2469,201 @@ Vi du neu dap an dung la **C**, truong answer phai la:
 - Da xac nhan CSS an lop overlay va dat padding card co anh ve 0.
 - CSS can ngoac: { = 795 va } = 795.
 - faith-discovery.js can ngoac: { = 95, } = 95, ( = 311 va ) = 311.
+
+---
+
+### **14.62. Popup cau hoi khi bam vao o khoa infographic**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Trong man hinh tra loi cua **Kham Pha Duc Tin**, cac o che infographic co the bam duoc.
+- Khi bam vao mot o che, he thong mo popup cau hoi va dap an tuong ung voi manh infographic do.
+- Popup dung chung du lieu cau hoi hien tai, co tieu de cau hoi, chu de, dap an A/B/C/D, khung giai thich va nut dong.
+- Tra loi dung trong popup se mo dung manh infographic, cap nhat diem va dong bo voi panel cau hoi ben trai.
+- Tra loi sai trong popup chi khoa dap an sai vua chon va cho phep thu lai.
+- Cac manh da mo khong con bat click de tranh thao tac lai khong can thiet.
+- Ho tro dong popup bang nut Dong, nut X hoac phim Escape.
+- Cap nhat cache version CSS/JS sang `20260717-faith-tile-popup`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra HTML va JavaScript co day du cac ID popup: `faithQuestionModal`, `faithModalOptions`.
+- Da kiem tra CSS can ngoac: `{` = 823 va `}` = 823.
+- Da kiem tra JavaScript can ngoac: `{` = 125, `}` = 125, `(` = 402 va `)` = 402.
+
+---
+
+### **14.63. Chi dung popup cau hoi trong man hinh tra loi Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- An panel cau hoi va dap an ben trai trong man hinh tra loi **Kham Pha Duc Tin**.
+- Man hinh tra loi chi con panel infographic; nguoi dung bam vao tung o khoa de mo popup cau hoi.
+- Bo nut `Cau tiep theo` trong popup de dung luong moi: tra loi xong thi dong popup va nguoi dung tu chon o tiep theo.
+- Sau khi tra loi dung trong popup, popup tu dong dong sau 3 giay.
+- Khi dong popup thu cong hoac mo cau hoi khac, he thong tu xoa timer cu de tranh popup dong sai thoi diem.
+- Cap nhat cache version CSS/JS sang `20260717-faith-popup-only`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra HTML khong con `faithModalNextButton`.
+- Da kiem tra CSS can ngoac: `{` = 827 va `}` = 827.
+- Da kiem tra JavaScript can ngoac: `{` = 128, `}` = 128, `(` = 410 va `)` = 410.
+
+---
+
+### **14.64. Them nut quay lai chon chu de trong panel infographic**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them nut `Quay lai chon chu de` trong panel infographic cua man hinh tra loi **Kham Pha Duc Tin**.
+- Nut nam goc tren ben trai panel infographic tren desktop, dung giao dien pill vang nhat dong bo voi nut `Quay lai Trang chu`.
+- Khi bam nut, he thong quay lai man hinh chon chu de va reset tien do cau hoi hien tai theo luong `returnToFaithSetPicker`.
+- Tren mobile, nut chuyen ve dang full-width nam tren noi dung panel de tranh de len infographic.
+- Cap nhat cache version CSS/JS sang `20260717-faith-back-topic`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra HTML co `faithBackToTopicsButton`.
+- Da kiem tra JavaScript co gan su kien click cho `faithBackToTopicsButton`.
+- Da kiem tra CSS can ngoac: `{` = 833 va `}` = 833.
+- Da kiem tra JavaScript can ngoac: `{` = 128 va `}` = 128.
+
+---
+
+### **14.65. Canh o che infographic theo ty le anh 3:4**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Chinh lai cach chia o che infographic trong **Kham Pha Duc Tin** de phu hop anh doc ty le 3:4.
+- He thong doc ty le that cua anh sau khi anh load xong; neu chua doc duoc thi mac dinh theo ty le 3:4.
+- Thay cach chia can bac hai bang thuat toan chon so cot/hang gan nhat voi ty le anh.
+- Voi infographic 12 the ty le 3:4, lop che se uu tien chia 3 cot x 4 hang.
+- Voi infographic 20 the ty le 3:4, lop che se uu tien chia 4 cot x 5 hang.
+- Khi anh infographic load xong, he thong tu dung lai lop che de tranh lech do chua co naturalWidth/naturalHeight luc render dau.
+- Cac manh da mo van giu trang thai `is-open` khi dung lai lop che.
+- Them CSS de o che phu sat khung, co vien nhe va khong tao khoang ho lam lo anh.
+- Cap nhat cache version CSS/JS sang `20260717-faith-portrait-mask`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra JavaScript co `getFaithMaskGridSize` va `getFaithInfographicAspectRatio`.
+- Da kiem tra CSS can ngoac: `{` = 837 va `}` = 837.
+- Da kiem tra JavaScript can ngoac: `{` = 137 va `}` = 137.
+
+---
+
+### **14.66. Thu nho infographic va sua slug URL**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Giam kich thuoc hien thi infographic trong man hinh tra loi **Kham Pha Duc Tin**.
+- Gioi han panel infographic con `860px`, khung anh con `760px`, va gioi han chieu cao anh theo man hinh desktop.
+- Anh infographic van giu nguyen ty le goc, khong bi cat, khong bi keo gian.
+- Tren mobile, anh van full-width de de xem va thao tac.
+- Sua ham tao slug URL trong `data.js` de uu tien tao slug moi tu tieu de hien tai, tranh dung lai slug cu bi loi font.
+- Neu du lieu title bi mojibake, ham slugify se co gang sua text truoc khi chuyen thanh duong dan ASCII.
+- Giu nguyen ID that cua bai viet sau dau `--` trong URL de tranh loi mo nham bai khi trung tieu de.
+- Cap nhat cache version CSS/data.js/faith-discovery.js sang `20260717-url-infographic-size`.
+
+**File lien quan:**
+- data.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 843 va `}` = 843.
+- Da kiem tra `data.js` can ngoac: `{` = 282 va `}` = 282.
+- Da kiem tra cac file HTML chinh da dung cache version `20260717-url-infographic-size`.
+
+---
+
+### **14.67. Sua loi font man Kham Pha Duc Tin va chuan kich thuoc infographic**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Sua cac chuoi tieng Viet bi mojibake trong `faith-discovery.html`.
+- Sua cac chuoi tieng Viet bi mojibake trong `faith-discovery.js`.
+- Dat lai `document.title` khi trang tai xong de tab trinh duyet hien dung: `Kham Pha Duc Tin - Bai Giang Tren Nui`.
+- Cap nhat cache version cua `faith-discovery.js` va `styles.css` sang `20260717-faith-font-image-size`.
+
+**Kich thuoc infographic khuyen nghi:**
+- Ty le anh bat buoc nen dung: **3:4**.
+- Bo 12 the: nen dung **1200 x 1600 px**.
+  - Luoi: 3 cot x 4 hang.
+  - Moi the nen nam trong vung 400 x 400 px.
+- Bo 20 the: nen dung **1600 x 2000 px**.
+  - Luoi: 4 cot x 5 hang.
+  - Moi the nen nam trong vung 400 x 400 px.
+- Neu muon file nhe hon:
+  - Bo 12 the co the dung 900 x 1200 px.
+  - Bo 20 the co the dung 1200 x 1500 px.
+- Dinh dang nen dung: `.webp` hoac `.jpg`.
+- Dung luong nen giu khoang **500 KB - 1.2 MB** de web tai nhanh.
+- Nen de cac the chia deu theo cot/hang, khong de vien ngoai qua day, vi lop che se chia deu theo so cot/hang.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da dat lai title trong HTML va JavaScript.
+- Da kiem tra CSS can ngoac: `{` = 843 va `}` = 843.
+- Da kiem tra JavaScript can ngoac: `{` = 137 va `}` = 137.
+
+---
+
+### **14.68. Full panel infographic 3:4 va tach nut quay lai chon chu de**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Chinh lai man hinh tra loi **Kham Pha Duc Tin** de infographic hien thi full panel hon.
+- Khung infographic duoc ep theo ty le **3:4** bang CSS `aspect-ratio: 3 / 4`.
+- Anh infographic duoc fill day khung, giu bo cuc 3:4, khong bi hien thi qua nho nhu truoc.
+- Lop che duoc tinh theo so manh:
+  - 12 manh: 3 cot x 4 hang.
+  - 20 manh: 4 cot x 5 hang.
+- Nut **Quay lai chon chu de** duoc dua ve vi tri rieng, nam phia tren title `Hinh anh se duoc mo khoa...`, khong con bi chong len title.
+- Tren mobile, nut quay lai full width de de bam va khung infographic giu dung ty le 3:4.
+- Cap nhat cache version cua `faith-discovery.html` sang `20260717-faith-full-panel-34`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
