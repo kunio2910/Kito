@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260717-faith-mask-params" />
+    <link rel="stylesheet" href="styles.css?v=20260718-faith-mask-meta" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -235,7 +235,7 @@
               <div class="faith-mask-admin-actions">
                 <label class="faith-mask-count-field">
                   <span>Số hình che</span>
-                  <input id="faithMaskCount" type="number" min="1" max="80" step="1" placeholder="Theo số câu hỏi" />
+                  <input id="faithMaskCount" form="faithMaskDetachedControls" type="number" min="1" max="80" step="1" placeholder="Theo số câu hỏi" />
                 </label>
                 <button class="ghost-button" type="button" id="generateFaithMasksButton">Tạo vùng che tự động</button>
                 <button class="ghost-button" type="button" id="clearFaithMasksButton">Xóa vùng che</button>
@@ -243,17 +243,22 @@
             </div>
             <div class="faith-mask-params">
               <strong id="faithMaskSelectedLabel">Chọn một ô che</strong>
+              <label class="faith-mask-list-field">
+                <span>Danh sách ô</span>
+                <input id="faithMaskSelectionInput" form="faithMaskDetachedControls" type="text" placeholder="Ví dụ: 1,2,5 hoặc 1-12" />
+              </label>
+              <button class="ghost-button" type="button" id="selectFaithMaskListButton">Chọn</button>
               <label>
                 <span>Vị trí X,Y (%)</span>
-                <input id="faithMaskPosition" type="text" placeholder="Ví dụ: 12, 25" />
+                <input id="faithMaskPosition" form="faithMaskDetachedControls" type="text" placeholder="Ví dụ: 12, 25" />
               </label>
               <label>
                 <span>Chiều dài (%)</span>
-                <input id="faithMaskLength" type="number" min="3" max="100" step="0.1" placeholder="Cao" />
+                <input id="faithMaskLength" form="faithMaskDetachedControls" type="number" min="3" max="100" step="any" placeholder="Cao" />
               </label>
               <label>
                 <span>Chiều rộng (%)</span>
-                <input id="faithMaskWidth" type="number" min="3" max="100" step="0.1" placeholder="Rộng" />
+                <input id="faithMaskWidth" form="faithMaskDetachedControls" type="number" min="3" max="100" step="any" placeholder="Rộng" />
               </label>
               <button class="ghost-button" type="button" id="applyFaithMaskParams">OK</button>
             </div>
@@ -326,7 +331,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260717-url-infographic-size"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260717-faith-mask-multiselect"></script>
+    <script src="admin.js?v=20260718-faith-mask-meta"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

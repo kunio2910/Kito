@@ -74,6 +74,8 @@ const faithMaskPositionInput = document.querySelector("#faithMaskPosition");
 const faithMaskLengthInput = document.querySelector("#faithMaskLength");
 const faithMaskWidthInput = document.querySelector("#faithMaskWidth");
 const applyFaithMaskParamsButton = document.querySelector("#applyFaithMaskParams");
+const faithMaskSelectionInput = document.querySelector("#faithMaskSelectionInput");
+const selectFaithMaskListButton = document.querySelector("#selectFaithMaskListButton");
 const faithQuestionsFile = document.querySelector("#faithQuestionsFile");
 const faithQuestionsJson = document.querySelector("#faithQuestionsJson");
 const formatFaithQuestionsButton = document.querySelector("#formatFaithQuestions");
@@ -469,6 +471,10 @@ function selectedFaithMaskList() {
     .sort((a, b) => a - b);
 }
 
+function formatFaithMaskSelection(indices) {
+  return indices.map((index) => index + 1).join(",");
+}
+
 function sameFaithMaskValue(indices, key) {
   if (!indices.length) return "";
   const firstValue = formatFaithMaskNumber(clampFaithMask(faithAdminMasks[indices[0]])[key]);
@@ -482,8 +488,13 @@ function syncFaithMaskParamsForm() {
   selectedFaithMaskIndices = new Set(selectedIndices);
   selectedFaithMaskIndex = selectedIndices[0] ?? -1;
 
+  const hasMasks = faithAdminMasks.length > 0;
+  if (faithMaskSelectionInput) faithMaskSelectionInput.disabled = !hasMasks;
+  if (selectFaithMaskListButton) selectFaithMaskListButton.disabled = !hasMasks;
+
   if (!selectedIndices.length) {
     if (faithMaskSelectedLabel) faithMaskSelectedLabel.textContent = "Chọn một ô che";
+    if (faithMaskSelectionInput) faithMaskSelectionInput.value = "";
     if (faithMaskPositionInput) {
       faithMaskPositionInput.value = "";
       faithMaskPositionInput.disabled = true;
@@ -495,6 +506,7 @@ function syncFaithMaskParamsForm() {
   }
 
   setFaithMaskParamsDisabled(false);
+  if (faithMaskSelectionInput) faithMaskSelectionInput.value = formatFaithMaskSelection(selectedIndices);
 
   if (selectedIndices.length > 1) {
     if (faithMaskSelectedLabel) faithMaskSelectedLabel.textContent = `Đã chọn ${selectedIndices.length} ô che`;
@@ -538,6 +550,60 @@ function selectFaithMask(index, additive = false) {
     tile.classList.toggle("is-active", selectedFaithMaskIndices.has(Number(tile.dataset.index)));
   });
   syncFaithMaskParamsForm();
+}
+
+function parseFaithMaskSelection(value) {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    throw new Error("Vui lòng nhập danh sách ô cần chọn. Ví dụ: 1,2,5 hoặc 1-12.");
+  }
+
+  const selected = new Set();
+  raw.split(/[,;]+/).map((part) => part.trim()).filter(Boolean).forEach((part) => {
+    const range = part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if (range) {
+      let start = Number(range[1]);
+      let end = Number(range[2]);
+      if (!Number.isInteger(start) || !Number.isInteger(end)) {
+        throw new Error("Danh sách ô không hợp lệ.");
+      }
+      if (start > end) [start, end] = [end, start];
+      for (let number = start; number <= end; number += 1) {
+        selected.add(number - 1);
+      }
+      return;
+    }
+
+    const number = Number(part);
+    if (!Number.isInteger(number)) {
+      throw new Error("Danh sách ô không hợp lệ.");
+    }
+    selected.add(number - 1);
+  });
+
+  const validSelection = [...selected]
+    .filter((index) => index >= 0 && index < faithAdminMasks.length)
+    .sort((a, b) => a - b);
+
+  if (!validSelection.length) {
+    throw new Error("Không tìm thấy ô che phù hợp với danh sách đã nhập.");
+  }
+
+  return validSelection;
+}
+
+function selectFaithMasksFromInput() {
+  try {
+    const indices = parseFaithMaskSelection(faithMaskSelectionInput?.value);
+    selectedFaithMaskIndices = new Set(indices);
+    selectedFaithMaskIndex = indices[0] ?? -1;
+    renderFaithMaskEditor();
+    if (faithDiscoveryMessage) {
+      faithDiscoveryMessage.textContent = `Đã chọn ${indices.length} ô che từ danh sách. Nhập chiều dài/chiều rộng rồi bấm OK để áp dụng.`;
+    }
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+  }
 }
 
 function parseFaithMaskPosition(value) {
@@ -842,7 +908,11 @@ function renderFaithMaskEditor() {
           style="left:${safeMask.x}%;top:${safeMask.y}%;width:${safeMask.w}%;height:${safeMask.h}%"
           aria-label="Vùng che ${index + 1}"
         >
-          <span>${index + 1}</span>
+          <span class="faith-mask-editor-number">${index + 1}</span>
+          <span class="faith-mask-editor-meta">
+            X:${formatFaithMaskNumber(safeMask.x)} Y:${formatFaithMaskNumber(safeMask.y)}<br />
+            D:${formatFaithMaskNumber(safeMask.h)} R:${formatFaithMaskNumber(safeMask.w)}
+          </span>
           <em class="faith-mask-editor-delete" role="button" tabindex="0" aria-label="Xóa vùng che ${index + 1}">×</em>
           ${resizeHandles}
         </button>
@@ -1636,6 +1706,13 @@ faithPickerImageUrl?.addEventListener("input", updateFaithPickerPreview);
 faithBannerImageUrl?.addEventListener("input", updateFaithBannerPreview);
 faithInfographicUrl?.addEventListener("input", updateFaithImagePreview);
 applyFaithMaskParamsButton?.addEventListener("click", applyFaithMaskParams);
+selectFaithMaskListButton?.addEventListener("click", selectFaithMasksFromInput);
+faithMaskSelectionInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    selectFaithMasksFromInput();
+  }
+});
 faithMaskPositionInput?.addEventListener("keydown", (event) => {
   if (event.key === "Enter") applyFaithMaskParams();
 });

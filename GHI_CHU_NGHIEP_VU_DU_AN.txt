@@ -3470,3 +3470,25 @@ Vi du neu dap an dung la **C**, truong answer phai la:
 - Can ngoac: `styles.css` { = 997, } = 997, ( = 960, ) = 960.
 - Can ngoac: `index.html` { = 3, } = 3, ( = 6, ) = 6.
 - Localhost tra ve HTTP 200 cho trang chu va `styles.css?v=20260718-hero-classic-font`.
+14.92. Nhập danh sách ô che trong tab Khám Phá Đức Tin - 18/07/2026
+- Trang quản lý, mục Khám Phá Đức Tin: thêm ô "Danh sách ô" và nút "Chọn" bên cạnh nhóm thông số vùng che.
+- Có thể nhập nhanh các ô theo số đang hiển thị trên vùng che, ví dụ: 1,2,5 hoặc nhập khoảng 1-12; bấm Enter hoặc nút Chọn để chọn nhiều ô cùng lúc.
+- Sau khi chọn bằng danh sách, các ô được chọn vẫn dùng chung cơ chế hiện tại: nhập chiều dài/chiều rộng rồi bấm OK để áp dụng cho nhiều ô; vị trí X,Y chỉ mở khi chọn một ô riêng lẻ.
+- Cập nhật layout form thông số để ô nhập danh sách không làm lệch các trường X,Y, chiều dài, chiều rộng; tăng version cache admin.js/styles.css sang 20260718-faith-mask-list-select.
+- Kiểm tra tĩnh: admin.js, admin.html, styles.css cân bằng ngoặc; localhost 127.0.0.1:5500 hiện chưa chạy nên chưa kiểm thử trình duyệt trong phiên này.
+14.93. Sửa lỗi bấm Lưu bộ câu hỏi bị nhảy lại ô thông số vùng che - 18/07/2026
+- Nguyên nhân: các ô hỗ trợ chỉnh vùng che nằm bên trong form Khám Phá Đức Tin và dùng input number có step=0.1. Khi kéo vùng che, hệ thống sinh số lẻ 3 chữ số như 12.347; browser coi là không hợp lệ và chặn submit trước khi JS lưu chạy, nên màn hình tự focus lại ô Chiều dài/Chiều rộng.
+- Cách sửa: tách các input hỗ trợ vùng che khỏi form lưu bằng form="faithMaskDetachedControls" cho Số hình che, Danh sách ô, Vị trí X,Y, Chiều dài, Chiều rộng.
+- Đổi Chiều dài/Chiều rộng sang step="any" để nhận số lẻ từ thao tác kéo thả mà không bị native validation báo sai.
+- Tăng version cache admin.js/styles.css sang 20260718-faith-mask-save-fix để trình duyệt lấy bản mới.
+- Lưu ý thao tác: nếu nhập thông số vùng che thủ công thì bấm OK để áp dụng vào vùng che, sau đó bấm Lưu bộ câu hỏi để lưu vào cấu hình.
+14.94. Hiển thị thông số trực tiếp trên từng ô che Khám Phá Đức Tin - 18/07/2026
+- Trang quản lý, tab Khám Phá Đức Tin: mỗi ô che trong editor hiện thêm dòng thông số nhỏ màu trắng gồm X/Y, D/R theo phần trăm để admin dễ kiểm tra vị trí, chiều dài và chiều rộng ngay trên ảnh.
+- Đổi số thứ tự ô che sang class riêng faith-mask-editor-number và thêm class faith-mask-editor-meta cho phần thông số, tránh bị áp style vòng tròn của số thứ tự.
+- CSS phần ô che chuyển sang flex column, chữ thông số có font nhỏ, màu trắng, text-shadow và pointer-events:none để không ảnh hưởng thao tác kéo/thả/kéo cạnh/xóa ô.
+- Tăng version cache admin.js/styles.css sang 20260718-faith-mask-meta.
+- Kiểm tra tĩnh: admin.js, admin.html, styles.css cân bằng ngoặc; localhost 127.0.0.1:5500 chưa chạy nên chưa kiểm thử trình duyệt trong phiên này.
+14.95. Chỉnh chữ thông số ô che về chữ thường - 18/07/2026
+- Trang quản lý, tab Khám Phá Đức Tin: phần thông số X/Y/D/R hiển thị trên từng ô che được đổi sang font-weight 400 và text-transform lowercase để chữ nhỏ, thường, nhẹ hơn và không in đậm.
+- Giữ nguyên số thứ tự ô che và các thao tác kéo/thả/kéo cạnh/xóa ô.
+- Kiểm tra tĩnh: styles.css cân bằng ngoặc.

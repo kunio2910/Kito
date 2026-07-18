@@ -5684,7 +5684,7 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
 
 .faith-mask-params {
   display: grid;
-  grid-template-columns: minmax(110px, auto) minmax(180px, 1fr) minmax(120px, 0.6fr) minmax(120px, 0.6fr) auto;
+  grid-template-columns: minmax(110px, auto) minmax(190px, 1fr) auto minmax(170px, 0.9fr) minmax(110px, 0.55fr) minmax(110px, 0.55fr) auto;
   align-items: end;
   gap: 10px;
   padding: 10px;
@@ -5712,8 +5712,13 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
 }
 
 .faith-mask-params input {
+  min-width: 0;
   min-height: 40px;
   padding: 0 12px;
+}
+
+.faith-mask-list-field input {
+  width: 100%;
 }
 
 .faith-mask-params button {
@@ -5774,12 +5779,15 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
 
 .faith-mask-editor-tile {
   position: absolute;
-  display: grid;
-  place-items: center;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 4px;
   border: 2px solid rgba(255, 216, 122, 0.95);
   background: rgba(38, 22, 13, 0.72);
-  color: #fff7dc;
+  color: #fff;
   cursor: move;
   touch-action: none;
   font-weight: 800;
@@ -5790,13 +5798,27 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
   box-shadow: 0 0 0 3px rgba(224, 160, 49, 0.34), 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
-.faith-mask-editor-tile span {
+.faith-mask-editor-number {
   display: grid;
   width: 28px;
   aspect-ratio: 1;
   place-items: center;
   border-radius: 50%;
   background: #c78318;
+}
+
+.faith-mask-editor-meta {
+  display: block;
+  max-width: 100%;
+  color: #fff;
+  font-size: clamp(7px, 0.72vw, 10px);
+  font-weight: 400;
+  line-height: 1.15;
+  text-align: center;
+  text-transform: lowercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  word-break: keep-all;
 }
 
 .faith-mask-editor-delete {
