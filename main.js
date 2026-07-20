@@ -320,14 +320,33 @@ function setupComingSoonLinks() {
     document.body.appendChild(notice);
   }
   let noticeTimer = null;
+  const showComingSoonNotice = () => {
+    notice.textContent = "Nội dung này đang hoàn thành, vui lòng đợi !";
+    notice.classList.add("show");
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => notice.classList.remove("show"), 2600);
+  };
 
   document.querySelectorAll("[data-coming-soon]").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      notice.textContent = "Nội dung này đang hoàn thành, vui lòng đợi !";
-      notice.classList.add("show");
-      clearTimeout(noticeTimer);
-      noticeTimer = setTimeout(() => notice.classList.remove("show"), 2600);
+      showComingSoonNotice();
+    });
+  });
+
+  document.querySelectorAll("[data-local-journey]").forEach((link) => {
+    const icon = link.querySelector("span");
+    const title = link.querySelector("strong");
+    const subtitle = link.querySelector("small");
+    if (icon) icon.textContent = "••";
+    if (title) title.textContent = "Hành Trình Kinh Thánh";
+    if (subtitle) subtitle.textContent = "Khám phá các cột mốc đức tin";
+
+    link.addEventListener("click", (event) => {
+      const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+      if (isLocalhost) return;
+      event.preventDefault();
+      showComingSoonNotice();
     });
   });
 }

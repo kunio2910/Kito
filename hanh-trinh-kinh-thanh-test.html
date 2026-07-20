@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Hành Trình Kinh Thánh - Bài Giảng Trên Núi</title>
+    <meta
+      name="description"
+      content="Màn hình thử nghiệm chọn chủ đề Hành Trình Kinh Thánh, chỉ hiển thị khi chạy trên localhost."
+    />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="stylesheet" href="styles.css?v=20260720-bible-journey-local" />
+  </head>
+  <body class="faith-page faith-choosing-set journey-page">
+    <header class="site-header">
+      <div class="brand" aria-label="Truyền Giáo Kitô">
+        <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Mở trang quản lý">✝</a>
+        <span>Truyền Giáo<br />Kitô</span>
+      </div>
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="/">Trang chủ</a>
+        <a href="/cac-thanh">Các Thánh</a>
+        <a href="/nha-tho">Nhà Thờ</a>
+        <a href="/bai-viet">Bài Viết</a>
+        <a href="/su-kien">Sự Kiện</a>
+        <a href="/cau-nguyen">Cầu Nguyện</a>
+        <a href="/giao-ly">Giáo Lý</a>
+      </nav>
+    </header>
+
+    <main class="faith-shell journey-shell">
+      <section class="faith-set-picker journey-set-picker" aria-label="Chọn chủ đề Hành Trình Kinh Thánh">
+        <a class="faith-picker-home" href="/">← Quay lại Trang chủ</a>
+        <div class="faith-picker-head">
+          <h2>Hành Trình Kinh Thánh</h2>
+          <p class="faith-picker-subtitle">Chọn một hành trình để khám phá các cột mốc trong Kinh Thánh.</p>
+        </div>
+
+        <div class="faith-picker-tools" aria-label="Tìm kiếm và sắp xếp chủ đề">
+          <label class="faith-search-label">
+            <span>Tìm kiếm</span>
+            <input id="journeySearch" type="search" placeholder="Nhập tên chủ đề..." />
+          </label>
+          <label>
+            <span>Sắp xếp</span>
+            <select id="journeySort">
+              <option value="default">Mặc định</option>
+              <option value="title-asc">A → Z</option>
+              <option value="title-desc">Z → A</option>
+              <option value="steps-desc">Nhiều cột mốc nhất</option>
+              <option value="steps-asc">Ít cột mốc nhất</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="faith-picker-grid journey-topic-grid" id="journeyTopicGrid"></div>
+        <div class="pagination faith-picker-pagination" id="journeyPagination" aria-label="Phân trang chủ đề"></div>
+      </section>
+    </main>
+
+    <script src="journey-test.js?v=20260720-bible-journey-local"></script>
+  </body>
+</html>

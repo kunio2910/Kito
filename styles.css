@@ -6524,3 +6524,48 @@ body.faith-page:not(.faith-choosing-set) .faith-visual-card .faith-score-card {
     border-radius: 14px;
   }
 }
+
+/* 14.96. Man hinh local test Hanh Trinh Kinh Thanh */
+body.journey-page .journey-set-picker {
+  min-height: calc(100vh - 92px);
+}
+
+body.journey-page .faith-picker-head h2 {
+  color: #5a2d16;
+}
+
+body.journey-page .journey-topic-card {
+  text-align: left;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(255, 224, 142, 0.26), transparent 34%),
+    linear-gradient(135deg, #fff9ec, #fff1d6);
+}
+
+body.journey-page .journey-topic-card span {
+  background: rgba(188, 117, 18, 0.12);
+  color: #9b5b12;
+}
+
+body.journey-page .journey-topic-card small {
+  color: #80512b;
+}
+
+body.journey-page .journey-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 18px;
+  text-align: center;
+  color: #7b5535;
+  font-weight: 700;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-topic-card {
+  background:
+    radial-gradient(circle at 14% 18%, rgba(202, 143, 54, 0.18), transparent 34%),
+    linear-gradient(135deg, #332217, #24170f);
+}
+
+:root[data-theme="dark"] body.journey-page .journey-topic-card small,
+:root[data-theme="dark"] body.journey-page .journey-empty {
+  color: #f0cf9a;
+}

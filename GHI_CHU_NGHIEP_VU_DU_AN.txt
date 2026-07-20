@@ -1704,6 +1704,41 @@ Cac truong trong form tao/sua noi dung:
 
 ---
 
+### **14.87. Doi anh preview social sang favicon.png**
+
+**Ngay cap nhat:** 20/07/2026
+
+**Chuc nang:**
+- Doi anh hien thi khi chia se link website sang `favicon.png`.
+- Cap nhat the `og:image` thanh:
+  - `https://www.baigiangtrennui.com/favicon.png`
+- Bo sung the `twitter:image` cung dung:
+  - `https://www.baigiangtrennui.com/favicon.png`
+- Ap dung cho cac trang chinh:
+  - `index.html`
+  - `category.html`
+  - `detail.html`
+  - `prayer-request.html`
+  - `faith-discovery.html`
+
+**File lien quan:**
+- index.html
+- category.html
+- detail.html
+- prayer-request.html
+- faith-discovery.html
+- favicon.png
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da xac nhan `favicon.png` ton tai trong thu muc project.
+- Da xac nhan cac trang chinh deu co `og:image` va `twitter:image` tro ve `https://www.baigiangtrennui.com/favicon.png`.
+
+**Luu y:**
+- Zalo/Facebook/Google co the cache anh preview cu. Sau khi deploy can cho mot thoi gian hoac dung cong cu debug/refresh cache cua tung nen tang neu anh chua doi ngay.
+
+---
+
 ### **14.80. Hien tron anh chu de 16:9 trong man hinh chon chu de Kham Pha Duc Tin**
 
 **Ngay cap nhat:** 17/07/2026
@@ -3492,3 +3527,28 @@ Vi du neu dap an dung la **C**, truong answer phai la:
 - Trang quản lý, tab Khám Phá Đức Tin: phần thông số X/Y/D/R hiển thị trên từng ô che được đổi sang font-weight 400 và text-transform lowercase để chữ nhỏ, thường, nhẹ hơn và không in đậm.
 - Giữ nguyên số thứ tự ô che và các thao tác kéo/thả/kéo cạnh/xóa ô.
 - Kiểm tra tĩnh: styles.css cân bằng ngoặc.
+---
+
+### **14.96. Them nut Hanh Trinh Kinh Thanh va man hinh chon chu de local-only**
+
+**Ngay cap nhat:** 20/07/2026
+
+**Chuc nang:**
+- Thay nut **Cong doan** o cum loi tat duoi banner trang chu thanh **Hanh Trinh Kinh Thanh**.
+- Khi chay tren `localhost` hoac `127.0.0.1`, bam nut se vao trang `hanh-trinh-kinh-thanh-test.html`.
+- Khi chay tren domain that, bam nut se hien thong bao: "Noi dung nay dang hoan thanh, vui long doi !" va khong mo man test.
+- Them man hinh chon chu de local-only cho **Hanh Trinh Kinh Thanh**, dung phong cach giong man hinh chon chu de **Kham Pha Duc Tin**.
+- Man hinh moi co tim kiem, sap xep va phan trang theo chu de mau; hien tai chi dung de test y tuong tren localhost.
+- Trang test co `robots noindex,nofollow` va tu quay ve trang chu neu bi mo truc tiep tren moi truong khong phai localhost.
+
+**File lien quan:**
+- index.html
+- main.js
+- styles.css
+- hanh-trinh-kinh-thanh-test.html
+- journey-test.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Luu y:**
+- Chua gan vao navigation/header chinh de tranh hien tinh nang dang thu nghiem tren website public.
+- Khi can dua ra production, co the doi trang test thanh route chinh va bo guard local-only.
