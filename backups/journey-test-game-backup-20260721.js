@@ -22,8 +22,6 @@
     ],
   };
   let journeyChallenges = { [String(BAPTISM_STEP_NUMBER)]: baptismChallenge };
-  let activeJourneyMilestones = [];
-  let journeyTopicDetails = new Map();
 
   const jesusMilestones = [
     {
@@ -226,7 +224,6 @@
   jesusMilestones.forEach((step, index) => {
     Object.assign(step, journeyMapNumberPositions[index] || { x: 50, y: 10 + index * 5 });
   });
-  activeJourneyMilestones = jesusMilestones;
   let topics = [
     {
       id: JESUS_TOPIC_ID,
@@ -288,7 +285,6 @@
     page: 1,
     pageSize: 12,
     selectedStepNumber: BAPTISM_STEP_NUMBER,
-    detailStepNumber: null,
     activeView: "map",
     baptismSelectedSigns: new Set(),
     baptismMessage: "",
@@ -316,30 +312,9 @@
       .replace(/>/g, "&gt;");
   }
 
-  function escapeHtml(value) {
-    return escapeAttr(value);
-  }
-
   function normalizeJourneyTopicFromSettings(topic, index) {
     const fallback = topics.find((item) => item.id === topic?.id) || {};
-    const milestones = Array.isArray(topic?.milestones)
-      ? topic.milestones.map((milestone, milestoneIndex) => {
-          const number = Number(milestone?.number || milestoneIndex + 1);
-          const position = journeyMapNumberPositions[milestoneIndex] || { x: 50, y: 10 + milestoneIndex * 5 };
-          return {
-            number,
-            title: String(milestone?.title || `Cột mốc ${number}`).trim(),
-            reference: String(milestone?.reference || "").trim(),
-            region: String(milestone?.region || "").trim(),
-            scene: String(milestone?.scene || "").trim(),
-            story: String(milestone?.story || "").trim(),
-            lesson: String(milestone?.lesson || "").trim(),
-            cardImageUrl: String(milestone?.cardImageUrl || "").trim(),
-            x: Number.isFinite(Number(milestone?.x)) ? Number(milestone.x) : position.x,
-            y: Number.isFinite(Number(milestone?.y)) ? Number(milestone.y) : position.y,
-          };
-        })
-      : [];
+    const milestones = Array.isArray(topic?.milestones) ? topic.milestones : [];
     return {
       id: String(topic?.id || fallback.id || `journey-topic-${index + 1}`).trim(),
       title: String(topic?.title || fallback.title || `Chủ đề ${index + 1}`).trim(),
@@ -358,8 +333,6 @@
       ? settings.topics.map(normalizeJourneyTopicFromSettings).filter((topic) => topic.id)
       : [];
     if (!configuredTopics.length) return;
-
-    journeyTopicDetails = new Map(configuredTopics.map((topic) => [topic.id, topic]));
 
     const jesusTopic = configuredTopics.find((topic) => topic.id === JESUS_TOPIC_ID);
     if (jesusTopic?.milestones?.length) {
@@ -437,7 +410,7 @@
       label: topic.label,
       enabled: topic.enabled,
       pickerImageUrl: topic.pickerImageUrl,
-      steps: topic.milestones.length || (topic.id === JESUS_TOPIC_ID ? jesusMilestones.length : topic.steps),
+      steps: topic.id === JESUS_TOPIC_ID ? jesusMilestones.length : topic.steps,
     }));
   }
 
@@ -493,7 +466,7 @@
   }
 
   function getChallengeForStep(stepNumber) {
-    const step = activeJourneyMilestones.find((item) => item.number === stepNumber);
+    const step = jesusMilestones.find((item) => item.number === stepNumber);
     const challenge = journeyChallenges[String(stepNumber)] || {};
     return {
       ...challenge,
@@ -518,7 +491,7 @@
     state.baptismTone = "success";
     state.baptismMessage = "Bạn đã ghép đúng 3 dấu chỉ của biến cố Chúa chịu phép rửa.";
     progress.completed.add(stepNumber);
-    const nextStep = activeJourneyMilestones.find((item) => item.number > stepNumber);
+    const nextStep = jesusMilestones.find((item) => item.number > stepNumber);
     if (nextStep) progress.unlocked.add(nextStep.number);
 
     if (!state.rewardedSteps.has(stepNumber)) {
@@ -602,40 +575,9 @@
     `;
   }
 
-  function getStepImageUrl(step) {
-    const challenge = getChallengeForStep(step.number);
-    return String(challenge.sceneImageUrl || step.cardImageUrl || "").trim();
-  }
-
-  function renderMilestonePopup() {
-    const step = activeJourneyMilestones.find((item) => item.number === state.detailStepNumber);
-    if (!step) return "";
-    const imageUrl = getStepImageUrl(step);
-    return `
-      <div class="journey-milestone-modal" role="dialog" aria-modal="true" aria-label="${escapeAttr(step.title)}">
-        <button class="journey-milestone-modal-backdrop" type="button" data-close-milestone aria-label="Đóng"></button>
-        <article class="journey-milestone-panel">
-          <button class="journey-milestone-close" type="button" data-close-milestone aria-label="Đóng">×</button>
-          ${
-            imageUrl
-              ? `<img class="journey-milestone-image" src="${escapeAttr(imageUrl)}" alt="${escapeAttr(step.title)}" loading="lazy" />`
-              : `<div class="journey-milestone-image placeholder" aria-hidden="true"><span>${step.number}</span></div>`
-          }
-          <div class="journey-milestone-content">
-            <span class="journey-milestone-kicker">Cột mốc ${step.number}</span>
-            <h2>${escapeHtml(step.title)}</h2>
-            <p class="journey-milestone-meta">${escapeHtml(step.region)}${step.reference ? ` · ${escapeHtml(step.reference)}` : ""}</p>
-            <p>${escapeHtml(step.story)}</p>
-            <blockquote>${escapeHtml(step.lesson)}</blockquote>
-          </div>
-        </article>
-      </div>
-    `;
-  }
-
   function renderBaptismChallenge() {
     const stepNumber = state.activeChallengeNumber || BAPTISM_STEP_NUMBER;
-    const step = activeJourneyMilestones.find((item) => item.number === stepNumber) || activeJourneyMilestones.find((item) => item.number === BAPTISM_STEP_NUMBER) || activeJourneyMilestones[0];
+    const step = jesusMilestones.find((item) => item.number === stepNumber) || jesusMilestones.find((item) => item.number === BAPTISM_STEP_NUMBER);
     const challenge = getChallengeForStep(stepNumber);
     const selectedCount = challenge.targets.filter((target) => state.baptismSelectedSigns.has(target.signId)).length;
     const rewardPoints = Number(challenge.rewardPoints || BAPTISM_REWARD_POINTS) || 0;
@@ -729,11 +671,14 @@
     `;
   }
   function renderJourneyGame() {
-    const selectedStep = activeJourneyMilestones.find((step) => step.number === state.selectedStepNumber) || activeJourneyMilestones[0];
-    const pathPoints = activeJourneyMilestones.map((step) => `${step.x},${step.y}`).join(" ");
+    const selectedStep = jesusMilestones.find((step) => step.number === state.selectedStepNumber) || jesusMilestones[3];
+    const pathPoints = jesusMilestones.map((step) => `${step.x},${step.y}`).join(" ");
 
     gameRoot.innerHTML = `
-      <div class="journey-game-layout journey-map-info-layout">
+      <div class="journey-game-layout">
+        <aside class="journey-guide" id="journeyGuide" aria-live="polite">
+          ${renderStepDetail(selectedStep)}
+        </aside>
         <div class="journey-map-stage">
 
         <section class="journey-hud" aria-label="Tiến trình người chơi">
@@ -754,7 +699,7 @@
         </svg>
 
         <div class="journey-milestones" aria-label="Các cột mốc hành trình">
-          ${activeJourneyMilestones
+          ${jesusMilestones
             .map((step) => {
               const status = getStepStatus(step);
               return `
@@ -788,33 +733,12 @@
         </blockquote>
 
         <button class="journey-back-to-topics" type="button" id="journeyBackToTopics">← Chọn chủ đề khác</button>
-        ${renderMilestonePopup()}
         </div>
       </div>
     `;
   }
 
   function showJourneyGame(topicId) {
-    const topic = journeyTopicDetails.get(topicId) || (topicId === JESUS_TOPIC_ID ? { milestones: jesusMilestones, challenges: journeyChallenges } : null);
-    if (!topic) return;
-
-    activeJourneyMilestones = topic.milestones?.length ? topic.milestones : jesusMilestones;
-    journeyChallenges = topic.challenges && typeof topic.challenges === "object" ? topic.challenges : {};
-    if (topicId === JESUS_TOPIC_ID && !Object.keys(journeyChallenges).length) {
-      journeyChallenges = { [String(BAPTISM_STEP_NUMBER)]: baptismChallenge };
-    }
-
-    document.body.classList.remove("faith-choosing-set");
-    document.body.classList.add("journey-playing");
-    document.body.classList.remove("journey-challenge-mode");
-    picker.hidden = true;
-    game.hidden = false;
-    state.activeView = "map";
-    state.selectedStepNumber = activeJourneyMilestones[0]?.number || BAPTISM_STEP_NUMBER;
-    state.detailStepNumber = null;
-    renderJourneyGame();
-    return;
-
     if (topicId !== JESUS_TOPIC_ID) {
       alert("Chủ đề này đang được chuẩn bị. Hiện tại mình bắt đầu trước với Hành trình theo dấu chân Chúa Giêsu.");
       return;
@@ -827,7 +751,6 @@
     game.hidden = false;
     state.activeView = "map";
     state.selectedStepNumber = BAPTISM_STEP_NUMBER;
-    state.detailStepNumber = null;
     renderJourneyGame();
   }
 
@@ -842,21 +765,13 @@
 
   function returnToMap() {
     state.activeView = "map";
-    state.detailStepNumber = null;
     document.body.classList.remove("journey-challenge-mode");
     renderJourneyGame();
   }
 
   function startStepChallenge(stepNumber) {
-    const step = activeJourneyMilestones.find((item) => item.number === stepNumber);
+    const step = jesusMilestones.find((item) => item.number === stepNumber);
     if (!step) return;
-
-    state.selectedStepNumber = step.number;
-    state.detailStepNumber = step.number;
-    state.activeView = "map";
-    document.body.classList.remove("journey-challenge-mode");
-    renderJourneyGame();
-    return;
 
     const challenge = getChallengeForStep(step.number);
     state.selectedStepNumber = step.number;
@@ -921,13 +836,6 @@
       return;
     }
 
-    const closeMilestoneButton = event.target.closest("[data-close-milestone]");
-    if (closeMilestoneButton) {
-      state.detailStepNumber = null;
-      renderJourneyGame();
-      return;
-    }
-
     const signButton = event.target.closest(".journey-sign-option");
     if (signButton && !signButton.disabled) {
       handleBaptismChoice(signButton.dataset.sign);
@@ -946,6 +854,5 @@
       startStepChallenge(Number(challengeButton.dataset.step) || state.selectedStepNumber);
     }
   });
-  renderTopics();
   loadJourneyBibleSettings().finally(renderTopics);
 })();

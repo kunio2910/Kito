@@ -4019,6 +4019,30 @@ Lưu ý kỹ thuật:
 - styles.css
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 ------------------------------------------------------------
+## 14.114. Sửa Chọn Chủ Đề Hành Trình Và Quản Lý Panel Cột Mốc
+
+- Sửa lỗi click vào chủ đề Hành Trình Kinh Thánh không vào màn hình bản đồ.
+- Màn hình bản đồ giờ lấy đúng danh sách cột mốc theo chủ đề được chọn, không còn chỉ phụ thuộc chủ đề Chúa Giêsu mặc định.
+- Popup cột mốc sử dụng dữ liệu theo từng chủ đề/cột mốc đang active.
+- Trang quản lý mở lại trường `Ảnh panel cột mốc`.
+- Khi nhập hoặc upload ảnh panel cột mốc, bấm cập nhật cột mốc sẽ lưu đúng vào `cardImageUrl`.
+- Bổ sung upload Cloudinary cho ảnh panel cột mốc.
+- Đổi version cache sang `20260721-journey-map-topic-popup-admin`.
+
+------------------------------------------------------------
+## 14.113. Đổi Hành Trình Kinh Thánh Sang Popup Thông Tin Cột Mốc
+
+- Đã backup màn chơi game cũ phòng khi rollback:
+  - `backups/journey-test-game-backup-20260721.js`
+  - `backups/styles-game-backup-20260721.css`
+- Chức năng Hành Trình Kinh Thánh không còn chuyển sang màn chơi thử thách khi click cột mốc.
+- Khi người dùng click vào số cột mốc trên bản đồ, website mở popup thông tin chi tiết ngay trên bản đồ.
+- Popup hiển thị ảnh cột mốc theo thứ tự ưu tiên: ảnh màn chơi/câu hỏi đã nhập trong quản lý, sau đó tới ảnh cột mốc nếu có.
+- Popup hiển thị số cột mốc, tiêu đề, khu vực, câu Kinh Thánh, nội dung câu chuyện và ghi chú/bài học.
+- Đã ẩn các thành phần mang tính game như điểm, phần thưởng, chú thích trạng thái và câu trích dẫn HUD trong layout bản đồ mới.
+- Đã tăng version cache sang `20260721-journey-map-popup`.
+
+------------------------------------------------------------
 ## 14.112. Cập Nhật Hành Trình Kinh Thánh - Hotspot, Chủ Đề, Cột Mốc
 
 - Sửa hotspot trên bản đồ thành vùng bấm ẩn hoàn toàn, không còn tạo hiệu ứng mờ/glow lên số cột mốc có sẵn trên ảnh bản đồ khi mới vào map.

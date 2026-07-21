@@ -1321,7 +1321,7 @@ function updateJourneyMilestoneFromFields() {
       region: journeyMilestoneRegion.value.trim(),
       story: journeyMilestoneStory.value.trim(),
       lesson: journeyMilestoneLesson.value.trim(),
-      cardImageUrl: existing.cardImageUrl || "",
+      cardImageUrl: journeyMapCardImageUrl.value.trim(),
     });
     const nextMilestones = milestones.filter((item) => item.number !== number).concat(nextMilestone).sort((a, b) => a.number - b.number);
     journeyMilestonesJson.value = stringifyJourneyData(nextMilestones);
@@ -1356,6 +1356,8 @@ function startNewJourneyMilestone() {
     journeyMilestoneRegion.value = "";
     journeyMilestoneStory.value = "";
     journeyMilestoneLesson.value = "";
+    journeyMapCardImageUrl.value = "";
+    updateJourneyMapCardPreview();
     journeyChallengeTitle.value = "";
     journeyChallengeInstruction.value = "";
     journeyChallengeVerse.value = "";
@@ -1803,6 +1805,14 @@ function setupJourneyCloudinaryUpload() {
       journeyPickerImageUrl,
       updateJourneyPickerPreview,
       "Đã upload Cloudinary và tự điền ảnh khung chọn chủ đề."
+    );
+  });
+
+  journeyMapCardUploadButton?.addEventListener("click", () => {
+    openJourneyCloudinaryUpload(
+      journeyMapCardImageUrl,
+      updateJourneyMapCardPreview,
+      "Đã upload Cloudinary và tự điền ảnh panel cột mốc. Bấm Cập nhật cột mốc vào JSON để áp dụng."
     );
   });
 
