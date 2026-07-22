@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XF6HRTBJ1W"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XF6HRTBJ1W');
+    </script>
+    <title>Góp Ý - Bài Giảng Trên Núi</title>
+    <meta name="description" content="Gửi ý kiến đóng góp để giúp website Bài Giảng Trên Núi phục vụ tốt hơn." />
+    <link rel="canonical" href="https://www.baigiangtrennui.com/gop-y" />
+    <meta property="og:title" content="Góp Ý - Bài Giảng Trên Núi" />
+    <meta property="og:description" content="Gửi ý kiến đóng góp cho website Bài Giảng Trên Núi." />
+    <meta property="og:image" content="https://www.baigiangtrennui.com/favicon.png" />
+    <meta property="og:url" content="https://www.baigiangtrennui.com/gop-y" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://www.baigiangtrennui.com/favicon.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="stylesheet" href="styles.css?v=20260722-feedback-page" />
+  </head>
+  <body class="feedback-page">
+    <header class="site-header">
+      <div class="brand" aria-label="Truyền Giáo Kitô">
+        <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Mở trang quản lý">✝</a>
+        <span>Truyền Giáo<br />Kitô</span>
+      </div>
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="/">Trang chủ</a>
+        <a href="/cac-thanh">Các Thánh</a>
+        <a href="/nha-tho">Nhà Thờ</a>
+        <a href="/bai-viet">Bài Viết</a>
+        <a href="/su-kien">Sự Kiện</a>
+        <a href="/cau-nguyen">Cầu Nguyện</a>
+        <a href="/giao-ly">Giáo Lý</a>
+        <a class="active" href="/gop-y.html">Góp Ý</a>
+      </nav>
+    </header>
+
+    <main class="feedback-page-shell">
+      <a class="back-link" href="/">← Quay lại Trang chủ</a>
+      <section class="feedback-page-panel">
+        <h1>Ý kiến đóng góp</h1>
+        <form class="feedback-page-form" id="feedbackPageForm">
+          <textarea id="feedbackPageMessage" name="message" placeholder="Nhập ý kiến đóng góp của bạn..." required></textarea>
+          <button type="submit">Gửi ý kiến</button>
+          <p class="feedback-page-status" id="feedbackPageStatus" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div>
+        <strong>Truyền Giáo Kitô</strong>
+        <p>Lan tỏa Tin Mừng bằng lời cầu nguyện, học hỏi và phục vụ.</p>
+      </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="data.js?v=20260717-url-infographic-size"></script>
+    <script src="gop-y.js?v=20260722-feedback-page"></script>
+    <script defer src="/_vercel/insights/script.js"></script>
+  </body>
+</html>

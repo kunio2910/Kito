@@ -4521,6 +4521,63 @@ Lưu ý kỹ thuật:
 - hanh-trinh-kinh-thanh-test.html
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
+------------------------------------------------------------
+## 14.141. Them Muc Gop Y Tren Menu Trang Chu Va Form Y Kien Dong Gop
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Them muc **Gop Y** tren thanh menu man hinh chinh, nam ben phai muc **Giao Ly**.
+- Khi click **Gop Y**, trang cuon den section **Y kien dong gop** tren man hinh chinh.
+- Them form gop y gom textarea placeholder **Nhap y kien dong gop cua ban...** va nut **Gui y kien** theo mau giao dien nguoi dung gui.
+- Khi bam **Gui y kien**, goi lai ham `submitContentFeedback` hien co trong `data.js` de luu vao collection `feedbacks`.
+- Du lieu gui tu trang chu co `contentId: "home"`, `contentType: "home"`, `contentTitle: "Man hinh chinh"` va se hien trong trang quan ly, tab **Y kien dong gop**.
+- Them thong bao trang thai khi dang gui, gui thanh cong hoac loi.
+- Doi cache trang chu sang `20260722-home-feedback-form`.
+
+**File lien quan:**
+- index.html
+- main.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.142. Tach Gop Y Thanh Man Hinh Rieng
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Sua lai theo yeu cau moi: **Y kien dong gop** khong con nam trong trang chu.
+- Menu **Gop Y** tren man hinh chinh khong con tro den anchor `#feedback`, ma tro sang trang rieng `gop-y.html`.
+- Them trang moi `gop-y.html` voi giao dien rieng gom tieu de **Y kien dong gop**, textarea va nut **Gui y kien**.
+- Them script rieng `gop-y.js` de xu ly submit form va goi lai `submitContentFeedback` trong `data.js`.
+- Du lieu gop y van luu vao collection `feedbacks`, nen trang quan ly tab **Y kien dong gop** tiep tuc hien thi binh thuong.
+- Xoa section form gop y khoi `index.html`.
+- Doi cache trang chu va trang gop y sang `20260722-feedback-page`.
+
+**File lien quan:**
+- index.html
+- gop-y.html
+- gop-y.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.143. Random Theo Ngay Cho Card Hanh Trinh Kinh Thanh Trang Chu
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Section **Hanh Trinh Kinh Thanh** tren trang chu khong con lay 3 chu de dau tien.
+- Doi sang dung `dailyRandomItems(availableTopics, "journeyBible", 3)` de hien toi da 3 card random theo ngay.
+- Trong cung mot ngay, danh sach card on dinh; sang ngay moi se co the doi bo chu de khac.
+- Doi cache `main.js` tren trang chu sang `20260722-home-journey-random-daily`.
+
+**File lien quan:**
+- main.js
+- index.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
 -------------------------------------------------------------
 ## 14.129. Popup Mobile Và MapType Ổn Định Cho Hành Trình Kinh Thánh
 

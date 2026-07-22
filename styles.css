@@ -2072,6 +2072,124 @@ textarea {
   min-height: 104px;
 }
 
+.home-feedback-panel {
+  padding: 6px 8px 18px;
+}
+
+.home-feedback-form {
+  display: grid;
+  gap: 8px;
+  padding: 0 16px 8px;
+}
+
+.home-feedback-form textarea {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 12px;
+  color: var(--ink);
+  background: var(--white);
+  font: inherit;
+}
+
+.home-feedback-form button {
+  justify-self: start;
+  border: 0;
+  border-radius: 3px;
+  padding: 8px 12px;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.home-feedback-form button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.home-feedback-status {
+  min-height: 18px;
+  margin: 0;
+  color: var(--gold-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.feedback-page-shell {
+  width: min(100% - 48px, 1120px);
+  margin: 26px auto 56px;
+}
+
+.feedback-page-panel {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.feedback-page-panel h1 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.feedback-page-form {
+  display: grid;
+  gap: 8px;
+}
+
+.feedback-page-form textarea {
+  width: 100%;
+  min-height: 94px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 12px;
+  color: var(--ink);
+  background: var(--white);
+  font: inherit;
+}
+
+.feedback-page-form button {
+  justify-self: start;
+  border: 0;
+  border-radius: 3px;
+  padding: 8px 12px;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.feedback-page-form button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.feedback-page-status {
+  min-height: 18px;
+  margin: 0;
+  color: var(--gold-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 680px) {
+  .feedback-page-shell {
+    width: min(100% - 28px, 1120px);
+    margin-top: 18px;
+  }
+
+  .feedback-page-panel {
+    padding: 16px;
+  }
+}
+
 .visit-panel {
   margin-top: 26px;
 }
