@@ -4506,6 +4506,21 @@ Lưu ý kỹ thuật:
 - index.html
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
+------------------------------------------------------------
+## 14.140. An Khung Anh Popup Cot Moc Khi Khong Co Anh Panel
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Trong popup cot moc tren man hinh ban do Hanh Trinh Kinh Thanh, neu cot moc khong co anh panel (`cardImageUrl`) va khong co anh du phong tu challenge (`sceneImageUrl`) thi khong hien thi khung anh nua.
+- Bo placeholder so cot moc dang nam trong khung anh khi thieu anh, giup popup chi con phan noi dung.
+- Doi cache `journey-test.js` sang `20260722-journey-popup-hide-empty-image`.
+
+**File lien quan:**
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
 -------------------------------------------------------------
 ## 14.129. Popup Mobile Và MapType Ổn Định Cho Hành Trình Kinh Thánh
 

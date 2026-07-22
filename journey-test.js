@@ -1253,7 +1253,7 @@
           ${
             imageUrl
               ? `<img class="journey-milestone-image" src="${escapeAttr(imageUrl)}" alt="${escapeAttr(step.title)}" loading="lazy" />`
-              : `<div class="journey-milestone-image placeholder" aria-hidden="true"><span>${step.number}</span></div>`
+              : ""
           }
           <div class="journey-milestone-content">
             <h2>${escapeHtml(step.title)}</h2>
