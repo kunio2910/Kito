@@ -4717,3 +4717,7 @@ Lưu ý kỹ thuật:
 - Cột trái giờ hiển thị "Các thánh tiêu biểu" và "Hành Trình Kinh Thánh" ngay sau banner, giúp lấp khoảng trống cũ của quick links.
 - Màn chọn chủ đề Hành Trình Kinh Thánh bỏ dòng mô tả "Chọn một hành trình để khám phá các cột mốc trong Kinh Thánh".
 - Cập nhật cache CSS trang chủ sang `20260722-home-quicklinks-under-prayer`.
+### 14.150. Thu nhỏ chữ menu header để tên mục nằm một hàng
+- Giảm cỡ chữ menu header và giảm khoảng cách giữa các mục điều hướng chính.
+- Khóa `white-space: nowrap` cho link menu để các mục như "Trang chủ", "Các Thánh", "Cầu Nguyện", "Góp Ý" không tự xuống dòng.
+- Cập nhật cache CSS sang `20260722-nav-single-line` cho các trang HTML đang dùng `styles.css`.
