@@ -955,6 +955,7 @@
       enabled: topic?.enabled !== false,
       pickerImageUrl: String(topic?.pickerImageUrl || "").trim(),
       mapType,
+      mapName: String(topic?.mapName || "").trim(),
       mapImageUrl: journeyMapImageForTopic(stableTopicShell),
       mapPositionsEdited: topic?.mapPositionsEdited === true || mapType === MAP_TYPE_CUSTOM,
       steps: milestones.length || fallback.steps || 0,
@@ -1040,17 +1041,19 @@
       BAPTISM_REWARD_POINTS = Number(baptismChallenge.rewardPoints || BAPTISM_REWARD_POINTS) || BAPTISM_REWARD_POINTS;
     }
 
-    topics = configuredTopics.map((topic) => ({
-      id: topic.id,
-      title: topic.title,
-      description: topic.description,
-      label: topic.label,
-      enabled: topic.enabled,
-      pickerImageUrl: topic.pickerImageUrl,
-      mapType: topic.mapType,
-      mapImageUrl: topic.mapImageUrl,
-      steps: topic.milestones.length || (topic.id === JESUS_TOPIC_ID ? jesusMilestones.length : topic.steps),
-    }));
+    topics = configuredTopics
+      .filter((topic) => topic.enabled !== false)
+      .map((topic) => ({
+        id: topic.id,
+        title: topic.title,
+        description: topic.description,
+        label: topic.label,
+        enabled: topic.enabled,
+        pickerImageUrl: topic.pickerImageUrl,
+        mapType: topic.mapType,
+        mapImageUrl: topic.mapImageUrl,
+        steps: topic.milestones.length || (topic.id === JESUS_TOPIC_ID ? jesusMilestones.length : topic.steps),
+      }));
   }
 
   async function loadJourneyBibleSettings() {
@@ -1073,7 +1076,8 @@
 
   function openRequestedJourneyTopic() {
     const topicId = requestedJourneyTopicId();
-    if (!topicId || !journeyTopicDetails.has(topicId)) return false;
+    const topic = journeyTopicDetails.get(topicId);
+    if (!topicId || !topic || topic.enabled === false) return false;
     showJourneyGame(topicId);
     return true;
   }

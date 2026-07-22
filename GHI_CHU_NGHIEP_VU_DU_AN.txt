@@ -4507,6 +4507,42 @@ Lưu ý kỹ thuật:
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
 ------------------------------------------------------------
+## 14.144. Dat Ten Cho Ban Do Tuy Chinh Hanh Trinh Kinh Thanh
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Trang quan ly Hanh Trinh Kinh Thanh them truong **Ten ban do tuy chinh** ngay duoi dropdown **Ban do su dung**.
+- Ten ban do duoc luu vao chu de qua field `mapName`.
+- Khi admin nhap ten ban do, option `custom` trong dropdown **Ban do su dung** tu doi nhan theo ten vua nhap; neu chua co ten thi hien mac dinh **Ban do tuy chinh**.
+- Khi mo lai chu de da luu, `mapName` duoc nap lai vao form va dropdown tiep tuc hien ten ban do da dat.
+- Public `journey-test.js` giu lai field `mapName` trong object chu de de schema dong bo, chua thay doi hien thi ngoai trang nguoi xem.
+- Doi cache sang `20260722-journey-map-name`.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- hanh-trinh-kinh-thanh-test.html
+- journey-test.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.145. An Chu De Hanh Trinh Kinh Thanh Da Tat Tren Man Hinh Public
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Sua loi chu de da chon **An / dang chuan bi** trong trang quan ly nhung van hien tren man hinh chon chu de public cua **Hanh Trinh Kinh Thanh**.
+- `journey-test.js` khi tao danh sach `topics` public se loc `topic.enabled !== false`, chi hien cac chu de dang bat.
+- Chan mo truc tiep chu de da an qua URL query `?topic=`/`?topicId=`; neu topic bi an thi quay ve man hinh chon chu de.
+- Doi cache `journey-test.js` sang `20260722-journey-hide-disabled-topics`.
+
+**File lien quan:**
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
 ## 14.140. An Khung Anh Popup Cot Moc Khi Khong Co Anh Panel
 
 **Ngay cap nhat:** 22/07/2026

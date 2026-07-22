@@ -88,6 +88,7 @@ const journeyTopicId = document.querySelector("#journeyTopicId");
 const journeyTopicTitle = document.querySelector("#journeyTopicTitle");
 const journeyTopicLabel = document.querySelector("#journeyTopicLabel");
 const journeyTopicMapType = document.querySelector("#journeyTopicMapType");
+const journeyMapName = document.querySelector("#journeyMapName");
 const journeyTopicEnabled = document.querySelector("#journeyTopicEnabled");
 const journeyTopicDescription = document.querySelector("#journeyTopicDescription");
 const journeyPickerImageUrl = document.querySelector("#journeyPickerImageUrl");
@@ -1122,6 +1123,7 @@ function defaultJourneyAdminTopic() {
     description: "",
     enabled: true,
     mapType: "jesus",
+    mapName: "",
     mapImageUrl: "",
     mapPositionsEdited: false,
     pickerImageUrl: "",
@@ -1207,6 +1209,7 @@ function normalizeAdminJourneyTopic(topic, index = 0) {
     description: String(rawTopic.description || "").trim(),
     enabled: rawTopic.enabled !== false,
     mapType,
+    mapName: String(rawTopic.mapName || "").trim(),
     mapImageUrl: String(rawTopic.mapImageUrl || defaultJourneyAdminMapImageForType(mapType) || "").trim(),
     mapPositionsEdited: rawTopic.mapPositionsEdited === true,
     pickerImageUrl: String(rawTopic.pickerImageUrl || "").trim(),
@@ -1286,6 +1289,12 @@ function journeyDefaultPositionForMapType(number, mapType) {
 
 function defaultJourneyAdminMapImageForType(mapType) {
   return journeyAdminDefaultMapImages[mapType] || "";
+}
+
+function updateJourneyMapTypeCustomLabel(mapName = "") {
+  const customOption = journeyTopicMapType?.querySelector('option[value="custom"]');
+  if (!customOption) return;
+  customOption.textContent = String(mapName || "").trim() || "Bản đồ tùy chỉnh";
 }
 
 function selectedJourneyAdminMapType() {
@@ -1545,6 +1554,8 @@ function fillJourneyTopicForm(topic) {
   journeyTopicId.value = normalizedTopic.id;
   journeyTopicTitle.value = normalizedTopic.title;
   journeyTopicLabel.value = normalizedTopic.label;
+  if (journeyMapName) journeyMapName.value = normalizedTopic.mapName || "";
+  updateJourneyMapTypeCustomLabel(normalizedTopic.mapName);
   if (journeyTopicMapType) journeyTopicMapType.value = normalizedTopic.mapType || "jesus";
   journeyTopicEnabled.value = normalizedTopic.enabled ? "true" : "false";
   journeyTopicDescription.value = normalizedTopic.description;
@@ -2723,6 +2734,7 @@ journeyMapPointSelect?.addEventListener("change", () => {
 });
 journeyTopicMapType?.addEventListener("change", () => {
   const mapType = selectedJourneyAdminMapType();
+  updateJourneyMapTypeCustomLabel(journeyMapName?.value || selectedJourneyTopic()?.mapName || "");
   if (journeyMapImageUrl) journeyMapImageUrl.value = defaultJourneyAdminMapImageForType(mapType);
   currentJourneyMilestones = applyJourneyDefaultMapPositions(parseJourneyMilestonesFromForm(), mapType, false);
   syncJourneyMapPointCountField();
@@ -2730,6 +2742,9 @@ journeyTopicMapType?.addEventListener("change", () => {
   fillJourneyMilestoneForm(selectedJourneyMapPointNumber);
   renderJourneyMapEditor();
   if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã nạp ảnh và tọa độ mặc định theo loại bản đồ. Bấm Lưu Hành trình Kinh Thánh để áp dụng.";
+});
+journeyMapName?.addEventListener("input", () => {
+  updateJourneyMapTypeCustomLabel(journeyMapName.value);
 });
 journeyMapMarkerLayer?.addEventListener("pointerdown", (event) => {
   const marker = event.target.closest(".journey-map-marker");
@@ -2779,6 +2794,7 @@ journeyBibleForm?.addEventListener("submit", async (event) => {
       title,
       label: journeyTopicLabel.value.trim(),
       mapType: journeyTopicMapType?.value || "jesus",
+      mapName: journeyMapName?.value.trim() || "",
       mapImageUrl: journeyMapImageUrl?.value.trim() || defaultJourneyAdminMapImageForType(journeyTopicMapType?.value || "jesus"),
       mapPositionsEdited: true,
       enabled: journeyTopicEnabled.value !== "false",
