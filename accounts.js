@@ -17,6 +17,10 @@ const roleLabels = {
   viewer: "Viewer - chỉ xem",
 };
 
+if (typeof trackPageView === "function") {
+  trackPageView({ key: "page_accounts", label: "Quản lý tài khoản", kind: "admin_page" });
+}
+
 async function setupLogin() {
   await renderAuthStatus(document.querySelector("#accountAuthStatus"));
   const user = await getCurrentUser();

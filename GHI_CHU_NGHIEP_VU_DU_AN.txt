@@ -4864,3 +4864,16 @@ Lưu ý kỹ thuật:
 - Sửa lỗi mojibake trên `index.html` khiến title, meta description, Open Graph, navigation, hero, section heading, quick-links và footer hiển thị sai dấu tiếng Việt khi mở URL website.
 - Sửa các chuỗi render từ `main.js` như nhãn tìm kiếm, nút "Chi tiết", "Đọc thêm", "Khám phá", thông báo Firebase, quote Lời Chúa và tracking label để không ghi đè chữ đúng bằng chữ lỗi.
 - Cập nhật cache CSS/JS trang chủ sang `20260723-home-link-font-fix`.
+### 14.161. Sửa title URL trang Hành Trình và bổ sung Analytics bản đồ
+- Sửa lỗi mojibake trong `hanh-trinh-kinh-thanh-test.html`: title, meta description, Open Graph, header/menu, nhãn chọn chủ đề, bộ lọc ẩn và aria-label đều về tiếng Việt đúng dấu.
+- Bổ sung canonical và Open Graph cho URL công khai `/hanh-trinh-kinh-thanh` để preview URL không còn hiện chữ lỗi.
+- Nhúng lại Vercel Web Analytics script cho trang Hành Trình Kinh Thánh.
+- Khi người dùng mở một bản đồ/chủ đề, `journey-test.js` tự đồng bộ URL sang `?topic=...`, cập nhật `document.title` theo tên chủ đề và gửi custom event `Journey Map View` cho Vercel Analytics nếu `window.va` sẵn sàng.
+- Cập nhật cache `journey-test.js` sang `20260723-journey-title-analytics`.
+### 14.162. Rà soát và tăng chi tiết Vercel Analytics toàn website
+- Kiểm tra toàn bộ file HTML: các trang thật của website đều đã có script Vercel Insights `/ _vercel / insights / script.js`; riêng `googlee5213bf195fccdf7.html` là file xác minh Google nên giữ nguyên, không nhúng script để tránh ảnh hưởng xác minh.
+- Nâng cấp `trackPageView()` trong `data.js`: mỗi lượt ghi analytics nội bộ Firebase cũng gửi thêm custom event `Kito Page View` sang Vercel, gồm key, label, kind, content_type, content_id và path.
+- Thêm hàng đợi `window.vaq` trong helper `trackVercelEvent()` để custom event không bị mất nếu page JS chạy trước khi Vercel Insights tải xong.
+- Bổ sung page view chi tiết cho trang `Khám Phá Đức Tin`, `Trang quản lý` và `Quản lý tài khoản`.
+- Bổ sung custom event `Feedback Submitted` khi gửi góp ý thành công và `Prayer Request Submitted` khi gửi lời cầu nguyện thành công.
+- Cập nhật cache `data.js` sang `20260723-vercel-analytics-events`; cập nhật cache các JS liên quan: `faith-discovery.js`, `gop-y.js`, `prayer-request.js`, `admin.js`, `accounts.js`.

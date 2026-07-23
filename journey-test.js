@@ -1075,6 +1075,42 @@
     }
   }
 
+  function syncJourneyTopicUrl(topicId) {
+    try {
+      const url = new URL(window.location.href);
+      const currentTopicId = String(url.searchParams.get("topic") || url.searchParams.get("topicId") || "").trim();
+      if (currentTopicId === topicId) return;
+      url.searchParams.set("topic", topicId);
+      url.searchParams.delete("topicId");
+      window.history.pushState({ journeyTopicId: topicId }, "", `${url.pathname}${url.search}${url.hash}`);
+    } catch (error) {
+      // URL sync is optional; keep the map usable if history updates are blocked.
+    }
+  }
+
+  function trackJourneyMapView(topic, topicId) {
+    try {
+      const title = String(topic?.title || topicId || "Hành Trình Kinh Thánh").trim();
+      document.title = `${title} - Hành Trình Kinh Thánh - Bài Giảng Trên Núi`;
+      if (typeof window.va === "function") {
+        window.va("event", "Journey Map View", {
+          topic_id: topicId,
+          topic_title: title,
+          map_type: topic?.mapType || "",
+        });
+      }
+      if (typeof trackPageView === "function") {
+        trackPageView({
+          key: `journey_map_${topicId}`,
+          label: `Hành Trình Kinh Thánh - ${title}`,
+          kind: "journey_map",
+        });
+      }
+    } catch (error) {
+      // Analytics should never block the user journey.
+    }
+  }
+
   function openRequestedJourneyTopic() {
     const topicId = requestedJourneyTopicId();
     const topic = journeyTopicDetails.get(topicId);
@@ -1454,6 +1490,8 @@
     state.activeView = "map";
     state.selectedStepNumber = activeJourneyMilestones[0]?.number || BAPTISM_STEP_NUMBER;
     state.detailStepNumber = null;
+    syncJourneyTopicUrl(topicId);
+    trackJourneyMapView(topic, topicId);
     renderJourneyGame();
     return;
 

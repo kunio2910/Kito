@@ -804,6 +804,9 @@ function restartFaithGame() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   document.title = "Khám Phá Đức Tin - Bài Giảng Trên Núi";
+  if (typeof trackPageView === "function") {
+    trackPageView({ key: "page_faith_discovery", label: "Khám Phá Đức Tin", kind: "page" });
+  }
   if (typeof rememberCurrentPage === "function") {
     rememberCurrentPage("Khám Phá Đức Tin");
   }

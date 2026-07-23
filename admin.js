@@ -2956,6 +2956,9 @@ async function setupLogin() {
   setupCloudinaryUpload();
   setupFaithCloudinaryUpload();
   setupJourneyCloudinaryUpload();
+  if (typeof trackPageView === "function") {
+    trackPageView({ key: "page_admin", label: "Trang quản lý", kind: "admin_page" });
+  }
   await renderAuthStatus(document.querySelector("#adminAuthStatus"));
   const user = await getCurrentUser();
 

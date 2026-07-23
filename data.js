@@ -648,9 +648,38 @@ function shouldCountPageView(key, cooldownMs = 5 * 60 * 1000) {
   return true;
 }
 
+function trackVercelEvent(name, properties = {}) {
+  try {
+    if (typeof window === "undefined") return false;
+    if (typeof window.va !== "function") {
+      window.vaq = window.vaq || [];
+      window.vaq.push(["event", name, properties]);
+      return true;
+    }
+    window.va("event", name, properties);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 async function trackPageView(options = {}) {
   const key = analyticsDocId(options.key || window.location.pathname || "page_unknown");
   if (!shouldCountPageView(key, options.cooldownMs)) return false;
+  const label = options.label || document.title || key;
+  const kind = options.kind || "page";
+  const contentType = options.contentType || "";
+  const contentId = options.contentId || "";
+  const path = window.location.pathname + window.location.search;
+
+  trackVercelEvent("Kito Page View", {
+    key,
+    label,
+    kind,
+    content_type: contentType,
+    content_id: contentId,
+    path,
+  });
 
   try {
     const { db } = requireFirebase();
@@ -675,11 +704,11 @@ async function trackPageView(options = {}) {
       pageRef,
       {
         key,
-        label: options.label || document.title || key,
-        kind: options.kind || "page",
-        contentType: options.contentType || "",
-        contentId: options.contentId || "",
-        path: window.location.pathname + window.location.search,
+        label,
+        kind,
+        contentType,
+        contentId,
+        path,
         count: firebase.firestore.FieldValue.increment(1),
         updatedAt: now,
       },

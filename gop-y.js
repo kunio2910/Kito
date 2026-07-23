@@ -28,6 +28,12 @@ function setupFeedbackPageForm() {
       );
       textarea.value = "";
       if (status) status.textContent = "Cảm ơn bạn, ý kiến đã được gửi.";
+      if (typeof trackVercelEvent === "function") {
+        trackVercelEvent("Feedback Submitted", {
+          source: "feedback_page",
+          path: window.location.pathname,
+        });
+      }
     } catch (error) {
       console.error("Không thể gửi ý kiến đóng góp.", error);
       if (status) status.textContent = error.message || "Không thể gửi ý kiến, vui lòng thử lại.";

@@ -40,6 +40,12 @@ prayerForm.addEventListener("submit", async (event) => {
     prayerMessage.classList.add("success");
     prayerMessage.textContent =
       "L\u1eddi c\u1ea7u nguy\u1ec7n c\u1ee7a b\u1ea1n s\u1ebd \u0111\u01b0\u1ee3c g\u1eedi \u0111\u1ebfn ban qu\u1ea3n tr\u1ecb \u0111\u1ec3 duy\u1ec7t tr\u01b0\u1edbc khi hi\u1ec3n th\u1ecb tr\u00ean website.";
+    if (typeof trackVercelEvent === "function") {
+      trackVercelEvent("Prayer Request Submitted", {
+        anonymous: isAnonymous,
+        path: window.location.pathname,
+      });
+    }
   } catch (error) {
     prayerMessage.classList.add("error");
     prayerMessage.textContent = error.message;
